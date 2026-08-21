@@ -313,6 +313,23 @@ function renderPie() {
    finalizado → marcador + repetición + galería
 ---------------------------------------------------------------------------- */
 
+/** Botón de directo de la ficha. Un único sitio decide texto y destino:
+    · sin youtubeId  → nuestra sala de directo (modo prueba)
+    · con youtubeId  → el vídeo en YouTube, en pestaña nueva
+    Devuelve "" solo en el caso sin salida: partido acabado y sin vídeo. */
+function botonDirecto(partido) {
+  const acabado = partido.estado === "finalizado";
+  if (acabado && !partido.youtubeId) return "";
+
+  const punto = acabado ? "" : `<span class="punto" aria-hidden="true"></span>`;
+  const texto = acabado ? "Ver repetición" : "Directo en YouTube";
+  if (!partido.youtubeId) {
+    return `<a class="btn btn--ghost btn--directo" href="directo.html">${punto}${texto}</a>`;
+  }
+  const url = `https://www.youtube.com/watch?v=${encodeURIComponent(partido.youtubeId)}`;
+  return `<a class="btn btn--ghost btn--directo" href="${url}" rel="noopener" target="_blank">${punto}${texto}</a>`;
+}
+
 function tarjetaPartido(partido, sel, { conSeleccion = false, sinReproductor = false } = {}) {
   const sede = sedeDe(partido.sede);
   const sedeHTML = sede
@@ -337,23 +354,19 @@ function tarjetaPartido(partido, sel, { conSeleccion = false, sinReproductor = f
       : `<span class="directo-badge"><span><span class="punto" aria-hidden="true"></span>En juego</span></span>`;
     cruce = `${asturias}<span class="vs">–</span>${rival}`;
     media = sinReproductor ? "" : reproductor(partido);
-    if (sinReproductor) {
+    // Fuera de la sala, el CTA principal lleva a ella. Solo se añade si el
+    // botón de directo apunta a otro sitio (YouTube), para no duplicar destino.
+    if (sinReproductor && partido.youtubeId) {
       acciones = `<a class="btn" href="directo.html">Ver el directo</a>`;
     }
-    if (CONFIG.canalYoutube || partido.youtubeId) {
-      const url = partido.youtubeId
-        ? `https://www.youtube.com/watch?v=${encodeURIComponent(partido.youtubeId)}`
-        : CONFIG.canalYoutube;
-      acciones += `<a class="btn btn--ghost" href="${esc(url)}" rel="noopener" target="_blank">Ver en YouTube</a>`;
-    }
+    acciones += botonDirecto(partido);
   } else if (partido.estado === "finalizado") {
     cruce = `${asturias}
       <span class="marcador"><span>${partido.golesAsturias ?? "–"}</span><span>·</span><span>${partido.golesRival ?? "–"}</span></span>
       ${rival}`;
     const btns = [];
-    if (partido.youtubeId) {
-      btns.push(`<a class="btn btn--ghost" href="https://www.youtube.com/watch?v=${encodeURIComponent(partido.youtubeId)}" rel="noopener" target="_blank">Ver repetición</a>`);
-    }
+    const repeticion = botonDirecto(partido);
+    if (repeticion) btns.push(repeticion);
     if (partido.galeria) {
       btns.push(`<a class="btn btn--ghost" href="${esc(partido.galeria)}" rel="noopener" target="_blank">Galería de fotos</a>`);
     }
@@ -364,10 +377,7 @@ function tarjetaPartido(partido, sel, { conSeleccion = false, sinReproductor = f
       cabecera = `<span class="badge-enjuego">En juego</span>`;
     }
     cruce = `${asturias}<span class="vs">vs</span>${rival}`;
-    if (partido.youtubeId) {
-      // El directo ya está programado en YouTube: enlace para activar recordatorio
-      acciones = `<a class="btn btn--ghost" href="https://www.youtube.com/watch?v=${encodeURIComponent(partido.youtubeId)}" rel="noopener" target="_blank">Recordatorio en YouTube</a>`;
-    }
+    acciones = botonDirecto(partido);
   }
 
   return `

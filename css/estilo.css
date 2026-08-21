@@ -676,6 +676,16 @@ section { padding-block: var(--sp-8); }
 }
 .btn--ghost:hover { background: var(--azul-50); }
 
+/* Botón de directo de la ficha de partido: el punto rojo lo identifica */
+.btn--directo .punto {
+  width: .55em; height: .55em; border-radius: 50%;
+  background: #D5261F; flex-shrink: 0;
+  animation: pulso 1.4s infinite var(--ease);
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn--directo .punto { animation: none; }
+}
+
 /* =============================================================================
    PORTADA: HOY JUEGAN
    ============================================================================= */
