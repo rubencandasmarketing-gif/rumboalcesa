@@ -492,9 +492,13 @@ section { padding-block: var(--sp-8); }
    Barra de categorías a todo el ancho: seis cintas azules repartidas por igual,
    con el remate diagonal de la marca. En móvil pasa a carrusel con snap.
    ============================================================================= */
-/* La franja cierra la sección: sin hueco debajo, la separación con la agenda
-   la pone ya el padding-top de la sección siguiente. */
-.seccion-selecciones { padding-bottom: 0; }
+/* Arranca limpia bajo el héroe —sin .solapa, que la metía sobre la foto y el
+   corte diagonal— y cierra pegada a la franja: el aire con la sección
+   siguiente lo pone ya el padding-top de esa sección. */
+.seccion-selecciones {
+  padding-top: var(--sp-6);
+  padding-bottom: 0;
+}
 
 .cintas-selecciones {
   display: flex;
