@@ -757,10 +757,22 @@ document.addEventListener("click", e => {
 });
 
 function renderSalaDirecto() {
-  /* --- MODO DEMO (directo.html?demo) ------------------------------------
+  /* --- MODO DEMO ---------------------------------------------------------
      Simulación para enseñar la sala a responsables y patrocinadores.
-     Cambiar estos valores para ajustar el partido de ejemplo. */
-  const MODO_DEMO = new URLSearchParams(location.search).has("demo");
+
+     DEMO_POR_DEFECTO: mientras la web esté en preparación, la sala muestra
+     la simulación sin necesidad de parámetro. ⚠️ PONER EN false ANTES DEL
+     CAMPEONATO, o los visitantes verán un partido de ejemplo como si fuera
+     un directo real.
+       · ?real  → fuerza la sala de verdad (estado vacío) sin tocar el código
+       · ?demo  → fuerza la simulación aunque DEMO_POR_DEFECTO sea false
+
+     Un partido realmente en emisión SIEMPRE manda sobre la simulación.
+     Cambiar los valores de DEMO para ajustar el partido de ejemplo. */
+  const DEMO_POR_DEFECTO = true;
+  const parametros = new URLSearchParams(location.search);
+  const MODO_DEMO = parametros.has("demo") ||
+                    (DEMO_POR_DEFECTO && !parametros.has("real"));
   const DEMO = {
     youtubeId: "RyMJQqWtAjs",       // vídeo real del año pasado, de ejemplo
     rival: "Selección de Madrid",
