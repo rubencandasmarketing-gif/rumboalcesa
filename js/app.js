@@ -387,9 +387,11 @@ function tarjetaPartido(partido, sel, { conSeleccion = false, sinReproductor = f
 }
 
 /* Fachada del reproductor: el iframe de YouTube SOLO se carga al pulsar. */
-function reproductor(partido) {
+/* conPatro:false deja solo el vídeo, para cuando quien llama pone debajo su
+   propio espacio de patrocinio (la sala de directo usa la barra premium). */
+function reproductor(partido, { conPatro = true } = {}) {
   const p = CONFIG.patrocinadorPrincipal;
-  const patro = p.activo
+  const patroBloque = p.activo
     ? `<div class="patro-reproductor"><span>Directo ofrecido por</span>
          <a href="${esc(p.url)}" rel="sponsored noopener" target="_blank"><img src="${esc(p.logo)}" alt="${esc(p.nombre)}"></a>
        </div>`
@@ -398,6 +400,7 @@ function reproductor(partido) {
            <strong>Tu marca junto a cada directo</strong>
          </span>
        </div>`;
+  const patro = conPatro ? patroBloque : "";
 
   if (!partido.youtubeId) {
     return `<div class="reproductor" data-partido="${esc(partido.id)}">
@@ -704,6 +707,22 @@ function renderSeleccion(id) {
    cambiar. Sin emisión, muestra los partidos del día.
 ---------------------------------------------------------------------------- */
 
+/** Barra premium pegada bajo el vídeo: el espacio de más valor de la sala.
+    Con patrocinador real muestra su logo; si no, el hueco en venta. */
+function barraOfrecidoPor() {
+  const p = CONFIG.patrocinadorPrincipal;
+  const marca = p.activo
+    ? `<a class="ofrecido__marca" href="${esc(p.url)}" rel="sponsored noopener" target="_blank">
+         <img src="${esc(p.logo)}" alt="${esc(p.nombre)}">
+       </a>`
+    : `<span class="ofrecido__hueco">Tu logo aquí</span>`;
+  return `
+    <div class="ofrecido">
+      <span class="ofrecido__etiqueta">Partido ofrecido por</span>
+      ${marca}
+    </div>`;
+}
+
 function bannerPatrocinador() {
   const p = CONFIG.patrocinadorPrincipal;
   if (p.activo) {
@@ -738,6 +757,18 @@ document.addEventListener("click", e => {
 });
 
 function renderSalaDirecto() {
+  /* --- MODO DEMO (directo.html?demo) ------------------------------------
+     Simulación para enseñar la sala a responsables y patrocinadores.
+     Cambiar estos valores para ajustar el partido de ejemplo. */
+  const MODO_DEMO = new URLSearchParams(location.search).has("demo");
+  const DEMO = {
+    youtubeId: "RyMJQqWtAjs",       // vídeo real del año pasado, de ejemplo
+    rival: "Selección de Madrid",
+    categoria: "Juvenil",
+    genero: "Masculina",
+    fase: "Fase de grupos — Jornada 2"
+  };
+
   const main = $("main");
   const todos = todosLosPartidos();
   SALA_ACTIVOS = todos
@@ -756,18 +787,37 @@ function renderSalaDirecto() {
       ${SALA_ACTIVOS.map(t => `<button class="agenda-dia sala-chip" type="button" data-id="${esc(t.partido.id)}" aria-pressed="false">${esc(t.sel.categoria)} ${t.sel.genero === "Masculina" ? "M" : "F"}</button>`).join("")}
     </div>` : "";
 
+  // La demo sustituye al estado vacío: banner, vídeo, barra premium, banner
+  const salaDemo = () => {
+    const partido = { id: "demo", rival: DEMO.rival, youtubeId: DEMO.youtubeId, estado: "directo" };
+    return `
+      <p class="sala-nota">Simulación — partido de ejemplo</p>
+      <div class="sala-cruce">
+        <span class="directo-badge"><span><span class="punto" aria-hidden="true"></span>En directo</span></span>
+        <h2 class="sala-cruce__titulo">Asturias <span>vs</span> ${esc(DEMO.rival)}</h2>
+        <p class="sala-cruce__meta">${esc(DEMO.categoria)} ${esc(DEMO.genero)} · ${esc(DEMO.fase)}</p>
+      </div>
+      ${bannerPatrocinador()}
+      <div class="sala-emision">
+        ${reproductor(partido, { conPatro: false })}
+        ${barraOfrecidoPor()}
+      </div>
+      ${bannerPatrocinador()}`;
+  };
+
   const cuerpo = SALA_ACTIVOS.length ? `
       ${bannerPatrocinador()}
       ${chips}
       <div id="sala-partido"></div>
       ${bannerPatrocinador()}`
+    : MODO_DEMO ? salaDemo()
     : vacio("Ahora mismo no hay ningún partido en emisión",
             "En cuanto empiece uno, aparecerá aquí sin recargar la página.");
 
   main.append(el(`
     <div class="seleccion-hero">
       <div class="contenedor anim-entrada">
-        <h1>${SALA_ACTIVOS.length ? `<span class="genero">En directo</span>` : "Directos"}</h1>
+        <h1>${SALA_ACTIVOS.length || MODO_DEMO ? `<span class="genero">En directo</span>` : "Directos"}</h1>
       </div>
     </div>
     <section class="contenedor sala">${cuerpo}</section>

@@ -518,6 +518,80 @@ section { padding-block: var(--sp-8); }
   border-color: transparent transparent transparent var(--azul-950);
 }
 
+/* =============================================================================
+   SALA DE DIRECTO: cruce, emisión y espacios de patrocinio
+   ============================================================================= */
+/* Aviso de simulación: discreto, para que no reste seriedad a la demo */
+.sala-nota {
+  justify-self: start;
+  display: inline-flex; align-items: center; gap: .5em;
+  margin: 0;
+  padding: .35em .8em;
+  border: 1px solid var(--azul-300);
+  border-radius: var(--r-full);
+  background: var(--azul-50);
+  color: var(--azul-800);
+  font-size: var(--step--1); font-weight: 700;
+  letter-spacing: .04em;
+}
+.sala-nota::before {
+  content: ""; width: .5em; height: .5em; border-radius: 50%;
+  background: var(--azul-500);
+}
+
+.sala-cruce { display: grid; justify-items: center; gap: var(--sp-1); text-align: center; }
+.sala-cruce__titulo {
+  margin: 0;
+  font-family: var(--font-display); font-weight: 700;
+  font-size: var(--step-3); line-height: 1;
+  text-transform: uppercase; letter-spacing: .01em;
+  color: var(--azul-950);
+}
+.sala-cruce__titulo span { color: var(--azul-500); }
+.sala-cruce__meta {
+  margin: 0;
+  font-family: var(--font-display); font-weight: 600;
+  font-size: var(--step-0); text-transform: uppercase; letter-spacing: .1em;
+  color: var(--azul-800);
+}
+
+/* El vídeo y su barra premium forman un solo bloque */
+.sala-emision {
+  border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+.sala-emision .reproductor { border-radius: 0; }
+
+/* "Partido ofrecido por": el espacio de más valor, con el amarillo de marca */
+.ofrecido {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: var(--sp-2) var(--sp-3);
+  min-height: 64px; padding: var(--sp-2) var(--sp-3);
+  background: var(--azul-950);
+  border-top: 4px solid var(--amarillo);
+}
+.ofrecido__etiqueta {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: var(--step--1); text-transform: uppercase; letter-spacing: .16em;
+  color: var(--amarillo);
+}
+.ofrecido__marca img { max-height: 46px; width: auto; display: block; }
+.ofrecido__hueco {
+  display: inline-flex; align-items: center; min-height: 44px;
+  padding: .5em 1.4em;
+  border: 1.5px dashed rgba(255, 255, 255, .45);
+  border-radius: var(--r-sm);
+  font-family: var(--font-display); font-weight: 700;
+  font-size: var(--step-0); text-transform: uppercase; letter-spacing: .08em;
+  color: #fff;
+}
+
+@media (max-width: 620px) {
+  .ofrecido { flex-direction: column; gap: var(--sp-1); text-align: center; }
+  .sala-cruce__titulo { font-size: var(--step-2); }
+}
+
 /* Patrocinador junto al reproductor (hueco 2 de 3) */
 .patro-reproductor {
   display: flex; align-items: center; justify-content: center; gap: var(--sp-2);
