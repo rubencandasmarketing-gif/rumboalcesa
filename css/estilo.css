@@ -164,47 +164,41 @@ section { padding-block: var(--sp-8); }
 }
 .cabecera__marca img { height: 52px; width: auto; flex-shrink: 0; }
 
-/* Wordmark: dos líneas apiladas y apretadas, en condensada itálica, con el
-   remate diagonal de la marca bajo CESA. Es la firma de la web. */
+/* Wordmark: una línea sólida en condensada itálica del peso más fuerte, con
+   el subrayado diagonal de la marca a todo el ancho. Es la firma de la web.
+   nowrap + clamp: en pantallas estrechas encoge, nunca parte en dos líneas. */
 .cabecera__titulo {
-  display: grid; justify-items: start;
-  font-family: var(--font-display);
-  font-style: italic; font-weight: 700;
-  text-transform: uppercase;
-  line-height: .9;
-}
-.cabecera__titulo__rumbo {
-  font-size: clamp(.8rem, .72rem + .3vw, 1.02rem);
-  letter-spacing: .05em;
-  color: #fff;
-}
-.cabecera__titulo__cesa {
   position: relative;
-  font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.3rem);
-  letter-spacing: -.015em;
-  padding-bottom: .16em; padding-right: .06em;  /* aire para el vuelo de la itálica */
-  color: var(--amarillo);
+  display: inline-block;
+  font-family: var(--font-display);
+  font-style: italic; font-weight: 900;
+  font-size: clamp(1.5rem, 1rem + 2.2vw, 2.5rem);
+  text-transform: uppercase;
+  letter-spacing: .01em; line-height: 1;
+  white-space: nowrap;
+  color: #fff;
+  padding-bottom: .14em; padding-right: .05em;  /* aire para el vuelo de la itálica */
 }
-/* El remate diagonal, mismo gesto que las cintas y la banda de foto */
-.cabecera__titulo__cesa::after {
+.cabecera__titulo__cesa { color: var(--amarillo); }
+
+/* Subrayado diagonal bajo TODO el wordmark, mismo gesto que el resto de la web */
+.cabecera__titulo::after {
   content: "";
-  position: absolute; left: 0; bottom: 0;
-  width: 100%; height: .11em; min-height: 4px;
-  background: var(--amarillo);
+  position: absolute; left: 0; bottom: -2px;
+  width: 100%; height: 5px;
+  background: var(--amarillo-deg);
   transform: skewX(var(--skew));
   transform-origin: left bottom;
-  transition: width .28s var(--ease), transform .28s var(--ease);
+  transition: transform .28s var(--ease), filter .28s var(--ease);
 }
-.cabecera__marca:hover .cabecera__titulo__cesa::after {
-  width: 116%;
-  transform: skewX(var(--skew)) translateX(3px);
+.cabecera__marca:hover .cabecera__titulo::after {
+  transform: skewX(var(--skew)) translateX(4px);
+  filter: brightness(1.12);
 }
 .cabecera__marca:focus-visible { outline-offset: 5px; }
 
 @media (max-width: 400px) {
   .cabecera__marca img { height: 42px; }
-  .cabecera__titulo__cesa { font-size: 1.45rem; }
-  .cabecera__titulo__rumbo { font-size: .74rem; }
 }
 
 /* Navegación: cuatro entradas, con "Selecciones" desplegable en escritorio y
