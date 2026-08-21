@@ -78,6 +78,7 @@ export const SELECCIONES = [
     categoria: "Infantil",
     genero: "Masculina",
     escudo: "",
+    portada: "",   // foto de ambiente propia para la cabecera (opcional): "img/ambiente/....webp"
     staff: [],
     plantilla: [],
     partidos: []
@@ -87,6 +88,7 @@ export const SELECCIONES = [
     categoria: "Infantil",
     genero: "Femenina",
     escudo: "",
+    portada: "",   // foto de ambiente propia para la cabecera (opcional): "img/ambiente/....webp"
     staff: [],
     plantilla: [],
     partidos: []
@@ -96,6 +98,7 @@ export const SELECCIONES = [
     categoria: "Cadete",
     genero: "Masculina",
     escudo: "",
+    portada: "",   // foto de ambiente propia para la cabecera (opcional): "img/ambiente/....webp"
     staff: [
       // PRUEBA con foto real — completar nombre
       { nombre: "Completar nombre", rol: "Entrenador", foto: "img/jugadores/cadete-masculina/staff-entrenador.webp" }
@@ -111,6 +114,7 @@ export const SELECCIONES = [
     categoria: "Cadete",
     genero: "Femenina",
     escudo: "",
+    portada: "",   // foto de ambiente propia para la cabecera (opcional): "img/ambiente/....webp"
     staff: [],
     plantilla: [],
     partidos: []
@@ -120,6 +124,7 @@ export const SELECCIONES = [
     categoria: "Juvenil",
     genero: "Masculina",
     escudo: "",
+    portada: "",   // foto de ambiente propia para la cabecera (opcional): "img/ambiente/....webp"
 
     staff: [
       // EJEMPLO — borrar
@@ -181,6 +186,7 @@ export const SELECCIONES = [
     categoria: "Juvenil",
     genero: "Femenina",
     escudo: "",
+    portada: "",   // foto de ambiente propia para la cabecera (opcional): "img/ambiente/....webp"
     staff: [],
     plantilla: [],
     partidos: []

@@ -56,6 +56,8 @@
      Se aplican como capa ::before sobre las superficies azules. --- */
   --grano: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.06 0'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>");
   --rayas: repeating-linear-gradient(82deg, rgba(255,255,255,.045) 0 2px, transparent 2px 16px);
+  /* La misma trama, en tinta azul, para superficies claras */
+  --rayas-claras: repeating-linear-gradient(82deg, rgba(1,104,179,.055) 0 2px, transparent 2px 16px);
 
   --ease: cubic-bezier(.22, .61, .36, 1);
   --measure: 62ch;
@@ -332,11 +334,15 @@ section { padding-block: var(--sp-8); }
    ============================================================================= */
 .heroe {
   background:
-    linear-gradient(96deg, rgba(6,35,56,.95) 12%, rgba(4,58,94,.82) 46%, rgba(1,104,179,.28) 100%),
+    /* Velo reforzado en el lado del texto: garantiza contraste AA sobre
+       cualquier zona de la foto, incluidas las claras. */
+    linear-gradient(180deg, rgba(6,35,56,.55) 0 38%, rgba(6,35,56,0) 78%),
+    linear-gradient(96deg, rgba(6,35,56,.97) 0 34%, rgba(4,58,94,.90) 58%, rgba(1,104,179,.42) 100%),
     url("../img/ambiente/jugada-contraataque.webp") right 42% / cover no-repeat,
     var(--azul-700);
   color: #fff;
-  padding-block: var(--sp-8) var(--sp-12);
+  /* El corte diagonal mide 56px: se le suma para que no pise el texto */
+  padding-block: var(--sp-8) calc(var(--sp-12) + 56px);
   position: relative;
   overflow: hidden;
 }
@@ -362,6 +368,20 @@ section { padding-block: var(--sp-8); }
   font-weight: 400; line-height: 1.45; margin-top: 0;
 }
 .heroe h1 span { color: var(--amarillo); }
+.heroe__acciones {
+  display: flex; flex-wrap: wrap; gap: var(--sp-2);
+  margin-top: var(--sp-3);
+}
+/* Fantasma sobre azul: al revés que .btn--ghost, que vive sobre fondo claro */
+.btn--fantasma {
+  background: transparent; color: #fff;
+  border: 1.5px solid rgba(255, 255, 255, .55);
+  box-shadow: none;
+}
+.btn--fantasma:hover {
+  background: rgba(255, 255, 255, .12);
+  border-color: #fff;
+}
 .heroe__simbolo {
   justify-self: center;
   width: min(300px, 60%);
@@ -791,14 +811,19 @@ section { padding-block: var(--sp-8); }
 /* =============================================================================
    CABECERA DE SELECCIÓN
    ============================================================================= */
+/* Por defecto, azul con textura: SIN foto genérica repetida en las seis.
+   Con "portada" en datos.js, esa selección estrena su propia imagen. */
 .seleccion-hero {
-  background:
-    linear-gradient(180deg, rgba(4,58,94,.90), rgba(1,104,179,.86)),
-    url("../img/ambiente/equipo-pinya-aerea.webp") center 40% / cover no-repeat,
-    var(--azul-700);
+  background: linear-gradient(135deg, var(--azul-900), var(--azul-700) 60%, var(--azul-800));
   color: #fff;
-  padding-block: var(--sp-6);
+  padding-block: var(--sp-8) calc(var(--sp-6) + 40px);
   position: relative; overflow: hidden;
+}
+.seleccion-hero--foto {
+  background:
+    linear-gradient(100deg, rgba(6,35,56,.95) 0 38%, rgba(4,58,94,.86) 62%, rgba(1,104,179,.55) 100%),
+    var(--foto) center 40% / cover no-repeat,
+    var(--azul-700);
 }
 .seleccion-hero::before {
   content: ""; position: absolute; inset: 0;
@@ -810,10 +835,27 @@ section { padding-block: var(--sp-8); }
   background: var(--paper);
   clip-path: polygon(0 100%, 100% 100%, 100% 0);
 }
-.seleccion-hero .contenedor { position: relative; display: flex; align-items: center; gap: var(--sp-3); }
-.seleccion-hero img { width: 84px; height: 84px; object-fit: contain; }
-.seleccion-hero h1 { margin: 0; font-size: var(--step-3); }
-.seleccion-hero .genero { color: var(--amarillo); }
+.seleccion-hero .contenedor {
+  position: relative;
+  display: flex; align-items: center; gap: var(--sp-3);
+}
+.seleccion-hero__escudo {
+  width: clamp(64px, 11vw, 108px); height: auto; aspect-ratio: 1;
+  object-fit: contain; flex-shrink: 0;
+  filter: drop-shadow(0 6px 18px rgba(6, 35, 56, .45));
+}
+.seleccion-hero__texto { min-width: 0; }
+.seleccion-hero h1 {
+  margin: 0; font-size: var(--step-4);
+  text-transform: uppercase; line-height: .95;
+}
+.seleccion-hero .genero { color: var(--amarillo); display: block; }
+.seleccion-hero__dato {
+  margin: var(--sp-1) 0 0;
+  font-family: var(--font-display); font-weight: 600;
+  font-size: var(--step-0); text-transform: uppercase; letter-spacing: .1em;
+  color: var(--azul-100);
+}
 
 /* =============================================================================
    RESULTADOS (portada)
@@ -856,14 +898,27 @@ section { padding-block: var(--sp-8); }
 .patro-grid--seis { grid-template-columns: repeat(6, 1fr); }
 @media (max-width: 900px) { .patro-grid--seis { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 520px) { .patro-grid--seis { grid-template-columns: repeat(2, 1fr); } }
+/* Hueco reservado, no roto: el símbolo respira al pasar por encima */
 .patro-hueco {
+  position: relative;
   min-height: 90px;
   border: 1.5px dashed var(--azul-300);
   border-radius: var(--r-md);
-  background:
-    url("../img/marca/simbolo-blanco.png") center / 34% auto no-repeat,
-    var(--azul-50);
+  background: var(--azul-50);
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease);
 }
+.patro-hueco::after {
+  content: ""; position: absolute; inset: 0;
+  background: url("../img/marca/simbolo-blanco.png") center / 34% auto no-repeat;
+  opacity: .5;
+  transition: opacity .25s var(--ease);
+}
+.patro-hueco:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--azul-500);
+}
+.patro-hueco:hover::after { opacity: .85; }
 
 /* Placeholder "Este espacio puede ser tuyo" (huecos con activo:false) */
 .patro-placeholder {
@@ -944,18 +999,45 @@ section { padding-block: var(--sp-8); }
   background: var(--grano);
   pointer-events: none;
 }
-.pie .contenedor {
-  position: relative;
-  display: flex; flex-wrap: wrap; gap: var(--sp-3);
-  align-items: center; justify-content: space-between;
+.pie .contenedor { position: relative; }
+.pie__rejilla {
+  display: grid; gap: var(--sp-4) var(--sp-6);
+  grid-template-columns: minmax(0, 1.6fr) repeat(2, minmax(0, 1fr));
+  align-items: start;
 }
-.pie img { height: 34px; width: auto; }
+.pie__col { display: grid; gap: var(--sp-2); align-content: start; }
+.pie__col--marca p { margin: 0; max-width: 34ch; color: var(--azul-100); }
+.pie__titulo {
+  margin: 0;
+  font-family: var(--font-display); font-weight: 700;
+  font-size: var(--step-0); text-transform: uppercase; letter-spacing: .1em;
+  color: #fff;
+}
+.pie__enlaces { list-style: none; margin: 0; padding: 0; display: grid; gap: .1rem; }
+.pie__enlaces a {
+  display: inline-flex; align-items: center; min-height: 44px;
+  text-decoration: none;
+}
+.pie__enlaces a:hover { text-decoration: underline; text-underline-offset: .25em; }
+
+/* Separador sutil y línea legal */
+.pie__legal {
+  margin-top: var(--sp-4); padding-top: var(--sp-3);
+  border-top: 1px solid rgba(255, 255, 255, .14);
+  color: var(--azul-300); font-size: var(--step--1);
+}
+
+.pie img { height: 40px; width: auto; }
 .pie a { color: var(--azul-100); }
 .pie a:hover { color: var(--amarillo); }
-.pie__redes { display: flex; gap: var(--sp-1); }
+.pie__redes { display: flex; gap: var(--sp-2); margin-top: var(--sp-1); }
+
+@media (max-width: 720px) {
+  .pie__rejilla { grid-template-columns: 1fr; gap: var(--sp-4); }
+}
 .pie__red {
   display: grid; place-items: center;
-  width: 44px; height: 44px;
+  width: 52px; height: 52px;
   border: 1.5px solid rgba(255, 255, 255, .28);
   border-radius: 50%;
   transition: border-color .2s var(--ease), color .2s var(--ease), transform .2s var(--ease);
@@ -965,17 +1047,71 @@ section { padding-block: var(--sp-8); }
 /* =============================================================================
    UTILIDADES Y ESTADOS VACÍOS
    ============================================================================= */
+/* Estado vacío: "esto llegará", no "esto está roto" */
 .vacio {
-  border: 1px dashed var(--line);
+  position: relative; overflow: hidden;
+  display: grid; justify-items: center; gap: var(--sp-1);
+  border: 1px dashed var(--azul-300);
   border-radius: var(--r-md);
-  background: #fff;
-  padding: var(--sp-3);
-  color: var(--muted);
+  background: var(--rayas-claras), var(--azul-50);
+  padding: var(--sp-4) var(--sp-3);
   text-align: center;
+}
+/* No hay símbolo en azul entre los recursos de marca: el blanco sobre un
+   disco azul resuelve el contraste sobre fondo claro. */
+.vacio__simbolo {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: url("../img/marca/simbolo-blanco.png") center / 60% auto no-repeat,
+              var(--azul-700);
+  opacity: .9;
+}
+.vacio__titular {
+  margin: 0;
+  font-family: var(--font-display); font-weight: 700;
+  font-size: var(--step-1); text-transform: uppercase; letter-spacing: .03em;
+  color: var(--azul-900);
+}
+.vacio__detalle {
+  margin: 0; max-width: 46ch;
+  font-size: var(--step--1); color: var(--azul-800);
+}
+
+/* =============================================================================
+   BANDA DE FOTO (portada)
+   ============================================================================= */
+.banda-foto {
+  position: relative; isolation: isolate;
+  display: grid; align-items: center;
+  min-height: clamp(220px, 32vw, 340px);
+  background:
+    linear-gradient(100deg, rgba(6,35,56,.92) 0 34%, rgba(4,58,94,.72) 62%, rgba(1,104,179,.45) 100%),
+    var(--foto) center 45% / cover no-repeat,
+    var(--azul-800);
+  color: #fff;
+}
+.banda-foto::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: var(--rayas), var(--grano);
+  pointer-events: none;
+}
+.banda-foto__claim {
+  margin: 0; max-width: 18ch;
+  font-family: var(--font-display); font-weight: 700;
+  font-size: var(--step-3); line-height: 1;
+  text-transform: uppercase; letter-spacing: .01em;
+  text-shadow: 0 2px 18px rgba(6, 35, 56, .6);
+}
+.banda-foto__claim::after {
+  content: ""; display: block;
+  width: 96px; height: 7px; margin-top: var(--sp-2);
+  background: var(--amarillo);
+  transform: skewX(var(--skew));
 }
 
 /* Animación de entrada sutil */
 @media (prefers-reduced-motion: no-preference) {
+  /* Los saltos a #selecciones (héroe, nav, pie) se deslizan */
+  html { scroll-behavior: smooth; }
   .anim-entrada { animation: entrada .5s var(--ease) both; }
   @keyframes entrada {
     from { opacity: 0; transform: translateY(10px); }

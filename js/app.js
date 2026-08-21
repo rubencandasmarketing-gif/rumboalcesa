@@ -13,6 +13,13 @@ import { CONFIG, SEDES, PATROCINADORES, SELECCIONES } from "./datos.js";
    los datos y los enlaces funcionan igual; solo se desactivan los relojes. */
 const MODO_ESTATICO = new URLSearchParams(location.search).has("static");
 
+/* Banda visual de la portada. Cambiar aquí para usar otra foto o otro claim.
+   Cualquiera de las de img/ambiente/ sirve: la foto va bajo un velo azul. */
+const BANDA = {
+  foto: "img/ambiente/celebracion-equipo.webp",
+  claim: "Toda Asturias, en una semana"
+};
+
 /* --- Utilidades ----------------------------------------------------------- */
 
 const $ = (sel, ctx = document) => ctx.querySelector(sel);
@@ -21,6 +28,21 @@ function el(html) {
   const t = document.createElement("template");
   t.innerHTML = html.trim();
   return t.content;
+}
+
+/** Limpia una ruta antes de meterla en un url() de CSS inline. */
+function rutaCss(r) {
+  return String(r ?? "").replace(/["'()\\\s]/g, "");
+}
+
+/** Estado vacío: dice "esto llegará", no "esto está roto".
+    Titular breve arriba y una línea de explicación debajo. */
+function vacio(titular, detalle = "") {
+  return `<div class="vacio">
+      <span class="vacio__simbolo" aria-hidden="true"></span>
+      <p class="vacio__titular">${esc(titular)}</p>
+      ${detalle ? `<p class="vacio__detalle">${esc(detalle)}</p>` : ""}
+    </div>`;
 }
 
 /** Escapa texto que viene de datos.js antes de insertarlo en HTML. */
@@ -218,9 +240,9 @@ function cablearNavegacion() {
 }
 
 const ICONOS_REDES = {
-  twitter: `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M18.9.9h3.68l-8.04 9.19L24 22.6h-7.41l-5.8-7.58-6.64 7.58H.47l8.6-9.83L0 .9h7.59l5.25 6.93L18.9.9Zm-1.29 19.5h2.04L6.49 2.99H4.3l13.31 17.41Z"/></svg>`,
-  instagram: `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23a3.8 3.8 0 0 1-.9 1.38c-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.8 3.8 0 0 1-1.38-.9 3.74 3.74 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.58 2.2 15.2 2.2 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.21 8.8 2.2 12 2.2M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63a5.88 5.88 0 0 0-2.13 1.38A5.86 5.86 0 0 0 .63 4.14C.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.28.26 2.15.56 2.91.31.8.72 1.48 1.38 2.13a5.87 5.87 0 0 0 2.13 1.38c.77.3 1.64.5 2.91.56 1.28.06 1.69.07 4.95.07s3.67-.01 4.95-.07c1.28-.06 2.15-.26 2.91-.56a5.9 5.9 0 0 0 2.13-1.38 5.86 5.86 0 0 0 1.38-2.13c.3-.77.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.28-.26-2.15-.56-2.91a5.89 5.89 0 0 0-1.38-2.13A5.85 5.85 0 0 0 19.86.63c-.77-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0m0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32M12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8m6.41-11.85a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88"/></svg>`,
-  facebook: `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M24 12.07C24 5.45 18.63.07 12 .07S0 5.45 0 12.07c0 5.99 4.39 10.95 10.13 11.85v-8.38H7.08v-3.47h3.05V9.43c0-3 1.79-4.67 4.53-4.67 1.31 0 2.69.24 2.69.24v2.95h-1.52c-1.49 0-1.95.93-1.95 1.87v2.25h3.33l-.53 3.47h-2.8v8.38C19.61 23.03 24 18.06 24 12.07z"/></svg>`
+  twitter: `<svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M18.9.9h3.68l-8.04 9.19L24 22.6h-7.41l-5.8-7.58-6.64 7.58H.47l8.6-9.83L0 .9h7.59l5.25 6.93L18.9.9Zm-1.29 19.5h2.04L6.49 2.99H4.3l13.31 17.41Z"/></svg>`,
+  instagram: `<svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23a3.8 3.8 0 0 1-.9 1.38c-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.8 3.8 0 0 1-1.38-.9 3.74 3.74 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.58 2.2 15.2 2.2 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.21 8.8 2.2 12 2.2M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63a5.88 5.88 0 0 0-2.13 1.38A5.86 5.86 0 0 0 .63 4.14C.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.28.26 2.15.56 2.91.31.8.72 1.48 1.38 2.13a5.87 5.87 0 0 0 2.13 1.38c.77.3 1.64.5 2.91.56 1.28.06 1.69.07 4.95.07s3.67-.01 4.95-.07c1.28-.06 2.15-.26 2.91-.56a5.9 5.9 0 0 0 2.13-1.38 5.86 5.86 0 0 0 1.38-2.13c.3-.77.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.28-.26-2.15-.56-2.91a5.89 5.89 0 0 0-1.38-2.13A5.85 5.85 0 0 0 19.86.63c-.77-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0m0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32M12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8m6.41-11.85a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88"/></svg>`,
+  facebook: `<svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M24 12.07C24 5.45 18.63.07 12 .07S0 5.45 0 12.07c0 5.99 4.39 10.95 10.13 11.85v-8.38H7.08v-3.47h3.05V9.43c0-3 1.79-4.67 4.53-4.67 1.31 0 2.69.24 2.69.24v2.95h-1.52c-1.49 0-1.95.93-1.95 1.87v2.25h3.33l-.53 3.47h-2.8v8.38C19.61 23.03 24 18.06 24 12.07z"/></svg>`
 };
 const NOMBRES_REDES = { twitter: "X (Twitter)", instagram: "Instagram", facebook: "Facebook" };
 
@@ -249,15 +271,36 @@ function renderPie() {
       <div class="contenedor" style="display:grid;place-items:center">${cierre}</div>
     </div>
     <footer class="pie">
-      <div class="contenedor">
-        <a href="https://www.fbmpa.es" rel="noopener" target="_blank" aria-label="Federación de Balonmano del Principado de Asturias">
-          <img src="img/marca/fbmpa-blanco.png" alt="FBMPA">
-        </a>
-        <p style="margin:0">
-          Web de la Federación de Balonmano del Principado de Asturias dedicada al seguimiento del ${esc(CONFIG.edicion)}.<br>
-          Web oficial de la federación: <a href="https://www.fbmpa.es" rel="noopener" target="_blank">fbmpa.es</a> · <a href="patrocinadores.html">Patrocinadores</a>
-        </p>
-        ${redesHTML()}
+      <div class="contenedor pie__rejilla">
+        <div class="pie__col pie__col--marca">
+          <a href="https://www.fbmpa.es" rel="noopener" target="_blank"
+             aria-label="Federación de Balonmano del Principado de Asturias">
+            <img src="img/marca/fbmpa-blanco.png" alt="FBMPA">
+          </a>
+          <p>Cobertura de las selecciones asturianas de balonmano en el ${esc(CONFIG.edicion)}.</p>
+        </div>
+
+        <nav class="pie__col" aria-label="Enlaces del pie">
+          <h2 class="pie__titulo">Navegación</h2>
+          <ul class="pie__enlaces">
+            <li><a href="index.html">Portada</a></li>
+            <li><a href="index.html#selecciones">Selecciones</a></li>
+            <li><a href="directo.html">Directo</a></li>
+            <li><a href="patrocinadores.html">Patrocinadores</a></li>
+          </ul>
+        </nav>
+
+        <div class="pie__col">
+          <h2 class="pie__titulo">Federación</h2>
+          <ul class="pie__enlaces">
+            <li><a href="https://www.fbmpa.es" rel="noopener" target="_blank">fbmpa.es</a></li>
+          </ul>
+          ${redesHTML()}
+        </div>
+      </div>
+
+      <div class="contenedor pie__legal">
+        Web de la Federación de Balonmano del Principado de Asturias dedicada al seguimiento del ${esc(CONFIG.edicion)}.
       </div>
     </footer>
   `));
@@ -430,7 +473,7 @@ function renderAgendaDia(fecha) {
   const cont = document.querySelector("#agenda-cuerpo");
   if (!cont) return;
   const filas = (AGENDA.get(fecha) || []).map(filaAgenda).join("");
-  cont.innerHTML = filas || `<div class="vacio">Sin partidos este día.</div>`;
+  cont.innerHTML = filas || vacio("Sin partidos este día", "Elige otra fecha en la agenda.");
   document.querySelectorAll(".agenda-dia").forEach(b =>
     b.setAttribute("aria-pressed", String(b.dataset.fecha === fecha)));
 }
@@ -480,7 +523,7 @@ function renderPortada() {
           ${fechas.map(f => `<button class="agenda-dia" type="button" data-fecha="${f}" aria-pressed="false">${diaCorto(f)}</button>`).join("")}
         </div>
         <div class="agenda-lista" id="agenda-cuerpo"></div>`
-      : `<div class="vacio">El calendario se publicará próximamente.</div>`}
+      : vacio("El calendario, muy pronto", "Cuando se publique el sorteo, los partidos aparecerán aquí.")}
     </section>`;
 
   // --- Franja de selecciones ---
@@ -496,6 +539,10 @@ function renderPortada() {
         <div class="heroe__texto anim-entrada">
           <h1>Asturias,<br>rumbo al <span>CESA</span></h1>
           <p>Toda la cobertura de las selecciones asturianas en el Campeonato de España: convocatorias, calendario, resultados y directos.</p>
+          <div class="heroe__acciones">
+            <a class="btn" href="directo.html">Ver directos</a>
+            <a class="btn btn--fantasma" href="#selecciones">Las selecciones</a>
+          </div>
         </div>
       </div>
     </div>
@@ -511,6 +558,10 @@ function renderPortada() {
     </section>
 
     ${agendaHTML}
+
+    <div class="banda-foto" style="--foto: url('${rutaCss(BANDA.foto)}')">
+      <div class="contenedor"><p class="banda-foto__claim">${esc(BANDA.claim)}</p></div>
+    </div>
 
     ${franjaPatrocinadores()}
   `));
@@ -530,7 +581,7 @@ function renderSeleccion(id) {
   const sel = SELECCIONES.find(s => s.id === id);
   const main = $("main");
   if (!sel) {
-    main.append(el(`<div class="contenedor"><div class="vacio">Selección no encontrada.</div></div>`));
+    main.append(el(`<div class="contenedor">${vacio("Selección no encontrada", "Comprueba el enlace o vuelve a la portada.")}</div>`));
     return;
   }
 
@@ -541,7 +592,7 @@ function renderSeleccion(id) {
 
   const calendario = partidos.length
     ? partidos.map(p => tarjetaPartido(p, sel)).join("")
-    : `<div class="vacio">El calendario se publicará próximamente.</div>`;
+    : vacio("El calendario, muy pronto", "Cuando se publique el sorteo, los partidos aparecerán aquí.");
 
   // Convocatoria: siempre 16 huecos. Los cubiertos, con ficha; el resto, en espera.
   const PLAZAS = 16;
@@ -611,10 +662,17 @@ function renderSeleccion(id) {
   const staff = fijos + extra;
 
   main.append(el(`
-    <div class="seleccion-hero">
+    <div class="seleccion-hero${sel.portada ? " seleccion-hero--foto" : ""}"${
+      sel.portada ? ` style="--foto: url('${rutaCss(sel.portada)}')"` : ""}>
       <div class="contenedor anim-entrada">
-        <img src="${sel.escudo ? esc(sel.escudo) : "img/marca/simbolo-amarillo.png"}" alt="">
-        <h1>${esc(sel.categoria)} <span class="genero">${esc(sel.genero)}</span></h1>
+        <img class="seleccion-hero__escudo"
+             src="${sel.escudo ? esc(sel.escudo) : "img/marca/simbolo-amarillo.png"}" alt="">
+        <div class="seleccion-hero__texto">
+          <h1>${esc(sel.categoria)} <span class="genero">${esc(sel.genero)}</span></h1>
+          ${convocados.length
+            ? `<p class="seleccion-hero__dato">${convocados.length} convocad${sel.genero === "Femenina" ? "a" : "o"}${convocados.length === 1 ? "" : "s"}</p>`
+            : ""}
+        </div>
       </div>
     </div>
 
@@ -703,9 +761,8 @@ function renderSalaDirecto() {
       ${chips}
       <div id="sala-partido"></div>
       ${bannerPatrocinador()}`
-    : `
-      <div class="vacio">Ahora mismo no hay ningún partido en emisión.<br>
-      En cuanto empiece uno, se verá aquí.</div>`;
+    : vacio("Ahora mismo no hay ningún partido en emisión",
+            "En cuanto empiece uno, aparecerá aquí sin recargar la página.");
 
   main.append(el(`
     <div class="seleccion-hero">
