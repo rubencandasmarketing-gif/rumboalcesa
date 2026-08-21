@@ -59,6 +59,19 @@ function emisionActiva(p) {
     (p.estado === "programado" && p.youtubeId && enJuegoPorHorario(p));
 }
 
+/** ¿Hay algún partido que justifique estar pendiente? Uno en emisión, uno
+    cuya hora ya entró, o uno con youtubeId que empieza dentro de 2 h. */
+function hayAlgoQueVigilar() {
+  const ahora = Date.now();
+  const margen = 120 * 60000;
+  return SELECCIONES.some(s => s.partidos.some(p => {
+    if (emisionActiva(p) || enJuegoPorHorario(p)) return true;
+    if (p.estado !== "programado" || !p.youtubeId) return false;
+    const faltan = new Date(`${p.fecha}T${p.hora}:00`).getTime() - ahora;
+    return faltan > 0 && faltan <= margen;
+  }));
+}
+
 function hoyISO() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
@@ -675,10 +688,14 @@ function renderPatrocinadores() {
 }
 
 /* --- Actualización automática ----------------------------------------------
-   Cada 60 s (solo con la pestaña visible) se comprueba si datos.js cambió en
-   el servidor. Si cambió y no hay ningún directo reproduciéndose, la página
-   se recarga sola; si hay un reproductor abierto, no se corta la emisión:
-   aparece un aviso para actualizar cuando el espectador quiera.
+   Mientras hay partidos que vigilar se comprueba cada 60 s (solo con la
+   pestaña visible) si datos.js cambió en el servidor. Si cambió y no hay
+   ningún directo reproduciéndose, la página se recarga sola; si hay un
+   reproductor abierto, no se corta la emisión: aparece un aviso para
+   actualizar cuando el espectador quiera.
+
+   Fuera de campeonato no se sondea: el temporizador pasa a mirar el reloj
+   cada 5 min, solo para detectar cuándo entra el siguiente partido.
 ---------------------------------------------------------------------------- */
 
 let ultimaVersionDatos = null;
@@ -709,11 +726,34 @@ function mostrarAvisoNovedades() {
   document.body.append(b);
 }
 
-setInterval(() => { if (!document.hidden) comprobarNovedades(); }, 60000);
+const MS_VIGILANDO = 60000;      // con partidos en juego: sondeo cada minuto
+const MS_EN_ESPERA = 5 * 60000;  // sin nada que vigilar: solo se mira el reloj
+
+let temporizadorSondeo = null;
+let vigilando = null;
+
+/** Ajusta el ritmo al estado del campeonato. Solo toca el temporizador
+    cuando el estado cambia, así nunca se acumulan dos a la vez. */
+function ajustarSondeo() {
+  const toca = hayAlgoQueVigilar();
+  if (toca === vigilando) return;
+  vigilando = toca;
+  clearInterval(temporizadorSondeo);
+  temporizadorSondeo = toca
+    ? setInterval(cicloVigilando, MS_VIGILANDO)
+    : setInterval(ajustarSondeo, MS_EN_ESPERA);
+}
+
+function cicloVigilando() {
+  if (!document.hidden) comprobarNovedades();
+  ajustarSondeo();
+}
+
 document.addEventListener("visibilitychange", () => {
   if (!document.hidden) comprobarNovedades();
 });
 comprobarNovedades();
+ajustarSondeo();
 
 /* La sala del directo vigila el reloj: si un partido entra o sale de emisión,
    se refresca sola — salvo que haya un reproductor abierto (entonces, aviso). */
