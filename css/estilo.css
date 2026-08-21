@@ -718,8 +718,9 @@ section { padding-block: var(--sp-8); }
 }
 .agenda-lista { display: grid; gap: var(--sp-1); }
 .agenda-fila {
+  position: relative;
   display: grid;
-  grid-template-columns: 3.5em 7em minmax(0, 1fr) auto;
+  grid-template-columns: 3.5em 7em minmax(0, 1fr) auto auto;
   gap: var(--sp-2); align-items: center;
   background: #fff; border: 1px solid var(--line);
   border-radius: var(--r-md);
@@ -745,6 +746,31 @@ section { padding-block: var(--sp-8); }
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 .agenda-fila__sede { font-size: var(--step--1); color: var(--muted); }
+
+/* Enlace estirado: cubre la fila entera sin envolverla, para que el botón de
+   directo pueda vivir dentro sin anidar enlaces. */
+.agenda-fila__cruce { text-decoration: none; color: inherit; }
+.agenda-fila__cruce::after { content: ""; position: absolute; inset: 0; }
+.agenda-fila__cruce:focus-visible::after { outline: 3px solid var(--azul-500); outline-offset: -3px; border-radius: var(--r-md); }
+
+/* Acceso al directo desde la agenda, por encima del enlace estirado */
+.agenda-fila__directo {
+  position: relative; z-index: 1;
+  display: inline-flex; align-items: center; justify-content: center; gap: .4em;
+  min-height: 44px; padding: 0 .9em;
+  border: 1.5px solid var(--azul-300); border-radius: var(--r-full);
+  font: 700 var(--step--1)/1 var(--font-body);
+  text-transform: uppercase; letter-spacing: .04em;
+  color: var(--azul-800); text-decoration: none; white-space: nowrap;
+  transition: background .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease);
+}
+.agenda-fila__directo:hover { background: var(--azul-50); border-color: var(--azul-500); color: var(--azul-900); }
+.agenda-fila__directo .punto {
+  width: .5em; height: .5em; border-radius: 50%;
+  background: #D5261F; flex-shrink: 0;
+  animation: pulso 1.4s infinite var(--ease);
+}
+@media (prefers-reduced-motion: reduce) { .agenda-fila__directo .punto { animation: none; } }
 .badge-enjuego {
   display: inline-flex; align-items: center;
   font: 700 var(--step--1)/1 var(--font-display);
@@ -770,8 +796,11 @@ section { padding-block: var(--sp-8); }
 .marcador--mini { font-size: var(--step-0); }
 .directo-badge--mini { font-size: var(--step--1); }
 @media (max-width: 620px) {
+  /* En móvil el botón de directo baja a una segunda línea a todo el ancho:
+     mantiene los 44px táctiles sin comprimir el cruce. */
   .agenda-fila { grid-template-columns: 3.2em minmax(0, 1fr) auto; }
   .agenda-fila__sel { display: none; }
+  .agenda-fila__directo { grid-column: 1 / -1; }
 }
 
 /* =============================================================================

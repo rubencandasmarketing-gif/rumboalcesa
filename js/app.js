@@ -313,21 +313,42 @@ function renderPie() {
    finalizado → marcador + repetición + galería
 ---------------------------------------------------------------------------- */
 
-/** Botón de directo de la ficha. Un único sitio decide texto y destino:
+/** Único sitio que decide a dónde va el directo de un partido:
     · sin youtubeId  → nuestra sala de directo (modo prueba)
     · con youtubeId  → el vídeo en YouTube, en pestaña nueva
-    Devuelve "" solo en el caso sin salida: partido acabado y sin vídeo. */
-function botonDirecto(partido) {
+    Devuelve null en el único caso sin salida: acabado y sin vídeo. */
+function destinoDirecto(partido) {
   const acabado = partido.estado === "finalizado";
-  if (acabado && !partido.youtubeId) return "";
+  if (acabado && !partido.youtubeId) return null;
+  return {
+    acabado,
+    href: partido.youtubeId
+      ? `https://www.youtube.com/watch?v=${encodeURIComponent(partido.youtubeId)}`
+      : "directo.html",
+    fuera: Boolean(partido.youtubeId)
+  };
+}
 
-  const punto = acabado ? "" : `<span class="punto" aria-hidden="true"></span>`;
-  const texto = acabado ? "Ver repetición" : "Directo en YouTube";
-  if (!partido.youtubeId) {
-    return `<a class="btn btn--ghost btn--directo" href="directo.html">${punto}${texto}</a>`;
-  }
-  const url = `https://www.youtube.com/watch?v=${encodeURIComponent(partido.youtubeId)}`;
-  return `<a class="btn btn--ghost btn--directo" href="${url}" rel="noopener" target="_blank">${punto}${texto}</a>`;
+/** Botón de la ficha completa (página de selección y sala de directo). */
+function botonDirecto(partido) {
+  const d = destinoDirecto(partido);
+  if (!d) return "";
+  const punto = d.acabado ? "" : `<span class="punto" aria-hidden="true"></span>`;
+  const texto = d.acabado ? "Ver repetición" : "Directo en YouTube";
+  return `<a class="btn btn--ghost btn--directo" href="${d.href}"${
+    d.fuera ? ' rel="noopener" target="_blank"' : ""}>${punto}${texto}</a>`;
+}
+
+/** Versión compacta para la fila de la agenda. Mismo destino, menos texto. */
+function enlaceDirectoAgenda(partido, sel) {
+  const d = destinoDirecto(partido);
+  if (!d) return `<span></span>`;
+  const punto = d.acabado ? "" : `<span class="punto" aria-hidden="true"></span>`;
+  const texto = d.acabado ? "Repetición" : "Directo";
+  const etiqueta = `${d.acabado ? "Ver la repetición" : "Ver el directo"} de ${
+    nombreSeleccion(sel)} contra ${partido.rival}`;
+  return `<a class="agenda-fila__directo" href="${d.href}" aria-label="${esc(etiqueta)}"${
+    d.fuera ? ' rel="noopener" target="_blank"' : ""}>${punto}<span>${texto}</span></a>`;
 }
 
 function tarjetaPartido(partido, sel, { conSeleccion = false, sinReproductor = false } = {}) {
@@ -471,13 +492,18 @@ function filaAgenda({ partido, sel }) {
   } else {
     estado = sede ? `<span class="agenda-fila__sede">${esc(sede.municipio)}</span>` : "<span></span>";
   }
+  // La fila deja de ser un <a> envolvente: dentro va el botón de directo, y un
+  // enlace dentro de otro es HTML inválido. El enlace a la selección se estira
+  // sobre toda la fila con ::after, así se sigue pudiendo pulsar en cualquier
+  // parte; el botón de directo va por encima con su propio z-index.
   return `
-    <a class="agenda-fila ${emisionActiva(partido) ? "agenda-fila--directo" : ""}" href="${sel.id}.html">
+    <div class="agenda-fila ${emisionActiva(partido) ? "agenda-fila--directo" : ""}">
       <span class="agenda-fila__hora">${esc(partido.hora)}</span>
       <span class="agenda-fila__sel">${esc(sel.categoria)} ${sel.genero === "Masculina" ? "M" : "F"}</span>
-      <span class="agenda-fila__cruce">Asturias <span class="vs">–</span> ${esc(partido.rival)}</span>
+      <a class="agenda-fila__cruce" href="${sel.id}.html">Asturias <span class="vs">–</span> ${esc(partido.rival)}</a>
       ${estado}
-    </a>`;
+      ${enlaceDirectoAgenda(partido, sel)}
+    </div>`;
 }
 
 let AGENDA = new Map();
