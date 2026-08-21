@@ -94,8 +94,10 @@ function renderCabecera() {
          <b>Este espacio puede ser tuyo</b><span>· Patrocinador principal</span>
        </span>`;
 
-  const enlaces = SELECCIONES.map(s =>
-    `<li><a href="${s.id}.html">${esc(s.categoria)} ${s.genero === "Masculina" ? "M" : "F"}</a></li>`
+  const hayDirecto = SELECCIONES.some(s => s.partidos.some(p => emisionActiva(p)));
+
+  const submenu = SELECCIONES.map(s =>
+    `<li><a href="${s.id}.html">${esc(s.categoria)}<span>${esc(s.genero)}</span></a></li>`
   ).join("");
 
   document.body.prepend(el(`
@@ -106,17 +108,33 @@ function renderCabecera() {
           <img src="img/marca/simbolo-amarillo.png" alt="FBMPA">
           <span class="cabecera__titulo">Rumbo al <b>CESA</b></span>
         </a>
-        <nav class="nav" aria-label="Selecciones">
-          <ul>
+
+        <button class="nav-hamburguesa" type="button" aria-label="Abrir menú"
+                aria-expanded="false" aria-controls="nav-principal">
+          <span aria-hidden="true"></span>
+        </button>
+
+        <nav class="nav" id="nav-principal" aria-label="Principal">
+          <button class="nav__cerrar" type="button" aria-label="Cerrar menú">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <ul class="nav__lista">
             <li><a href="index.html">Portada</a></li>
-            ${SELECCIONES.some(s => s.partidos.some(p => emisionActiva(p)))
-              ? `<li><a class="nav__directo" href="directo.html"><span class="punto" aria-hidden="true"></span>Directo</a></li>` : ""}
-            ${enlaces}
+            <li class="nav__grupo">
+              <button class="nav__disparador" type="button"
+                      aria-expanded="false" aria-controls="nav-selecciones">
+                Selecciones<span class="nav__flecha" aria-hidden="true"></span>
+              </button>
+              <ul class="nav__panel" id="nav-selecciones">${submenu}</ul>
+            </li>
+            <li><a class="${hayDirecto ? "nav__directo" : ""}" href="directo.html">${
+              hayDirecto ? '<span class="punto" aria-hidden="true"></span>' : ""}Directo</a></li>
             <li><a href="patrocinadores.html">Patrocinadores</a></li>
           </ul>
         </nav>
       </div>
     </header>
+    <div class="nav-velo" hidden></div>
   `));
 
   // Marca la página actual en la navegación
@@ -124,6 +142,79 @@ function renderCabecera() {
   document.querySelectorAll(".nav a").forEach(a => {
     if (a.getAttribute("href") === aqui) a.setAttribute("aria-current", "page");
   });
+
+  cablearNavegacion();
+}
+
+/* --- Comportamiento de la navegación ---------------------------------------
+   Escritorio: "Selecciones" es un desplegable que abre con ratón, con clic y
+   con teclado. Móvil (≤820px): la barra se pliega en un cajón lateral y
+   "Selecciones" lleva a la franja de cintas de la portada.
+---------------------------------------------------------------------------- */
+function cablearNavegacion() {
+  const cabecera = document.querySelector(".cabecera");
+  const nav = document.getElementById("nav-principal");
+  const hamburguesa = document.querySelector(".nav-hamburguesa");
+  const cerrar = document.querySelector(".nav__cerrar");
+  const grupo = document.querySelector(".nav__grupo");
+  const disparador = document.querySelector(".nav__disparador");
+  const velo = document.querySelector(".nav-velo");
+  const movil = matchMedia("(max-width: 820px)");
+
+  // Si estamos en una página de selección, el desplegable queda marcado
+  if (grupo.querySelector('a[aria-current="page"]')) grupo.classList.add("nav__grupo--activo");
+
+  const desplegar = abierto => {
+    grupo.classList.toggle("nav__grupo--abierto", abierto);
+    disparador.setAttribute("aria-expanded", String(abierto));
+  };
+
+  const abrirCajon = abierto => {
+    cabecera.classList.toggle("cabecera--abierta", abierto);
+    hamburguesa.setAttribute("aria-expanded", String(abierto));
+    velo.hidden = !abierto;
+    document.body.classList.toggle("sin-scroll", abierto);
+    if (!abierto) desplegar(false);
+  };
+
+  const irASelecciones = () => {
+    const destino = document.getElementById("selecciones");
+    if (!destino) { location.href = "index.html#selecciones"; return; }
+    const quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    destino.scrollIntoView({ behavior: quieto ? "auto" : "smooth", block: "start" });
+  };
+
+  hamburguesa.addEventListener("click", () =>
+    abrirCajon(hamburguesa.getAttribute("aria-expanded") !== "true"));
+  cerrar.addEventListener("click", () => { abrirCajon(false); hamburguesa.focus(); });
+  velo.addEventListener("click", () => abrirCajon(false));
+
+  disparador.addEventListener("click", () => {
+    if (movil.matches) { abrirCajon(false); irASelecciones(); }
+    else desplegar(disparador.getAttribute("aria-expanded") !== "true");
+  });
+
+  // Ratón en escritorio
+  grupo.addEventListener("mouseenter", () => { if (!movil.matches) desplegar(true); });
+  grupo.addEventListener("mouseleave", () => { if (!movil.matches) desplegar(false); });
+
+  // Al salir del grupo con Tab, se cierra
+  grupo.addEventListener("focusout", e => {
+    if (!movil.matches && !grupo.contains(e.relatedTarget)) desplegar(false);
+  });
+
+  // Escape: cierra primero el desplegable, luego el cajón
+  document.addEventListener("keydown", e => {
+    if (e.key !== "Escape") return;
+    if (grupo.classList.contains("nav__grupo--abierto")) { desplegar(false); disparador.focus(); }
+    else if (hamburguesa.getAttribute("aria-expanded") === "true") { abrirCajon(false); hamburguesa.focus(); }
+  });
+
+  // Elegir una opción cierra el cajón
+  nav.addEventListener("click", e => { if (e.target.closest("a") && movil.matches) abrirCajon(false); });
+
+  // Al pasar de móvil a escritorio, deshacer el estado del cajón
+  movil.addEventListener("change", () => { if (!movil.matches) abrirCajon(false); });
 }
 
 const ICONOS_REDES = {
@@ -411,7 +502,7 @@ function renderPortada() {
 
     ${directoHTML}
 
-    <section class="seccion-selecciones" aria-labelledby="t-sel">
+    <section class="seccion-selecciones" id="selecciones" aria-labelledby="t-sel">
       <div class="contenedor">
         <p class="eyebrow">Las seis selecciones</p>
         <h2 id="t-sel">Nuestros equipos</h2>
@@ -425,6 +516,12 @@ function renderPortada() {
   `));
 
   if (fechaInicial) renderAgendaDia(fechaInicial);
+
+  // Al llegar desde otra página con index.html#selecciones, la sección aún no
+  // existía cuando el navegador intentó saltar: se coloca ahora.
+  if (location.hash === "#selecciones") {
+    document.getElementById("selecciones")?.scrollIntoView({ block: "start" });
+  }
 }
 
 /* --- Página de selección --------------------------------------------------- */

@@ -170,28 +170,161 @@ section { padding-block: var(--sp-8); }
 }
 .cabecera__titulo b { color: var(--amarillo); }
 
-/* Nav horizontal con scroll (patrón de cobertura deportiva, móvil primero) */
-.nav {
-  margin-left: auto;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
+/* Navegación: cuatro entradas, con "Selecciones" desplegable en escritorio y
+   cajón lateral en móvil. Registro deportivo: condensada y en mayúsculas. */
+.nav { margin-left: auto; }
+.nav__lista {
+  display: flex; align-items: center; gap: .15rem;
+  list-style: none; margin: 0; padding: 0;
 }
-.nav::-webkit-scrollbar { display: none; }
-.nav ul {
-  display: flex; gap: .25rem; list-style: none;
-  margin: 0; padding: 0; white-space: nowrap;
-}
-.nav a {
-  display: inline-block; padding: .7em .9em;
+.nav__lista > li { position: relative; }
+
+.nav__lista > li > a,
+.nav__disparador {
+  position: relative;
+  display: inline-flex; align-items: center; gap: .45em;
+  padding: .75em .9em; min-height: 44px;
+  font-family: var(--font-display); font-weight: 600;
+  font-size: var(--step-0); text-transform: uppercase;
+  letter-spacing: .06em; line-height: 1; white-space: nowrap;
   color: #fff; text-decoration: none;
-  font-weight: 600; font-size: var(--step--1);
+  background: none; border: 0; cursor: pointer;
   border-radius: var(--r-sm);
-  transition: background .2s var(--ease), color .2s var(--ease);
+  transition: color .2s var(--ease);
 }
-.nav a:hover { background: var(--azul-800); }
-.nav a[aria-current="page"] {
-  background: var(--amarillo); color: var(--azul-950);
+
+/* Hover: subrayado diagonal amarillo que crece desde el centro. Sin fondo. */
+.nav__lista > li > a::after,
+.nav__disparador::after {
+  content: "";
+  position: absolute; left: 50%; bottom: .4em;
+  width: 0; height: 4px;
+  background: var(--amarillo);
+  transform: translateX(-50%) skewX(var(--skew));
+  transition: width .25s var(--ease), background .25s var(--ease);
+}
+.nav__lista > li > a:hover::after,
+.nav__lista > li > a:focus-visible::after,
+.nav__disparador:hover::after,
+.nav__disparador:focus-visible::after,
+.nav__grupo--abierto > .nav__disparador::after,
+.nav__grupo--activo > .nav__disparador::after { width: calc(100% - 1.8em); }
+
+/* Página actual: cinta amarilla con el remate diagonal en tinta azul */
+.nav__lista > li > a[aria-current="page"] {
+  background: var(--amarillo-deg);
+  color: var(--azul-950);
+}
+.nav__lista > li > a[aria-current="page"]::after {
+  width: calc(100% - 1.8em);
+  background: var(--azul-950);
+}
+/* Directo ya va sobre amarillo: su remate en tinta azul para que se vea */
+.nav__lista > li > a.nav__directo::after { background: var(--azul-950); }
+
+/* Flecha del desplegable */
+.nav__flecha {
+  width: .42em; height: .42em;
+  border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+  transform: translateY(-.15em) rotate(45deg);
+  transition: transform .2s var(--ease);
+}
+.nav__grupo--abierto > .nav__disparador .nav__flecha { transform: translateY(.1em) rotate(-135deg); }
+
+/* Panel del desplegable (escritorio) */
+.nav__panel {
+  position: absolute; top: calc(100% + .3rem); right: 0;
+  display: grid; grid-template-columns: repeat(2, minmax(9rem, 1fr)); gap: .1rem;
+  margin: 0; padding: .4rem;
+  list-style: none;
+  background: #fff;
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-lg);
+  opacity: 0; visibility: hidden; transform: translateY(-6px);
+  transition: opacity .2s var(--ease), transform .2s var(--ease), visibility .2s;
+  z-index: 60;
+}
+.nav__grupo--abierto > .nav__panel { opacity: 1; visibility: visible; transform: none; }
+
+.nav__panel a {
+  display: block; padding: .65em .75em;
+  font-family: var(--font-display); font-weight: 600;
+  font-size: var(--step-0); text-transform: uppercase; letter-spacing: .04em;
+  line-height: 1.1; white-space: nowrap;
+  color: var(--ink); text-decoration: none;
+  border-radius: var(--r-sm);
+  transition: background .18s var(--ease), color .18s var(--ease);
+}
+.nav__panel a span {
+  display: block;
+  font-family: var(--font-body);
+  font-size: var(--step--1); font-weight: 700;
+  letter-spacing: .1em; color: var(--azul-800);
+}
+.nav__panel a:hover, .nav__panel a:focus-visible { background: var(--azul-50); }
+.nav__panel a[aria-current="page"] { background: var(--amarillo-deg); color: var(--azul-950); }
+.nav__panel a[aria-current="page"] span { color: var(--azul-900); }
+
+/* Hamburguesa y cierre: solo en móvil */
+.nav-hamburguesa, .nav__cerrar { display: none; }
+.nav-velo[hidden] { display: none; }
+
+@media (max-width: 820px) {
+  .nav-hamburguesa {
+    display: inline-flex; align-items: center; justify-content: center;
+    margin-left: auto; width: 44px; height: 44px;
+    background: none; border: 0; color: #fff; cursor: pointer;
+    border-radius: var(--r-sm);
+  }
+  .nav-hamburguesa > span, .nav-hamburguesa > span::before, .nav-hamburguesa > span::after {
+    display: block; width: 24px; height: 2.5px; border-radius: 2px; background: currentColor;
+  }
+  .nav-hamburguesa > span { position: relative; }
+  .nav-hamburguesa > span::before { content: ""; position: absolute; top: -8px; }
+  .nav-hamburguesa > span::after  { content: ""; position: absolute; top: 8px; }
+
+  /* Cajón lateral */
+  .nav {
+    position: fixed; inset: 0 0 0 auto;
+    width: min(360px, 86vw);
+    margin: 0; padding: var(--sp-6) var(--sp-2) var(--sp-4);
+    background: var(--azul-900);
+    box-shadow: var(--shadow-lg);
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform .28s var(--ease);
+    z-index: 60;
+  }
+  .cabecera--abierta .nav { transform: none; }
+
+  .nav__cerrar {
+    display: inline-flex; align-items: center; justify-content: center;
+    position: absolute; top: var(--sp-1); right: var(--sp-1);
+    width: 44px; height: 44px;
+    background: none; border: 0; color: #fff; cursor: pointer;
+    font-size: 1.8rem; line-height: 1; border-radius: var(--r-sm);
+  }
+
+  .nav__lista { flex-direction: column; align-items: stretch; gap: .2rem; }
+  .nav__lista > li > a, .nav__disparador {
+    width: 100%; justify-content: space-between;
+    min-height: 52px; font-size: var(--step-1); padding: .8em .8em;
+  }
+  /* En el cajón el subrayado nace a la izquierda */
+  .nav__lista > li > a::after, .nav__disparador::after { left: .8em; transform: skewX(var(--skew)); }
+  .nav__lista > li > a:hover::after,
+  .nav__lista > li > a:focus-visible::after,
+  .nav__lista > li > a[aria-current="page"]::after,
+  .nav__disparador:hover::after,
+  .nav__disparador:focus-visible::after,
+  .nav__grupo--activo > .nav__disparador::after { width: 2.5rem; }
+
+  /* Aquí "Selecciones" lleva a la franja de cintas: el panel no se usa */
+  .nav__panel { display: none; }
+  .nav__flecha { transform: rotate(-45deg) translateY(.15em); }
+
+  .nav-velo { position: fixed; inset: 0; background: rgba(6, 35, 56, .55); z-index: 55; }
+  body.sin-scroll { overflow: hidden; }
 }
 
 /* =============================================================================
@@ -498,6 +631,7 @@ section { padding-block: var(--sp-8); }
 .seccion-selecciones {
   padding-top: var(--sp-6);
   padding-bottom: 0;
+  scroll-margin-top: 84px;   /* la cabecera es sticky: que no tape el título */
 }
 
 .cintas-selecciones {
