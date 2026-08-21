@@ -606,6 +606,20 @@ section { padding-block: var(--sp-8); }
 }
 
 /* El vídeo y su barra premium forman un solo bloque */
+/* Selector de partidos simultáneos: mismos chips que la agenda, con snap
+   para que en móvil se deslicen limpios si no caben. */
+.sala-chips { scroll-snap-type: x proximity; padding-bottom: 2px; }
+.sala-chip {
+  scroll-snap-align: start;
+  display: inline-flex; flex-direction: column; align-items: center;
+  gap: .18em; line-height: 1.05;
+}
+.sala-chip__rival {
+  font-family: var(--font-body); font-size: .74em; font-weight: 700;
+  text-transform: none; letter-spacing: .01em; opacity: .78;
+}
+@media (max-width: 480px) { .sala-chip__rival { display: none; } }
+
 .sala-emision {
   border-radius: var(--r-md);
   overflow: hidden;

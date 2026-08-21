@@ -782,11 +782,40 @@ function bannerPatrocinador() {
 let SALA_ACTIVOS = [];
 let salaIds = null;
 
+/** Cabecera del partido que se está viendo. La usan la sala real y la demo,
+    para que las dos se vean exactamente igual. */
+function cruceSala({ rival, categoria, genero, fase, sede, enJuego = false }) {
+  const meta = [`${categoria} ${genero}`, fase, sede].filter(Boolean).join(" · ");
+  return `
+    <span class="directo-badge"><span><span class="punto" aria-hidden="true"></span>${
+      enJuego ? "En juego" : "En directo"}</span></span>
+    <h2 class="sala-cruce__titulo">Asturias <span>vs</span> ${esc(rival)}</h2>
+    <p class="sala-cruce__meta">${esc(meta)}</p>`;
+}
+
+/** Cambia el partido que se ve, sin recargar. Solo se sustituyen el vídeo y
+    la cabecera: los banners del patrocinador no se tocan.
+    Reescribir #sala-video destruye el iframe anterior, así que nunca puede
+    haber dos vídeos sonando a la vez, y vuelve a salir la fachada. */
 function pintarPartidoSala(id) {
   const t = SALA_ACTIVOS.find(x => x.partido.id === id) || SALA_ACTIVOS[0];
-  const caja = document.querySelector("#sala-partido");
-  if (!caja || !t) return;
-  caja.innerHTML = tarjetaPartido(t.partido, t.sel, { conSeleccion: true });
+  const video = document.querySelector("#sala-video");
+  if (!video || !t) return;
+
+  video.innerHTML = reproductor(t.partido, { conPatro: false });
+
+  const cabecera = document.querySelector("#sala-cabecera");
+  const sede = sedeDe(t.partido.sede);
+  if (cabecera) {
+    cabecera.innerHTML = cruceSala({
+      rival: t.partido.rival,
+      categoria: t.sel.categoria,
+      genero: t.sel.genero,
+      fase: t.partido.fase,
+      sede: sede ? `${sede.nombre}, ${sede.municipio}` : "",
+      enJuego: t.partido.estado !== "directo"
+    });
+  }
   document.querySelectorAll(".sala-chip").forEach(b =>
     b.setAttribute("aria-pressed", String(b.dataset.id === t.partido.id)));
 }
@@ -834,9 +863,14 @@ function renderSalaDirecto() {
     .filter(t => t.partido.fecha === hoy && !emisionActiva(t.partido))
     .sort((a, b) => a.partido.hora.localeCompare(b.partido.hora));
 
+  // Con un solo partido no hay nada que elegir: no se pintan chips.
   const chips = SALA_ACTIVOS.length > 1 ? `
-    <div class="agenda-dias" role="group" aria-label="Elegir partido">
-      ${SALA_ACTIVOS.map(t => `<button class="agenda-dia sala-chip" type="button" data-id="${esc(t.partido.id)}" aria-pressed="false">${esc(t.sel.categoria)} ${t.sel.genero === "Masculina" ? "M" : "F"}</button>`).join("")}
+    <div class="agenda-dias sala-chips" role="group" aria-label="Elegir el partido que quieres ver">
+      ${SALA_ACTIVOS.map(t => `
+        <button class="agenda-dia sala-chip" type="button" data-id="${esc(t.partido.id)}" aria-pressed="false">
+          <span class="sala-chip__sel">${esc(t.sel.categoria)} ${t.sel.genero === "Masculina" ? "M" : "F"}</span>
+          <span class="sala-chip__rival">Asturias – ${esc(t.partido.rival)}</span>
+        </button>`).join("")}
     </div>` : "";
 
   // La demo sustituye al estado vacío: banner, vídeo, barra premium, banner
@@ -844,11 +878,8 @@ function renderSalaDirecto() {
     const partido = { id: "demo", rival: DEMO.rival, youtubeId: DEMO.youtubeId, estado: "directo" };
     return `
       <p class="sala-nota">Simulación — partido de ejemplo</p>
-      <div class="sala-cruce">
-        <span class="directo-badge"><span><span class="punto" aria-hidden="true"></span>En directo</span></span>
-        <h2 class="sala-cruce__titulo">Asturias <span>vs</span> ${esc(DEMO.rival)}</h2>
-        <p class="sala-cruce__meta">${esc(DEMO.categoria)} ${esc(DEMO.genero)} · ${esc(DEMO.fase)}</p>
-      </div>
+      <div class="sala-cruce">${cruceSala({
+        rival: DEMO.rival, categoria: DEMO.categoria, genero: DEMO.genero, fase: DEMO.fase })}</div>
       ${bannerPatrocinador()}
       <div class="sala-emision">
         ${reproductor(partido, { conPatro: false })}
@@ -857,10 +888,16 @@ function renderSalaDirecto() {
       ${bannerPatrocinador()}`;
   };
 
+  // Emisión real: los banners y la barra premium son fijos y envuelven siempre
+  // al reproductor; solo cambian por dentro #sala-cabecera y #sala-video.
   const cuerpo = SALA_ACTIVOS.length ? `
-      ${bannerPatrocinador()}
+      <div class="sala-cruce" id="sala-cabecera"></div>
       ${chips}
-      <div id="sala-partido"></div>
+      ${bannerPatrocinador()}
+      <div class="sala-emision">
+        <div id="sala-video"></div>
+        ${barraOfrecidoPor()}
+      </div>
       ${bannerPatrocinador()}`
     : MODO_DEMO ? salaDemo()
     : vacio("Ahora mismo no hay ningún partido en emisión",
