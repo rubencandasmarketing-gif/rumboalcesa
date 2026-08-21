@@ -411,7 +411,7 @@ function renderPortada() {
 
     ${directoHTML}
 
-    <section class="${enDirecto.length ? "" : "solapa"}" aria-labelledby="t-sel">
+    <section class="seccion-selecciones ${enDirecto.length ? "" : "solapa"}" aria-labelledby="t-sel">
       <div class="contenedor">
         <p class="eyebrow">Las seis selecciones</p>
         <h2 id="t-sel">Nuestros equipos</h2>

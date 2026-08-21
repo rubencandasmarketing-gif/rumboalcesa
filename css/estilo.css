@@ -492,11 +492,22 @@ section { padding-block: var(--sp-8); }
    Barra de categorías a todo el ancho: seis cintas azules repartidas por igual,
    con el remate diagonal de la marca. En móvil pasa a carrusel con snap.
    ============================================================================= */
+/* La franja cierra la sección: sin hueco debajo, la separación con la agenda
+   la pone ya el padding-top de la sección siguiente. */
+.seccion-selecciones { padding-bottom: 0; }
+
 .cintas-selecciones {
   display: flex;
   margin-inline: 0;
   background: var(--azul-700);
+  /* Deslizable a cualquier ancho: si las cintas no caben (p. ej. mientras
+     Barlow Condensed aún no ha cargado y la reserva es más ancha), la franja
+     se desliza en vez de recortar el texto. */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
+.cintas-selecciones::-webkit-scrollbar { display: none; }
 .cinta-sel {
   flex: 1;
   position: relative;
@@ -513,14 +524,16 @@ section { padding-block: var(--sp-8); }
 }
 .cinta-sel:first-child { border-left: 0; }
 
+/* nowrap: el texto nunca parte ni se recorta; la cinta crece si hace falta. */
 .cinta-sel__cat {
   font-family: var(--font-display); font-weight: 700;
-  text-transform: uppercase;
+  text-transform: uppercase; white-space: nowrap;
   font-size: var(--step-1); letter-spacing: .02em; line-height: 1;
 }
 .cinta-sel__gen {
   font-size: var(--step--1); color: var(--azul-100); font-weight: 700;
-  text-transform: uppercase; letter-spacing: .12em; line-height: 1;
+  text-transform: uppercase; white-space: nowrap;
+  letter-spacing: .12em; line-height: 1;
   transition: color .25s var(--ease);
 }
 
@@ -552,14 +565,10 @@ section { padding-block: var(--sp-8); }
 .cinta-sel[aria-current="page"]::after { width: 72px; background: var(--azul-950); }
 
 @media (max-width: 720px) {
-  .cintas-selecciones {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    scroll-snap-type: x mandatory;
-  }
-  .cintas-selecciones::-webkit-scrollbar { display: none; }
-  .cinta-sel { flex: 0 0 auto; min-width: 140px; scroll-snap-align: start; }
+  .cintas-selecciones { scroll-snap-type: x mandatory; }
+  /* flex-basis auto + nowrap: cada cinta se dimensiona por su contenido y
+     nunca baja de 150px, así el conjunto se desliza en vez de comprimirse. */
+  .cinta-sel { flex: 0 0 auto; min-width: 150px; scroll-snap-align: start; }
 }
 
 /* =============================================================================
