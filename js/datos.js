@@ -51,13 +51,26 @@ export const CONFIG = {
 
 /* --- SEDES --------------------------------------------------------------- */
 export const SEDES = [
-  // EJEMPLO — borrar y sustituir por las sedes reales
   {
-    id: "ejemplo-pumarin",
-    nombre: "Palacio de los Deportes (EJEMPLO)",
-    municipio: "Oviedo",
-    direccion: "C/ Río Caudal, s/n",
-    mapa: "https://maps.google.com/?q=Palacio+de+los+Deportes+Oviedo"
+    id: "calella",
+    nombre: "Pavelló Municipal de Calella",
+    municipio: "Calella",
+    direccion: "",
+    mapa: "https://maps.google.com/?q=Pavello+Municipal+Calella"
+  },
+  {
+    id: "blanes",
+    nombre: "Pavelló Municipal de Blanes",
+    municipio: "Blanes",
+    direccion: "",
+    mapa: "https://maps.google.com/?q=Pavello+Municipal+Blanes"
+  },
+  {
+    id: "pineda",
+    nombre: "Pavelló de Pineda de Mar",
+    municipio: "Pineda de Mar",
+    direccion: "",
+    mapa: "https://maps.google.com/?q=Pavello+Pineda+de+Mar"
   }
 ];
 
@@ -121,7 +134,17 @@ export const SELECCIONES = [
     portada: "",   // foto de ambiente propia para la cabecera (opcional): "img/ambiente/....webp"
     staff: [],
     plantilla: [],
-    partidos: []
+    partidos: [
+      { id: "im-j1", fecha: "2027-01-04", hora: "10:00", fase: "Fase de grupos — J1",
+        rival: "Madrid", sede: "calella",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
+      { id: "im-j2", fecha: "2027-01-05", hora: "10:00", fase: "Fase de grupos — J2",
+        rival: "Galicia", sede: "pineda",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
+      { id: "im-j3", fecha: "2027-01-06", hora: "10:00", fase: "Fase de grupos — J3",
+        rival: "Cantabria", sede: "blanes",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
+    ]
   },
   {
     id: "infantil-femenina",
@@ -131,7 +154,17 @@ export const SELECCIONES = [
     portada: "",   // foto de ambiente propia para la cabecera (opcional): "img/ambiente/....webp"
     staff: [],
     plantilla: [],
-    partidos: []
+    partidos: [
+      { id: "if-j1", fecha: "2027-01-04", hora: "12:30", fase: "Fase de grupos — J1",
+        rival: "Cataluña", sede: "calella",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
+      { id: "if-j2", fecha: "2027-01-05", hora: "12:30", fase: "Fase de grupos — J2",
+        rival: "Castilla y León", sede: "pineda",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
+      { id: "if-j3", fecha: "2027-01-06", hora: "12:30", fase: "Fase de grupos — J3",
+        rival: "País Vasco", sede: "blanes",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
+    ]
   },
   {
     id: "cadete-masculina",
@@ -147,7 +180,17 @@ export const SELECCIONES = [
       // PRUEBA con foto real — completar posición y club
       { dorsal: 6, nombre: "Marco (completar apellidos)", posicion: "Completar posición", club: "Completar club", foto: "img/jugadores/cadete-masculina/06-marco.webp" }
     ],
-    partidos: []
+    partidos: [
+      { id: "cm-j1", fecha: "2027-01-04", hora: "16:00", fase: "Fase de grupos — J1",
+        rival: "Andalucía", sede: "blanes",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
+      { id: "cm-j2", fecha: "2027-01-05", hora: "16:00", fase: "Fase de grupos — J2",
+        rival: "Aragón", sede: "calella",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
+      { id: "cm-j3", fecha: "2027-01-06", hora: "10:00", fase: "Fase de grupos — J3",
+        rival: "Navarra", sede: "pineda",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
+    ]
   },
   {
     id: "cadete-femenina",
@@ -157,7 +200,17 @@ export const SELECCIONES = [
     portada: "",   // foto de ambiente propia para la cabecera (opcional): "img/ambiente/....webp"
     staff: [],
     plantilla: [],
-    partidos: []
+    partidos: [
+      { id: "cf-j1", fecha: "2027-01-04", hora: "18:30", fase: "Fase de grupos — J1",
+        rival: "Comunidad Valenciana", sede: "blanes",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
+      { id: "cf-j2", fecha: "2027-01-05", hora: "18:30", fase: "Fase de grupos — J2",
+        rival: "Murcia", sede: "calella",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
+      { id: "cf-j3", fecha: "2027-01-06", hora: "12:30", fase: "Fase de grupos — J3",
+        rival: "Extremadura", sede: "pineda",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
+    ]
   },
   {
     id: "juvenil-masculina",
@@ -179,46 +232,12 @@ export const SELECCIONES = [
     ],
 
     partidos: [
-      // EJEMPLO — tres partidos, uno por estado, para ver la interfaz. Borrar.
-      {
-        id: "jm-ej1",
-        fecha: "2027-01-03",
-        hora: "10:00",
-        fase: "Fase de grupos — J1 (EJEMPLO)",
-        rival: "Selección Rival A",
-        sede: "ejemplo-pumarin",
-        estado: "finalizado",
-        golesAsturias: 31,
-        golesRival: 27,
-        youtubeId: "RyMJQqWtAjs",   // demo del enlace a la repetición
-        galeria: ""
-      },
-      {
-        id: "jm-ej2",
-        fecha: "2027-01-04",
-        hora: "18:30",
-        fase: "Fase de grupos — J2 (EJEMPLO)",
-        rival: "Selección Rival B",
-        sede: "ejemplo-pumarin",
-        estado: "programado",
-        golesAsturias: null,
-        golesRival: null,
-        youtubeId: "RyMJQqWtAjs",   // partido real del año pasado, de ejemplo
-        galeria: ""
-      },
-      {
-        id: "jm-ej3",
-        fecha: "2027-01-05",
-        hora: "12:00",
-        fase: "Fase de grupos — J3 (EJEMPLO)",
-        rival: "Selección Rival C",
-        sede: "ejemplo-pumarin",
-        estado: "programado",
-        golesAsturias: null,
-        golesRival: null,
-        youtubeId: "",     // ← ponlo en cuanto el directo esté programado en YouTube
-        galeria: ""
-      }
+      { id: "jm-j1", fecha: "2027-01-05", hora: "16:00", fase: "Fase de grupos — J1",
+        rival: "Galicia", sede: "blanes",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
+      { id: "jm-j2", fecha: "2027-01-06", hora: "16:00", fase: "Fase de grupos — J2",
+        rival: "Madrid", sede: "calella",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
     ]
   },
   {
@@ -229,6 +248,13 @@ export const SELECCIONES = [
     portada: "",   // foto de ambiente propia para la cabecera (opcional): "img/ambiente/....webp"
     staff: [],
     plantilla: [],
-    partidos: []
+    partidos: [
+      { id: "jf-j1", fecha: "2027-01-05", hora: "18:30", fase: "Fase de grupos — J1",
+        rival: "Castilla-La Mancha", sede: "blanes",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
+      { id: "jf-j2", fecha: "2027-01-06", hora: "18:30", fase: "Fase de grupos — J2",
+        rival: "Canarias", sede: "calella",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
+    ]
   }
 ];
