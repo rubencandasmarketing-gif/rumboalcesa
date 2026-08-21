@@ -396,7 +396,28 @@ section { padding-block: var(--sp-8); }
   color: var(--azul-100); font-size: var(--step-1);
   font-weight: 400; line-height: 1.45; margin-top: 0;
 }
-.heroe h1 span { color: var(--amarillo); }
+/* Titular del héroe: tres líneas con jerarquía. Los tamaños van en em, así
+   que escalan solos con el --step-4 del h1 y no hay que tocarlos en móvil.
+   "SELECCIONES" manda; el remate en amarillo cierra. */
+.heroe__titular {
+  display: grid; justify-items: start;
+  line-height: .86;
+  margin-bottom: var(--sp-2);
+}
+.heroe__titular > span { display: block; }
+.heroe__titular__previa {
+  font-size: .54em; letter-spacing: .015em;
+  color: #fff;
+}
+.heroe__titular__clave {
+  font-size: 1em; letter-spacing: -.005em;
+  color: #fff;
+}
+.heroe__titular__remate {
+  font-size: .36em; letter-spacing: .05em;
+  margin-top: .28em;
+  color: var(--amarillo);
+}
 .heroe__acciones {
   display: flex; flex-wrap: wrap; gap: var(--sp-2);
   margin-top: var(--sp-3);
