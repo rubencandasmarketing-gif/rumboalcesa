@@ -8,6 +8,11 @@
 
 import { CONFIG, SEDES, PATROCINADORES, SELECCIONES } from "./datos.js";
 
+/* Modo estático: con ?static en la URL no se arranca ningún temporizador, para
+   herramientas de revisión y captura que exigen la página en reposo. El render,
+   los datos y los enlaces funcionan igual; solo se desactivan los relojes. */
+const MODO_ESTATICO = new URLSearchParams(location.search).has("static");
+
 /* --- Utilidades ----------------------------------------------------------- */
 
 const $ = (sel, ctx = document) => ctx.querySelector(sel);
@@ -735,29 +740,38 @@ let vigilando = null;
 /** Ajusta el ritmo al estado del campeonato. Solo toca el temporizador
     cuando el estado cambia, así nunca se acumulan dos a la vez. */
 function ajustarSondeo() {
+  if (MODO_ESTATICO) return;
   const toca = hayAlgoQueVigilar();
   if (toca === vigilando) return;
   vigilando = toca;
   clearInterval(temporizadorSondeo);
   temporizadorSondeo = toca
     ? setInterval(cicloVigilando, MS_VIGILANDO)
-    : setInterval(ajustarSondeo, MS_EN_ESPERA);
+    : setInterval(cicloEnEspera, MS_EN_ESPERA);
 }
 
 function cicloVigilando() {
-  if (!document.hidden) comprobarNovedades();
+  if (document.hidden) return;
+  comprobarNovedades();
+  ajustarSondeo();
+}
+
+function cicloEnEspera() {
+  if (document.hidden) return;
   ajustarSondeo();
 }
 
 document.addEventListener("visibilitychange", () => {
-  if (!document.hidden) comprobarNovedades();
+  if (document.hidden) return;
+  comprobarNovedades();
+  ajustarSondeo();
 });
 comprobarNovedades();
 ajustarSondeo();
 
 /* La sala del directo vigila el reloj: si un partido entra o sale de emisión,
    se refresca sola — salvo que haya un reproductor abierto (entonces, aviso). */
-setInterval(() => {
+if (!MODO_ESTATICO) setInterval(() => {
   if (document.body.dataset.pagina !== "directo" || document.hidden) return;
   const ids = SELECCIONES.flatMap(s => s.partidos).filter(p => emisionActiva(p)).map(p => p.id).join(",");
   if (salaIds !== null && ids !== salaIds) {
@@ -769,7 +783,7 @@ setInterval(() => {
 
 /* Los chips "En juego" dependen del reloj: se refrescan solos cada minuto
    re-renderizando la agenda visible (sin tocar reproductores). */
-setInterval(() => {
+if (!MODO_ESTATICO) setInterval(() => {
   const activo = document.querySelector('.agenda-dia[aria-pressed="true"]');
   if (activo && !document.hidden) renderAgendaDia(activo.dataset.fecha);
 }, 60000);
