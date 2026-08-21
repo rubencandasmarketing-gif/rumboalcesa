@@ -155,7 +155,7 @@ export const SELECCIONES = [
         fase: "Fase de grupos — J2 (EJEMPLO)",
         rival: "Selección Rival B",
         sede: "ejemplo-pumarin",
-        estado: "directo",
+        estado: "programado",
         golesAsturias: null,
         golesRival: null,
         youtubeId: "RyMJQqWtAjs",   // partido real del año pasado, de ejemplo
