@@ -128,7 +128,10 @@ function renderCabecera() {
       <div class="contenedor">
         <a class="cabecera__marca" href="index.html" aria-label="${esc(CONFIG.nombreSitio)} — portada">
           <img src="img/marca/simbolo-amarillo.png" alt="FBMPA">
-          <span class="cabecera__titulo">Rumbo al <b>CESA</b></span>
+          <span class="cabecera__titulo">
+            <span class="cabecera__titulo__rumbo">Rumbo al</span>
+            <span class="cabecera__titulo__cesa">CESA</span>
+          </span>
         </a>
 
         <button class="nav-hamburguesa" type="button" aria-label="Abrir menú"
