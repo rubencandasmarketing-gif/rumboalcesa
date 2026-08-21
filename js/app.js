@@ -761,13 +761,17 @@ function cicloEnEspera() {
   ajustarSondeo();
 }
 
-document.addEventListener("visibilitychange", () => {
-  if (document.hidden) return;
+/* Congelado absoluto: con ?static no se registra el listener ni se hace la
+   petición de arranque, así la página no toca la red tras pintarse. */
+if (!MODO_ESTATICO) {
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) return;
+    comprobarNovedades();
+    ajustarSondeo();
+  });
   comprobarNovedades();
   ajustarSondeo();
-});
-comprobarNovedades();
-ajustarSondeo();
+}
 
 /* La sala del directo vigila el reloj: si un partido entra o sale de emisión,
    se refresca sola — salvo que haya un reproductor abierto (entonces, aviso). */
