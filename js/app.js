@@ -392,12 +392,11 @@ function renderPortada() {
       : `<div class="vacio">El calendario se publicará próximamente.</div>`}
     </section>`;
 
-  // --- Rejilla de selecciones ---
-  const rejilla = SELECCIONES.map(s => `
-    <a class="seleccion-card" href="${s.id}.html">
-      <img src="${s.escudo ? esc(s.escudo) : "img/marca/simbolo-amarillo.png"}" alt="" loading="lazy">
-      <span class="seleccion-card__cat">${esc(s.categoria)}</span>
-      <span class="seleccion-card__gen">${esc(s.genero)}</span>
+  // --- Franja de selecciones ---
+  const cintas = SELECCIONES.map(s => `
+    <a class="cinta-sel" href="${s.id}.html">
+      <span class="cinta-sel__cat">${esc(s.categoria)}</span>
+      <span class="cinta-sel__gen">${esc(s.genero)}</span>
     </a>`).join("");
 
   main.append(el(`
@@ -412,10 +411,12 @@ function renderPortada() {
 
     ${directoHTML}
 
-    <section class="contenedor ${enDirecto.length ? "" : "solapa"}" aria-labelledby="t-sel">
-      <p class="eyebrow">Las seis selecciones</p>
-      <h2 id="t-sel">Nuestros equipos</h2>
-      <div class="selecciones-grid">${rejilla}</div>
+    <section class="${enDirecto.length ? "" : "solapa"}" aria-labelledby="t-sel">
+      <div class="contenedor">
+        <p class="eyebrow">Las seis selecciones</p>
+        <h2 id="t-sel">Nuestros equipos</h2>
+      </div>
+      <div class="cintas-selecciones">${cintas}</div>
     </section>
 
     ${agendaHTML}

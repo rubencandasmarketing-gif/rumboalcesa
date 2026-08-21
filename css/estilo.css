@@ -488,33 +488,78 @@ section { padding-block: var(--sp-8); }
 }
 
 /* =============================================================================
-   PORTADA: REJILLA DE SELECCIONES
+   PORTADA: FRANJA DE SELECCIONES
+   Barra de categorías a todo el ancho: seis cintas azules repartidas por igual,
+   con el remate diagonal de la marca. En móvil pasa a carrusel con snap.
    ============================================================================= */
-.selecciones-grid {
-  display: grid; gap: var(--sp-2);
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+.cintas-selecciones {
+  display: flex;
+  margin-inline: 0;
+  background: var(--azul-700);
 }
-.seleccion-card {
-  display: flex; flex-direction: column; align-items: center; gap: var(--sp-1);
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: var(--r-md);
-  padding: var(--sp-3) var(--sp-2);
-  text-decoration: none; color: var(--ink);
+.cinta-sel {
+  flex: 1;
+  position: relative;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: .2em;
+  min-height: 44px;
+  padding: var(--sp-3) var(--sp-1);
+  background: var(--azul-700);
+  color: #fff;
   text-align: center;
-  box-shadow: var(--shadow-sm);
-  transition: transform .25s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease);
+  text-decoration: none;
+  border-left: 1px solid rgba(255, 255, 255, .14);
+  transition: background .25s var(--ease), color .25s var(--ease);
 }
-.seleccion-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--azul-300);
+.cinta-sel:first-child { border-left: 0; }
+
+.cinta-sel__cat {
+  font-family: var(--font-display); font-weight: 700;
+  text-transform: uppercase;
+  font-size: var(--step-1); letter-spacing: .02em; line-height: 1;
 }
-.seleccion-card img { width: 64px; height: 64px; object-fit: contain; }
-.seleccion-card__cat { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; font-size: var(--step-1); letter-spacing: .02em; }
-.seleccion-card__gen {
-  font-size: var(--step--1); color: var(--azul-800); font-weight: 700;
-  text-transform: uppercase; letter-spacing: .08em;
+.cinta-sel__gen {
+  font-size: var(--step--1); color: var(--azul-100); font-weight: 700;
+  text-transform: uppercase; letter-spacing: .12em; line-height: 1;
+  transition: color .25s var(--ease);
+}
+
+/* Remate diagonal de la marca, al pie de cada cinta */
+.cinta-sel::after {
+  content: "";
+  position: absolute; left: 50%; bottom: 0;
+  width: 44px; height: 5px;
+  background: var(--amarillo);
+  transform: translateX(-50%) skewX(var(--skew));
+  transition: width .25s var(--ease), background .25s var(--ease);
+}
+
+.cinta-sel:hover,
+.cinta-sel:focus-visible,
+.cinta-sel:active,
+.cinta-sel[aria-current="page"] {
+  background: var(--amarillo-deg);
+  color: var(--azul-950);
+}
+.cinta-sel:hover .cinta-sel__gen,
+.cinta-sel:focus-visible .cinta-sel__gen,
+.cinta-sel:active .cinta-sel__gen,
+.cinta-sel[aria-current="page"] .cinta-sel__gen { color: var(--azul-950); }
+
+.cinta-sel:hover::after,
+.cinta-sel:focus-visible::after,
+.cinta-sel:active::after,
+.cinta-sel[aria-current="page"]::after { width: 72px; background: var(--azul-950); }
+
+@media (max-width: 720px) {
+  .cintas-selecciones {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+  }
+  .cintas-selecciones::-webkit-scrollbar { display: none; }
+  .cinta-sel { flex: 0 0 auto; min-width: 140px; scroll-snap-align: start; }
 }
 
 /* =============================================================================
