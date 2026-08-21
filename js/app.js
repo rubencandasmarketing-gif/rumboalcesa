@@ -839,8 +839,13 @@ function renderSalaDirecto() {
 /* Celda de patrocinador habitual: con logo → enlace a su web; vacía → reservada */
 function huecoPatrocinador(p) {
   if (p && p.logo) {
+    // Logo con fondo incrustado: la tarjeta se tiñe de ese color y el logo
+    // llega a los bordes, para que no se lea como un recorte sobre blanco.
+    const propio = p.fondo
+      ? ` class="patro-logo--propio" style="--fondo: ${rutaCss(p.fondo)}"`
+      : "";
     return `
-    <a href="${esc(p.url)}" rel="sponsored noopener" target="_blank" aria-label="${esc(p.nombre)}">
+    <a${propio} href="${esc(p.url)}" rel="sponsored noopener" target="_blank" aria-label="${esc(p.nombre)}">
       <img src="${esc(p.logo)}" alt="${esc(p.nombre)}" loading="lazy">
     </a>`;
   }

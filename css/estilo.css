@@ -966,7 +966,15 @@ section { padding-block: var(--sp-8); }
   transition: box-shadow .2s var(--ease);
 }
 .patro-grid a:hover { box-shadow: var(--shadow-md); }
-.patro-grid img { max-height: 56px; width: auto; }
+.patro-grid img { max-height: 56px; width: auto; max-width: 100%; }
+
+/* Logo con fondo propio: la tarjeta toma ese color y el logo llega al borde */
+.patro-grid a.patro-logo--propio {
+  background: var(--fondo);
+  border-color: transparent;
+  padding: var(--sp-1) var(--sp-2);
+}
+.patro-grid a.patro-logo--propio img { max-height: 64px; }
 
 /* Rejilla fija de los 6 patrocinadores habituales de la federación */
 .patro-grid--seis { grid-template-columns: repeat(6, 1fr); }

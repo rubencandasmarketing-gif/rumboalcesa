@@ -62,9 +62,49 @@ export const SEDES = [
 ];
 
 /* --- PATROCINADORES (todos los niveles) ---------------------------------- */
+/* 'nivel' queda listo para cuando la federación defina los niveles.
+   'fondo' solo hace falta cuando el logo trae su propio color de fondo
+   incrustado (no transparente): el hueco se tiñe de ese color y el logo
+   ocupa la tarjeta entera, en vez de quedar como un recorte sobre blanco. */
 export const PATROCINADORES = [
-  // { nombre: "", logo: "img/patrocinadores/....webp", url: "", nivel: "" }
-  // 'nivel' queda listo para cuando la federación defina los niveles.
+  {
+    nombre: "Caja Rural de Asturias",
+    logo: "img/patrocinadores/caja-rural-asturias.jpg",
+    url: "https://www.cajaruraldeasturias.com/es",
+    nivel: "",
+    fondo: "#00613E"
+  },
+  {
+    nombre: "VIR Construcciones",
+    logo: "img/patrocinadores/vir-construcciones.jpg",
+    url: "https://virconstrucciones.com/",
+    nivel: ""
+  },
+  {
+    nombre: "Almacenes Silgar",
+    logo: "img/patrocinadores/almacenes-silgar.jpg",
+    url: "https://www.almacenessilgar.com/",
+    nivel: "",
+    fondo: "#151316"
+  },
+  {
+    nombre: "Joma",
+    logo: "img/patrocinadores/joma.png",
+    url: "https://www.joma-sport.com/",
+    nivel: ""
+  },
+  {
+    nombre: "Carlin Asturias",
+    logo: "img/patrocinadores/carlin-asturias.png",
+    url: "https://www.carlinasturias.com/",
+    nivel: ""
+  },
+  {
+    nombre: "Confía",
+    logo: "img/patrocinadores/confia.svg",
+    url: "https://www.confia.es/",
+    nivel: ""
+  }
 ];
 
 /* --- SELECCIONES ---------------------------------------------------------- */
