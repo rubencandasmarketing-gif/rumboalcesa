@@ -361,7 +361,7 @@ function tarjetaPartido(partido, sel, { conSeleccion = false, sinReproductor = f
     ? `<span class="partido__fase" style="color:var(--azul-800)">${esc(nombreSeleccion(sel))}</span>`
     : "";
 
-  let cabecera = "";
+  let cabecera = "";   // zona derecha: distintivo, marcador o sede
   let cruce = "";
   let media = "";
   let acciones = "";
@@ -382,9 +382,9 @@ function tarjetaPartido(partido, sel, { conSeleccion = false, sinReproductor = f
     }
     acciones += botonDirecto(partido);
   } else if (partido.estado === "finalizado") {
-    cruce = `${asturias}
-      <span class="marcador"><span>${partido.golesAsturias ?? "–"}</span><span>·</span><span>${partido.golesRival ?? "–"}</span></span>
-      ${rival}`;
+    // El marcador se va a la derecha: el cruce queda limpio en el centro
+    cabecera = `<span class="marcador"><span>${partido.golesAsturias ?? "–"}</span><span>·</span><span>${partido.golesRival ?? "–"}</span></span>`;
+    cruce = `${asturias}<span class="vs">–</span>${rival}`;
     const btns = [];
     const repeticion = botonDirecto(partido);
     if (repeticion) btns.push(repeticion);
@@ -393,10 +393,11 @@ function tarjetaPartido(partido, sel, { conSeleccion = false, sinReproductor = f
     }
     acciones = btns.join("");
   } else { // programado, aún sin emisión
-    if (enJuegoPorHorario(partido)) {
-      // Hora cumplida pero sin youtubeId: aviso honesto sin reproductor
-      cabecera = `<span class="badge-enjuego">En juego</span>`;
-    }
+    // Hora cumplida pero sin youtubeId: aviso honesto sin reproductor.
+    // Si aún no ha llegado la hora, a la derecha va la sede.
+    cabecera = enJuegoPorHorario(partido)
+      ? `<span class="badge-enjuego">En juego</span>`
+      : `<span class="partido__hora">${esc(partido.hora)}</span>`;
     cruce = `${asturias}<span class="vs">vs</span>${rival}`;
     acciones = botonDirecto(partido);
   }
@@ -411,7 +412,8 @@ function tarjetaPartido(partido, sel, { conSeleccion = false, sinReproductor = f
           <span>${fechaLarga(partido.fecha)} · ${esc(partido.hora)}</span>
           ${sedeHTML}
         </div>
-        <div class="partido__cruce">${cabecera}${cruce}</div>
+        <div class="partido__cruce">${cruce}</div>
+        <div class="partido__estado">${cabecera}</div>
         ${acciones ? `<div class="partido__acciones">${acciones}</div>` : ""}
       </div>
     </article>`;

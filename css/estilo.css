@@ -447,33 +447,68 @@ section { padding-block: var(--sp-8); }
 /* =============================================================================
    TARJETA DE PARTIDO — el componente central. Manda `estado`.
    ============================================================================= */
+/* Fila de partido: baja y repartida a lo ancho. De izquierda a derecha,
+   meta · cruce · estado · acción. El acento diagonal de marca cierra la
+   izquierda como una pestaña de color. */
 .partido {
+  position: relative;
   background: #fff;
   border: 1px solid var(--line);
   border-radius: var(--r-md);
   box-shadow: var(--shadow-sm);
   overflow: hidden;
-  transition: box-shadow .25s var(--ease), transform .25s var(--ease);
+  transition: box-shadow .25s var(--ease), border-color .25s var(--ease);
 }
-.partido:hover { box-shadow: var(--shadow-md); }
+.partido:hover { box-shadow: var(--shadow-md); border-color: var(--azul-300); }
 
-.partido__cuerpo { padding: var(--sp-3); }
+/* Pestaña diagonal: el corte lo hace el overflow:hidden de la tarjeta */
+.partido::before {
+  content: "";
+  position: absolute; top: -2px; bottom: -2px; left: -5px;
+  width: 14px;
+  background: var(--amarillo-deg);
+  transform: skewX(var(--skew));
+  pointer-events: none;
+}
+
+.partido__cuerpo {
+  display: grid;
+  grid-template-columns: minmax(8rem, 13rem) minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: var(--sp-1) var(--sp-3);
+  padding: var(--sp-2) var(--sp-3) var(--sp-2) calc(var(--sp-3) + 8px);
+}
 
 .partido__meta {
-  display: flex; flex-wrap: wrap; gap: .4em 1em;
+  display: flex; flex-direction: column; gap: .15em;
   font-size: var(--step--1); color: var(--muted);
-  margin-bottom: var(--sp-1);
+  min-width: 0;
 }
-.partido__fase { font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+.partido__fase {
+  font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--azul-800);
+}
+.partido__sede { min-width: 0; }
+.partido__sede a { color: inherit; }
 
 .partido__cruce {
-  display: flex; align-items: center; gap: var(--sp-2);
+  display: flex; align-items: center; gap: .5em;
   font-family: var(--font-display);
-  font-weight: 700; font-size: var(--step-2);
+  font-weight: 700; font-size: var(--step-1);
   text-transform: uppercase; letter-spacing: .015em;
-  flex-wrap: wrap;
+  line-height: 1.05;
+  min-width: 0;
 }
 .partido__equipo { min-width: 0; }
+
+/* Zona derecha: marcador, distintivo u hora, siempre alineada */
+.partido__estado { display: flex; align-items: center; justify-content: flex-end; }
+.partido__estado:empty { display: none; }
+.partido__hora {
+  font: 700 var(--step-1)/1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+  color: var(--azul-800);
+}
 
 /* Marcador: chip diagonal amarillo, números tabulares */
 .marcador {
@@ -523,10 +558,23 @@ section { padding-block: var(--sp-8); }
   box-shadow: var(--shadow-lg);
 }
 
-/* Enlaces de acción de la tarjeta */
+/* Enlaces de acción de la tarjeta: a la derecha del todo */
 .partido__acciones {
   display: flex; flex-wrap: wrap; gap: var(--sp-1);
-  margin-top: var(--sp-2);
+  justify-content: flex-end;
+}
+
+/* Móvil: tres filas limpias — meta, cruce, y estado + acción abajo */
+@media (max-width: 640px) {
+  .partido__cuerpo {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--sp-1) var(--sp-2);
+    padding: var(--sp-2) var(--sp-2) var(--sp-2) calc(var(--sp-2) + 8px);
+  }
+  .partido__meta  { grid-column: 1 / -1; }
+  .partido__cruce { grid-column: 1 / -1; font-size: var(--step-1); }
+  .partido__estado { justify-content: flex-start; }
+  .partido__acciones { justify-content: flex-end; }
 }
 
 /* =============================================================================
