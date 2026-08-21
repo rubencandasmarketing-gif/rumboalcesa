@@ -354,7 +354,7 @@ function enlaceDirectoAgenda(partido, sel) {
 function tarjetaPartido(partido, sel, { conSeleccion = false, sinReproductor = false } = {}) {
   const sede = sedeDe(partido.sede);
   const sedeHTML = sede
-    ? `<span class="partido__sede">📍 <a href="${esc(sede.mapa)}" rel="noopener" target="_blank">${esc(sede.nombre)}, ${esc(sede.municipio)}</a></span>`
+    ? `<span class="partido__sede">📍 <a href="${esc(sede.mapa)}" rel="noopener" target="_blank">${esc(sede.nombre)}</a></span>`
     : "";
 
   const etiquetaSel = conSeleccion

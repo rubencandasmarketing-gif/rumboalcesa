@@ -473,15 +473,15 @@ section { padding-block: var(--sp-8); }
 
 .partido__cuerpo {
   display: grid;
-  grid-template-columns: minmax(8rem, 13rem) minmax(0, 1fr) auto auto;
+  grid-template-columns: minmax(9rem, 15rem) minmax(0, 1fr) auto auto;
   align-items: center;
   gap: var(--sp-1) var(--sp-3);
-  padding: var(--sp-2) var(--sp-3) var(--sp-2) calc(var(--sp-3) + 8px);
+  padding: var(--sp-1) var(--sp-3) var(--sp-1) calc(var(--sp-3) + 8px);
 }
 
 .partido__meta {
-  display: flex; flex-direction: column; gap: .15em;
-  font-size: var(--step--1); color: var(--muted);
+  display: flex; flex-direction: column; gap: .1em;
+  font-size: var(--step--1); line-height: 1.35; color: var(--muted);
   min-width: 0;
 }
 .partido__fase {
