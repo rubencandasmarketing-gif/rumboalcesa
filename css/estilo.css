@@ -498,7 +498,9 @@ section { padding-block: var(--sp-8); }
 
 .cintas-selecciones {
   display: flex;
-  margin-inline: 0;
+  /* Pegada a su título y sin aire debajo: el hueco con la sección siguiente
+     lo pone solo el padding-top de esa sección, no este bloque. */
+  margin: var(--sp-2) 0 0;
   background: var(--azul-700);
   /* Deslizable a cualquier ancho: si las cintas no caben (p. ej. mientras
      Barlow Condensed aún no ha cargado y la reserva es más ancha), la franja
