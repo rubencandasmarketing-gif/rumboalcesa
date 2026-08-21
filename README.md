@@ -12,20 +12,36 @@ y no debería cambiar con prisa desde un pabellón.
 
 ### Chuleta de actualización rápida
 
-| Qué ha pasado | Qué cambias en `datos.js` |
+| Cuándo | Qué haces en `datos.js` |
 |---|---|
-| Empieza un partido | `estado: "directo"` + pega el `youtubeId` |
+| Días antes | Calendario completo + `youtubeId` de cada directo ya programado en YouTube |
+| Hora del partido | **Nada**: el reproductor se enciende solo (el enlace ya está) |
 | Termina | `estado: "finalizado"` + `golesAsturias` y `golesRival` |
 | Llega la galería | pega la URL en `galeria` |
+| Forzar emisión fuera de hora | `estado: "directo"` (partido adelantado, prórroga...) |
 | Entra el patrocinador principal | `patrocinadorPrincipal: { activo: true, ... }` |
 
 `youtubeId` es solo el ID: de `youtube.com/watch?v=ABC123` copias `ABC123`.
 
+### Actualización automática
+
+La web comprueba cada minuto si `datos.js` cambió en el servidor. Al publicar
+un cambio (push → deploy de Cloudflare), los espectadores con la pestaña
+abierta lo ven solos en ~1 minuto, sin refrescar. Si alguien está viendo un
+directo no se le corta: le aparece un aviso «Hay novedades» para actualizar
+cuando quiera.
+
+Además, cuando pasa la hora de un partido `programado`, se muestra un chip
+**«En juego»** calculado por reloj (durante 2h30). El estado `directo` con
+reproductor sigue siendo manual a propósito: solo se anuncia emisión cuando
+hay enlace real.
+
 ## Estructura
 
 ```
-index.html                  Portada (héroe + hoy juegan + selecciones + resultados)
+index.html                  Portada (héroe + directos + selecciones + agenda día a día)
 {seleccion}.html            6 páginas idénticas: solo cambia data-seleccion
+directo.html                Sala del directo: reproductor + banners del patrocinador
 patrocinadores.html
 js/datos.js                 ← EL archivo
 js/app.js                   Render (no tocar en caliente)
@@ -70,5 +86,6 @@ así que da igual que la foto tarde: no hay saltos de maquetación.
 - Confirmar registro de `rumboalcesa.es` (y valorar `.com` redirigido)
 - Fechas y edición reales del CESA → `CONFIG.edicion`
 - Canal de YouTube → `CONFIG.canalYoutube`
-- Niveles de patrocinio → campo `nivel` de `PATROCINADORES` (la página ya agrupa sola)
+- Enlaces de redes de la federación → `CONFIG.redes` (X, Instagram, Facebook; el pie los muestra solo)
+- Los 6 patrocinadores habituales → rellenar `nombre`, `logo` y `url` en `PATROCINADORES` (logos a `img/patrocinadores/`)
 - Escudos propios por selección si los hay → campo `escudo`

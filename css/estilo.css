@@ -20,6 +20,7 @@
   /* --- Acento: amarillo oficial FBMPA (10%: directo, marcadores, CTAs) --- */
   --amarillo:     #FFE55D;
   --amarillo-600: #F2CE1E; /* borde/hover del amarillo */
+  --amarillo-deg: linear-gradient(160deg, #FFEC7E, #FFE55D 45%, #F8D93E);
 
   /* --- Neutros tintados hacia el azul (nunca #000 / #fff puros) --- */
   --ink:     #12222F;
@@ -28,16 +29,18 @@
   --paper-2: #EAF1F7;
   --line:    #D7E3EE;
 
-  /* --- Tipografía: una familia, contraste por peso extremo --- */
-  --font: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* --- Tipografía: superfamilia Barlow. Condensed para titulares y cifras
+     (registro de retransmisión deportiva), Barlow para lectura. --- */
+  --font-display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
 
   /* --- Escala tipográfica fluida (ratio ~1.25) --- */
   --step--1: clamp(.82rem, .78rem + .2vw, .9rem);
   --step-0:  clamp(1rem, .96rem + .3vw, 1.1rem);
   --step-1:  clamp(1.2rem, 1.08rem + .6vw, 1.5rem);
   --step-2:  clamp(1.55rem, 1.3rem + 1.2vw, 2.1rem);
-  --step-3:  clamp(2.1rem, 1.65rem + 2.2vw, 3.2rem);
-  --step-4:  clamp(2.8rem, 1.9rem + 4.2vw, 4.6rem);
+  --step-3:  clamp(2.2rem, 1.7rem + 2.4vw, 3.5rem);
+  --step-4:  clamp(3rem, 2rem + 4.6vw, 5.4rem);
 
   /* --- Espaciado, escala de 8px --- */
   --sp-1: .5rem;  --sp-2: 1rem;  --sp-3: 1.5rem; --sp-4: 2rem;
@@ -48,6 +51,11 @@
   --shadow-sm: 0 1px 2px rgba(8, 58, 94, .07);
   --shadow-md: 0 4px 12px rgba(8, 58, 94, .09), 0 1px 3px rgba(8, 58, 94, .07);
   --shadow-lg: 0 18px 40px -12px rgba(8, 58, 94, .25), 0 6px 14px rgba(8, 58, 94, .10);
+
+  /* --- Texturas: grano SVG + rayado en la diagonal de la firma (82° = 90°−8°).
+     Se aplican como capa ::before sobre las superficies azules. --- */
+  --grano: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.06 0'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>");
+  --rayas: repeating-linear-gradient(82deg, rgba(255,255,255,.045) 0 2px, transparent 2px 16px);
 
   --ease: cubic-bezier(.22, .61, .36, 1);
   --measure: 62ch;
@@ -64,7 +72,7 @@ html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  font: 400 var(--step-0)/1.65 var(--font);
+  font: 400 var(--step-0)/1.65 var(--font-body);
   color: var(--ink);
   background: var(--paper);
   -webkit-font-smoothing: antialiased;
@@ -80,9 +88,10 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 }
 
 h1, h2, h3 {
-  font-weight: 900;
-  line-height: 1.08;
-  letter-spacing: -.015em;
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: .012em;
   margin: 0 0 var(--sp-2);
   text-wrap: balance;
 }
@@ -125,7 +134,7 @@ section { padding-block: var(--sp-8); }
 
 /* Franja del patrocinador principal (hueco 1 de 3) */
 .franja-principal {
-  background: var(--azul-950);
+  background: var(--grano), var(--azul-950);
   color: var(--azul-100);
   font-size: var(--step--1);
 }
@@ -138,7 +147,7 @@ section { padding-block: var(--sp-8); }
 .franja-principal a:hover { color: var(--amarillo); }
 
 .cabecera {
-  background: var(--azul-700);
+  background: var(--rayas), var(--azul-700);
   color: #fff;
   position: sticky; top: 0; z-index: 50;
   box-shadow: var(--shadow-md);
@@ -151,12 +160,13 @@ section { padding-block: var(--sp-8); }
   display: flex; align-items: center; gap: var(--sp-2);
   text-decoration: none; color: #fff; flex-shrink: 0;
 }
-.cabecera__marca img { height: 30px; width: auto; }
+.cabecera__marca img { height: 40px; width: auto; }
 .cabecera__titulo {
-  font-weight: 900; text-transform: uppercase;
-  letter-spacing: .02em; font-size: var(--step-0); line-height: 1.1;
-  border-left: 2px solid rgba(255,255,255,.35);
-  padding-left: var(--sp-2);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--step-1); text-transform: uppercase;
+  letter-spacing: .03em; line-height: 1; text-transform: uppercase;
+
 }
 .cabecera__titulo b { color: var(--amarillo); }
 
@@ -189,12 +199,18 @@ section { padding-block: var(--sp-8); }
    ============================================================================= */
 .heroe {
   background:
-    radial-gradient(1200px 500px at 85% -10%, var(--azul-800), transparent 60%),
+    linear-gradient(96deg, rgba(6,35,56,.95) 12%, rgba(4,58,94,.82) 46%, rgba(1,104,179,.28) 100%),
+    url("../img/ambiente/jugada-contraataque.webp") right 42% / cover no-repeat,
     var(--azul-700);
   color: #fff;
   padding-block: var(--sp-8) var(--sp-12);
   position: relative;
   overflow: hidden;
+}
+.heroe::before {          /* textura: rayado diagonal + grano */
+  content: ""; position: absolute; inset: 0;
+  background: var(--rayas), var(--grano);
+  pointer-events: none;
 }
 .heroe::after {           /* corte diagonal inferior — la firma */
   content: ""; position: absolute; inset: auto 0 -1px 0; height: 56px;
@@ -202,10 +218,12 @@ section { padding-block: var(--sp-8); }
   clip-path: polygon(0 100%, 100% 100%, 100% 0);
 }
 .heroe .contenedor {
+  position: relative;
   display: grid; gap: var(--sp-4);
-  grid-template-columns: 1.15fr .85fr;
+  grid-template-columns: minmax(0, 640px) 1fr;
   align-items: center;
 }
+.heroe__texto { text-shadow: 0 1px 12px rgba(6,35,56,.5); }
 .heroe__texto p {
   color: var(--azul-100); font-size: var(--step-1);
   font-weight: 400; line-height: 1.45; margin-top: 0;
@@ -218,7 +236,8 @@ section { padding-block: var(--sp-8); }
   filter: drop-shadow(0 12px 30px rgba(6, 35, 56, .45));
 }
 @media (max-width: 760px) {
-  .heroe .contenedor { grid-template-columns: 1fr; }
+  .heroe .contenedor {
+  position: relative; grid-template-columns: 1fr; }
   .heroe__simbolo { display: none; }
 }
 
@@ -246,7 +265,9 @@ section { padding-block: var(--sp-8); }
 
 .partido__cruce {
   display: flex; align-items: center; gap: var(--sp-2);
-  font-weight: 700; font-size: var(--step-1);
+  font-family: var(--font-display);
+  font-weight: 700; font-size: var(--step-2);
+  text-transform: uppercase; letter-spacing: .015em;
   flex-wrap: wrap;
 }
 .partido__equipo { min-width: 0; }
@@ -254,9 +275,10 @@ section { padding-block: var(--sp-8); }
 /* Marcador: chip diagonal amarillo, números tabulares */
 .marcador {
   display: inline-flex; gap: .35em;
-  background: var(--amarillo);
+  font-family: var(--font-display);
+  background: var(--amarillo-deg);
   color: var(--azul-950);
-  font-weight: 900; font-size: var(--step-1);
+  font-weight: 700; font-size: var(--step-1);
   font-variant-numeric: tabular-nums;
   padding: .15em .6em;
   transform: skewX(var(--skew));
@@ -264,17 +286,19 @@ section { padding-block: var(--sp-8); }
 }
 .marcador > span { transform: skewX(calc(var(--skew) * -1)); }
 
-.vs { color: var(--muted); font-weight: 400; font-size: var(--step-0); }
+.vs { color: var(--muted); font-weight: 400; font-size: var(--step-0); font-family: var(--font-body); text-transform: none; }
 
 .partido__sede a { color: var(--muted); }
 .partido__sede a:hover { color: var(--azul-800); }
 
 /* Distintivo EN DIRECTO */
 .directo-badge {
+  font-family: var(--font-display);
+  font-size: var(--step-0);
   display: inline-flex; align-items: center; gap: .5em;
-  background: var(--amarillo); color: var(--azul-950);
-  font-weight: 900; font-size: var(--step--1);
-  text-transform: uppercase; letter-spacing: .1em;
+  background: var(--amarillo-deg); color: var(--azul-950);
+  font-weight: 700;
+  text-transform: uppercase; letter-spacing: .08em;
   padding: .3em .8em;
   transform: skewX(var(--skew));
   border-radius: var(--r-sm);
@@ -308,7 +332,7 @@ section { padding-block: var(--sp-8); }
 .reproductor {
   position: relative;
   aspect-ratio: 16 / 9;
-  background: var(--azul-950);
+  background: var(--grano), var(--azul-950);
   border-radius: 0;
 }
 .reproductor iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
@@ -356,7 +380,7 @@ section { padding-block: var(--sp-8); }
    ============================================================================= */
 .btn {
   display: inline-flex; align-items: center; gap: .5em;
-  font: 700 var(--step--1)/1 var(--font);
+  font: 700 var(--step--1)/1 var(--font-body);
   letter-spacing: .02em;
   padding: .85em 1.5em;
   border-radius: var(--r-full);
@@ -378,8 +402,90 @@ section { padding-block: var(--sp-8); }
 /* =============================================================================
    PORTADA: HOY JUEGAN
    ============================================================================= */
-.hoy-juegan { margin-top: calc(var(--sp-8) * -1); position: relative; z-index: 2; padding-top: 0; }
+.solapa { margin-top: calc(var(--sp-8) * -1); position: relative; z-index: 2; padding-top: 0; }
 .hoy-juegan__lista { display: grid; gap: var(--sp-2); }
+
+/* =============================================================================
+   AGENDA DEL CAMPEONATO (portada)
+   ============================================================================= */
+.agenda-dias {
+  display: flex; gap: var(--sp-1);
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  margin-bottom: var(--sp-2);
+}
+.agenda-dias::-webkit-scrollbar { display: none; }
+.agenda-dia {
+  font: 700 var(--step-0)/1 var(--font-display);
+  text-transform: uppercase; letter-spacing: .04em;
+  padding: .7em 1.1em; min-height: 44px;
+  background: #fff; color: var(--azul-800);
+  border: 1.5px solid var(--line); border-radius: var(--r-full);
+  cursor: pointer; white-space: nowrap;
+  transition: background .2s var(--ease), border-color .2s var(--ease), transform .2s var(--ease);
+}
+.agenda-dia:hover { border-color: var(--azul-300); transform: translateY(-1px); }
+.agenda-dia[aria-pressed="true"] {
+  background: var(--amarillo-deg); color: var(--azul-950);
+  border-color: var(--amarillo-600);
+}
+.agenda-lista { display: grid; gap: var(--sp-1); }
+.agenda-fila {
+  display: grid;
+  grid-template-columns: 3.5em 7em minmax(0, 1fr) auto;
+  gap: var(--sp-2); align-items: center;
+  background: #fff; border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: var(--sp-1) var(--sp-2);
+  min-height: 52px;
+  text-decoration: none; color: var(--ink);
+  transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+.agenda-fila:hover { border-color: var(--azul-300); box-shadow: var(--shadow-sm); }
+.agenda-fila--directo { border: 2px solid var(--amarillo-600); }
+.agenda-fila__hora {
+  font: 700 var(--step-1)/1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+  color: var(--azul-800);
+}
+.agenda-fila__sel {
+  font-size: var(--step--1); font-weight: 700; color: var(--azul-800);
+  text-transform: uppercase; letter-spacing: .04em;
+}
+.agenda-fila__cruce {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: var(--step-1); text-transform: uppercase; letter-spacing: .015em;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.agenda-fila__sede { font-size: var(--step--1); color: var(--muted); }
+.badge-enjuego {
+  display: inline-flex; align-items: center;
+  font: 700 var(--step--1)/1 var(--font-display);
+  text-transform: uppercase; letter-spacing: .08em;
+  color: var(--azul-900);
+  background: var(--azul-100);
+  border: 1px solid var(--azul-300);
+  padding: .35em .8em;
+  border-radius: var(--r-full);
+}
+.aviso-novedades {
+  position: fixed; bottom: var(--sp-3); left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  font: 700 var(--step--1)/1 var(--font-body);
+  background: var(--amarillo-deg); color: var(--azul-950);
+  border: 1px solid var(--amarillo-600);
+  border-radius: var(--r-full);
+  padding: .9em 1.4em; min-height: 44px;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+}
+.marcador--mini { font-size: var(--step-0); }
+.directo-badge--mini { font-size: var(--step--1); }
+@media (max-width: 620px) {
+  .agenda-fila { grid-template-columns: 3.2em minmax(0, 1fr) auto; }
+  .agenda-fila__sel { display: none; }
+}
 
 /* =============================================================================
    PORTADA: REJILLA DE SELECCIONES
@@ -405,7 +511,7 @@ section { padding-block: var(--sp-8); }
   border-color: var(--azul-300);
 }
 .seleccion-card img { width: 64px; height: 64px; object-fit: contain; }
-.seleccion-card__cat { font-weight: 900; text-transform: uppercase; font-size: var(--step-0); }
+.seleccion-card__cat { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; font-size: var(--step-1); letter-spacing: .02em; }
 .seleccion-card__gen {
   font-size: var(--step--1); color: var(--azul-800); font-weight: 700;
   text-transform: uppercase; letter-spacing: .08em;
@@ -432,6 +538,7 @@ section { padding-block: var(--sp-8); }
 }
 .ficha__foto img { width: 100%; height: 100%; object-fit: cover; }
 .ficha__dorsal {
+  font-family: var(--font-display);
   position: absolute; top: 0; left: 0;
   background: var(--amarillo); color: var(--azul-950);
   font-weight: 900; font-size: var(--step-1);
@@ -446,15 +553,41 @@ section { padding-block: var(--sp-8); }
 .ficha__pos { font-size: var(--step--1); color: var(--azul-800); font-weight: 700; }
 .ficha__club { font-size: var(--step--1); color: var(--muted); }
 
+/* Ficha vacía: plaza de convocatoria pendiente */
+.ficha--vacia {
+  border-style: dashed;
+  box-shadow: none;
+  background: transparent;
+}
+.ficha--vacia .ficha__foto {
+  background:
+    url("../img/marca/simbolo-blanco.png") center 45% / 46% auto no-repeat,
+    var(--azul-50);
+}
+.ficha--vacia .ficha__nombre { color: var(--muted); font-weight: 600; }
+
 /* Staff: sin foto por defecto (pendiente nº 8); si hay foto, misma ficha */
 .staff-lista {
   display: grid; gap: var(--sp-2);
   grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
 }
 .staff-item {
+  display: flex; align-items: center; gap: var(--sp-2);
   background: #fff; border: 1px solid var(--line);
   border-radius: var(--r-md); padding: var(--sp-2);
   box-shadow: var(--shadow-sm);
+}
+.staff-item__foto {
+  width: 60px; height: 60px; border-radius: 50%;
+  object-fit: cover; flex-shrink: 0;
+  border: 2px solid var(--azul-100);
+}
+.staff-item--vacio { border-style: dashed; box-shadow: none; background: transparent; }
+.staff-item__foto--hueco {
+  background:
+    url("../img/marca/simbolo-blanco.png") center / 60% auto no-repeat,
+    var(--azul-50);
+  border-style: dashed;
 }
 .staff-item__rol {
   font-size: var(--step--1); color: var(--azul-800);
@@ -465,16 +598,25 @@ section { padding-block: var(--sp-8); }
    CABECERA DE SELECCIÓN
    ============================================================================= */
 .seleccion-hero {
-  background: var(--azul-700); color: #fff;
+  background:
+    linear-gradient(180deg, rgba(4,58,94,.90), rgba(1,104,179,.86)),
+    url("../img/ambiente/equipo-pinya-aerea.webp") center 40% / cover no-repeat,
+    var(--azul-700);
+  color: #fff;
   padding-block: var(--sp-6);
   position: relative; overflow: hidden;
+}
+.seleccion-hero::before {
+  content: ""; position: absolute; inset: 0;
+  background: var(--rayas), var(--grano);
+  pointer-events: none;
 }
 .seleccion-hero::after {
   content: ""; position: absolute; inset: auto 0 -1px 0; height: 40px;
   background: var(--paper);
   clip-path: polygon(0 100%, 100% 100%, 100% 0);
 }
-.seleccion-hero .contenedor { display: flex; align-items: center; gap: var(--sp-3); }
+.seleccion-hero .contenedor { position: relative; display: flex; align-items: center; gap: var(--sp-3); }
 .seleccion-hero img { width: 84px; height: 84px; object-fit: contain; }
 .seleccion-hero h1 { margin: 0; font-size: var(--step-3); }
 .seleccion-hero .genero { color: var(--amarillo); }
@@ -516,6 +658,19 @@ section { padding-block: var(--sp-8); }
 .patro-grid a:hover { box-shadow: var(--shadow-md); }
 .patro-grid img { max-height: 56px; width: auto; }
 
+/* Rejilla fija de los 6 patrocinadores habituales de la federación */
+.patro-grid--seis { grid-template-columns: repeat(6, 1fr); }
+@media (max-width: 900px) { .patro-grid--seis { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 520px) { .patro-grid--seis { grid-template-columns: repeat(2, 1fr); } }
+.patro-hueco {
+  min-height: 90px;
+  border: 1.5px dashed var(--azul-300);
+  border-radius: var(--r-md);
+  background:
+    url("../img/marca/simbolo-blanco.png") center / 34% auto no-repeat,
+    var(--azul-50);
+}
+
 /* Placeholder "Este espacio puede ser tuyo" (huecos con activo:false) */
 .patro-placeholder {
   display: flex; flex-direction: column; align-items: center; gap: var(--sp-1);
@@ -545,20 +700,73 @@ section { padding-block: var(--sp-8); }
 .patro-cierre { background: var(--paper-2); padding-block: var(--sp-6); }
 
 /* =============================================================================
+   SALA DEL DIRECTO
+   ============================================================================= */
+.sala { display: grid; gap: var(--sp-3); max-width: 940px; margin-inline: auto; }
+.banner-patro {
+  display: grid; place-items: center;
+  min-height: 96px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+.banner-patro img { max-height: 130px; width: auto; max-width: 100%; }
+.banner-patro--hueco {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: .25em; text-align: center; padding: var(--sp-2);
+  border: 2px dashed var(--azul-300);
+  background: var(--azul-50);
+  color: var(--azul-800);
+}
+.banner-patro--hueco strong {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  text-transform: uppercase; letter-spacing: .05em;
+}
+.nav__directo {
+  display: inline-flex; align-items: center; gap: .45em;
+  background: var(--amarillo-deg);
+  color: var(--azul-950) !important;
+  font-weight: 700;
+}
+.nav__directo .punto {
+  width: .5em; height: .5em; border-radius: 50%;
+  background: #D5261F;
+  animation: pulso 1.4s infinite var(--ease);
+}
+
+/* =============================================================================
    PIE
    ============================================================================= */
 .pie {
   background: var(--azul-950); color: var(--azul-100);
+  position: relative;
   padding-block: var(--sp-6);
   font-size: var(--step--1);
 }
+.pie::before {
+  content: ""; position: absolute; inset: 0;
+  background: var(--grano);
+  pointer-events: none;
+}
 .pie .contenedor {
+  position: relative;
   display: flex; flex-wrap: wrap; gap: var(--sp-3);
   align-items: center; justify-content: space-between;
 }
 .pie img { height: 34px; width: auto; }
 .pie a { color: var(--azul-100); }
 .pie a:hover { color: var(--amarillo); }
+.pie__redes { display: flex; gap: var(--sp-1); }
+.pie__red {
+  display: grid; place-items: center;
+  width: 44px; height: 44px;
+  border: 1.5px solid rgba(255, 255, 255, .28);
+  border-radius: 50%;
+  transition: border-color .2s var(--ease), color .2s var(--ease), transform .2s var(--ease);
+}
+.pie__red:hover { border-color: var(--amarillo); color: var(--amarillo); transform: translateY(-2px); }
 
 /* =============================================================================
    UTILIDADES Y ESTADOS VACÍOS

@@ -1,7 +1,17 @@
-# Configuracion local de Claude Code (no se publica)
-.claude/
+# Originales de fotos sin optimizar — nunca al repo (pesan y no se sirven)
+originales/
+*.psd
+*.CR2
+*.NEF
+*.ARW
 
-# Basura del sistema
-Thumbs.db
-desktop.ini
+# Sistema
 .DS_Store
+Thumbs.db
+
+# Editores
+.vscode/
+.idea/
+
+# Configuracion local de Claude Code
+.claude/

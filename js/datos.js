@@ -3,12 +3,20 @@
    =============================================================================
    ESTE ES EL ÚNICO ARCHIVO QUE SE TOCA DURANTE EL CAMPEONATO.
 
-   Chuleta rápida (desde el móvil):
+   Flujo de trabajo real:
 
-   · Empieza un partido  →  estado: "directo"    y rellena youtubeId
-   · Termina un partido  →  estado: "finalizado" y rellena golesAsturias/golesRival
+   DÍAS ANTES (con calma, desde el ordenador):
+   · Carga el calendario completo con fecha, hora, rival y sede
+   · Pega el youtubeId de cada partido según se programen los directos en
+     YouTube. Con el enlace puesto, la tarjeta ofrece "Recordatorio en
+     YouTube" y EL REPRODUCTOR SE ENCIENDE SOLO a la hora del partido.
+
+   DURANTE EL CAMPEONATO (desde el móvil):
+   · Termina un partido  →  estado: "finalizado" + golesAsturias/golesRival
    · Llega la galería    →  pega la URL en galeria
-   · Entra un patrocinador principal →  patrocinadorPrincipal: activo: true + datos
+   · estado: "directo" solo hace falta para FORZAR el reproductor fuera de
+     hora (un partido adelantado, una prórroga larga...)
+   · Entra el patrocinador principal →  patrocinadorPrincipal: activo: true
 
    youtubeId es SOLO el identificador, no la URL completa:
    https://www.youtube.com/watch?v=dQw4w9WgXcQ  →  youtubeId: "dQw4w9WgXcQ"
@@ -20,17 +28,23 @@
 
 export const CONFIG = {
   nombreSitio: "Asturias, rumbo al CESA",
-  descripcion: "Cobertura oficial de las selecciones asturianas de balonmano en el Campeonato de España de Selecciones Autonómicas.",
+  descripcion: "Toda la cobertura de las selecciones asturianas en el Campeonato de España: convocatorias, calendario, resultados y directos.",
   dominio: "rumboalcesa.es",            // provisional hasta confirmar registro
   canalYoutube: "",                     // URL del canal, p. ej. "https://www.youtube.com/@..."
   edicion: "CESA 2027",                 // pendiente de confirmar edición y fechas
-  contactoPatrocinio: "mailto:info@fbmpa.com", // a dónde apunta "Este espacio puede ser tuyo"
+  // Redes sociales de la federación: se muestran en el pie al rellenarlas
+  redes: {
+    twitter: "",     // p. ej. "https://x.com/fbmpa"
+    instagram: "",   // p. ej. "https://www.instagram.com/fbmpa"
+    facebook: ""     // p. ej. "https://www.facebook.com/fbmpa"
+  },
 
   // Con activo:false, los tres huecos muestran "Este espacio puede ser tuyo"
   patrocinadorPrincipal: {
     activo: false,
     nombre: "",
     logo: "",        // p. ej. "img/patrocinadores/nombre.webp"
+    banner: "",      // creatividad ancha para la sala del directo (si falta, se usa el logo)
     url: ""
   }
 };
@@ -56,7 +70,7 @@ export const PATROCINADORES = [
 /* --- SELECCIONES ---------------------------------------------------------- */
 /* Posiciones: Portero, Extremo izq., Lateral izq., Central, Pivote,
                Lateral der., Extremo der.
-   Roles staff: Entrenador/a, Segundo entrenador/a, Delegado/a, Fisioterapeuta */
+   Roles staff fijos: Seleccionador/a, Entrenador/a, Delegado/a (siempre visibles;\n   otros roles como Fisioterapeuta se muestran a continuación si se añaden) */
 
 export const SELECCIONES = [
   {
@@ -82,8 +96,14 @@ export const SELECCIONES = [
     categoria: "Cadete",
     genero: "Masculina",
     escudo: "",
-    staff: [],
-    plantilla: [],
+    staff: [
+      // PRUEBA con foto real — completar nombre
+      { nombre: "Completar nombre", rol: "Entrenador", foto: "img/jugadores/cadete-masculina/staff-entrenador.webp" }
+    ],
+    plantilla: [
+      // PRUEBA con foto real — completar posición y club
+      { dorsal: 6, nombre: "Marco (completar apellidos)", posicion: "Completar posición", club: "Completar club", foto: "img/jugadores/cadete-masculina/06-marco.webp" }
+    ],
     partidos: []
   },
   {
@@ -125,20 +145,20 @@ export const SELECCIONES = [
         estado: "finalizado",
         golesAsturias: 31,
         golesRival: 27,
-        youtubeId: "",
+        youtubeId: "RyMJQqWtAjs",   // demo del enlace a la repetición
         galeria: ""
       },
       {
         id: "jm-ej2",
-        fecha: "2026-08-19",           // ← fecha de hoy a propósito, para que
-        hora: "18:30",                 //   salga en "hoy juegan" al enseñar la web
+        fecha: "2027-01-04",
+        hora: "18:30",
         fase: "Fase de grupos — J2 (EJEMPLO)",
         rival: "Selección Rival B",
         sede: "ejemplo-pumarin",
         estado: "directo",
         golesAsturias: null,
         golesRival: null,
-        youtubeId: "",
+        youtubeId: "RyMJQqWtAjs",   // partido real del año pasado, de ejemplo
         galeria: ""
       },
       {
@@ -151,7 +171,7 @@ export const SELECCIONES = [
         estado: "programado",
         golesAsturias: null,
         golesRival: null,
-        youtubeId: "",
+        youtubeId: "",     // ← ponlo en cuanto el directo esté programado en YouTube
         galeria: ""
       }
     ]

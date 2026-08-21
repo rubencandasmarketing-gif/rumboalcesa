@@ -42,6 +42,23 @@ function fechaLarga(iso) {
   return f.charAt(0).toUpperCase() + f.slice(1);
 }
 
+/** Programado cuya hora ya pasó (ventana de 2h30). */
+function enJuegoPorHorario(p) {
+  if (p.estado !== "programado") return false;
+  const inicio = new Date(`${p.fecha}T${p.hora}:00`);
+  const ms = Date.now() - inicio.getTime();
+  return ms >= 0 && ms <= 150 * 60000;
+}
+
+/** Emisión activa: directo manual, o programado con youtubeId cuya hora llegó.
+    Como los directos se programan en YouTube con días de antelación, el
+    reproductor se enciende solo a la hora del partido sin tocar datos.js.
+    El estado "directo" queda como interruptor manual para forzarlo. */
+function emisionActiva(p) {
+  return p.estado === "directo" ||
+    (p.estado === "programado" && p.youtubeId && enJuegoPorHorario(p));
+}
+
 function hoyISO() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
@@ -55,9 +72,9 @@ function renderCabecera() {
     ? `<a href="${esc(p.url)}" rel="sponsored noopener" target="_blank">
          <img src="${esc(p.logo)}" alt="${esc(p.nombre)}, patrocinador principal">
        </a>`
-    : `<a class="patro-placeholder--franja" href="${esc(CONFIG.contactoPatrocinio)}">
-         <b>Este espacio puede ser tuyo</b><span>· Patrocinador principal · Contactar</span>
-       </a>`;
+    : `<span class="patro-placeholder--franja">
+         <b>Este espacio puede ser tuyo</b><span>· Patrocinador principal</span>
+       </span>`;
 
   const enlaces = SELECCIONES.map(s =>
     `<li><a href="${s.id}.html">${esc(s.categoria)} ${s.genero === "Masculina" ? "M" : "F"}</a></li>`
@@ -68,12 +85,14 @@ function renderCabecera() {
     <header class="cabecera">
       <div class="contenedor">
         <a class="cabecera__marca" href="index.html" aria-label="${esc(CONFIG.nombreSitio)} — portada">
-          <img src="img/marca/fbmpa-blanco.png" alt="FBMPA">
+          <img src="img/marca/simbolo-amarillo.png" alt="FBMPA">
           <span class="cabecera__titulo">Rumbo al <b>CESA</b></span>
         </a>
         <nav class="nav" aria-label="Selecciones">
           <ul>
             <li><a href="index.html">Portada</a></li>
+            ${SELECCIONES.some(s => s.partidos.some(p => emisionActiva(p)))
+              ? `<li><a class="nav__directo" href="directo.html"><span class="punto" aria-hidden="true"></span>Directo</a></li>` : ""}
             ${enlaces}
             <li><a href="patrocinadores.html">Patrocinadores</a></li>
           </ul>
@@ -89,16 +108,32 @@ function renderCabecera() {
   });
 }
 
+const ICONOS_REDES = {
+  twitter: `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M18.9.9h3.68l-8.04 9.19L24 22.6h-7.41l-5.8-7.58-6.64 7.58H.47l8.6-9.83L0 .9h7.59l5.25 6.93L18.9.9Zm-1.29 19.5h2.04L6.49 2.99H4.3l13.31 17.41Z"/></svg>`,
+  instagram: `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23a3.8 3.8 0 0 1-.9 1.38c-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.8 3.8 0 0 1-1.38-.9 3.74 3.74 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.58 2.2 15.2 2.2 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.21 8.8 2.2 12 2.2M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63a5.88 5.88 0 0 0-2.13 1.38A5.86 5.86 0 0 0 .63 4.14C.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.28.26 2.15.56 2.91.31.8.72 1.48 1.38 2.13a5.87 5.87 0 0 0 2.13 1.38c.77.3 1.64.5 2.91.56 1.28.06 1.69.07 4.95.07s3.67-.01 4.95-.07c1.28-.06 2.15-.26 2.91-.56a5.9 5.9 0 0 0 2.13-1.38 5.86 5.86 0 0 0 1.38-2.13c.3-.77.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.28-.26-2.15-.56-2.91a5.89 5.89 0 0 0-1.38-2.13A5.85 5.85 0 0 0 19.86.63c-.77-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0m0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32M12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8m6.41-11.85a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88"/></svg>`,
+  facebook: `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M24 12.07C24 5.45 18.63.07 12 .07S0 5.45 0 12.07c0 5.99 4.39 10.95 10.13 11.85v-8.38H7.08v-3.47h3.05V9.43c0-3 1.79-4.67 4.53-4.67 1.31 0 2.69.24 2.69.24v2.95h-1.52c-1.49 0-1.95.93-1.95 1.87v2.25h3.33l-.53 3.47h-2.8v8.38C19.61 23.03 24 18.06 24 12.07z"/></svg>`
+};
+const NOMBRES_REDES = { twitter: "X (Twitter)", instagram: "Instagram", facebook: "Facebook" };
+
+function redesHTML() {
+  const redes = CONFIG.redes || {};
+  const enlaces = ["twitter", "instagram", "facebook"]
+    .filter(k => redes[k])
+    .map(k => `<a class="pie__red" href="${esc(redes[k])}" rel="noopener" target="_blank" aria-label="FBMPA en ${NOMBRES_REDES[k]}">${ICONOS_REDES[k]}</a>`)
+    .join("");
+  return enlaces ? `<div class="pie__redes">${enlaces}</div>` : "";
+}
+
 function renderPie() {
   const p = CONFIG.patrocinadorPrincipal;
   const cierre = p.activo
     ? `<a href="${esc(p.url)}" rel="sponsored noopener" target="_blank">
          <img src="${esc(p.logo)}" alt="${esc(p.nombre)}" style="max-height:60px;width:auto">
        </a>`
-    : `<a class="patro-placeholder" href="${esc(CONFIG.contactoPatrocinio)}" style="text-decoration:none">
+    : `<div class="patro-placeholder">
          <strong>Este espacio puede ser tuyo</strong>
          <span>Patrocinador principal de la cobertura — presencia en todas las páginas y junto a cada directo.</span>
-       </a>`;
+       </div>`;
 
   document.body.append(el(`
     <div class="patro-cierre">
@@ -106,13 +141,14 @@ function renderPie() {
     </div>
     <footer class="pie">
       <div class="contenedor">
-        <a href="https://www.fbmpa.com" rel="noopener" target="_blank" aria-label="Federación de Balonmano del Principado de Asturias">
+        <a href="https://www.fbmpa.es" rel="noopener" target="_blank" aria-label="Federación de Balonmano del Principado de Asturias">
           <img src="img/marca/fbmpa-blanco.png" alt="FBMPA">
         </a>
         <p style="margin:0">
-          Web oficial de la Federación de Balonmano del Principado de Asturias.<br>
-          ${esc(CONFIG.edicion)} · <a href="patrocinadores.html">Patrocinadores</a>
+          Web de la Federación de Balonmano del Principado de Asturias dedicada al seguimiento del ${esc(CONFIG.edicion)}.<br>
+          Web oficial de la federación: <a href="https://www.fbmpa.es" rel="noopener" target="_blank">fbmpa.es</a> · <a href="patrocinadores.html">Patrocinadores</a>
         </p>
+        ${redesHTML()}
       </div>
     </footer>
   `));
@@ -125,7 +161,7 @@ function renderPie() {
    finalizado → marcador + repetición + galería
 ---------------------------------------------------------------------------- */
 
-function tarjetaPartido(partido, sel, { conSeleccion = false } = {}) {
+function tarjetaPartido(partido, sel, { conSeleccion = false, sinReproductor = false } = {}) {
   const sede = sedeDe(partido.sede);
   const sedeHTML = sede
     ? `<span class="partido__sede">📍 <a href="${esc(sede.mapa)}" rel="noopener" target="_blank">${esc(sede.nombre)}, ${esc(sede.municipio)}</a></span>`
@@ -143,15 +179,20 @@ function tarjetaPartido(partido, sel, { conSeleccion = false } = {}) {
   const asturias = `<span class="partido__equipo">Asturias</span>`;
   const rival = `<span class="partido__equipo">${esc(partido.rival)}</span>`;
 
-  if (partido.estado === "directo") {
-    cabecera = `<span class="directo-badge"><span><span class="punto" aria-hidden="true"></span>En directo</span></span>`;
+  if (emisionActiva(partido)) {
+    cabecera = partido.estado === "directo"
+      ? `<span class="directo-badge"><span><span class="punto" aria-hidden="true"></span>En directo</span></span>`
+      : `<span class="directo-badge"><span><span class="punto" aria-hidden="true"></span>En juego</span></span>`;
     cruce = `${asturias}<span class="vs">–</span>${rival}`;
-    media = reproductor(partido);
+    media = sinReproductor ? "" : reproductor(partido);
+    if (sinReproductor) {
+      acciones = `<a class="btn" href="directo.html">Ver el directo</a>`;
+    }
     if (CONFIG.canalYoutube || partido.youtubeId) {
       const url = partido.youtubeId
         ? `https://www.youtube.com/watch?v=${encodeURIComponent(partido.youtubeId)}`
         : CONFIG.canalYoutube;
-      acciones = `<a class="btn btn--ghost" href="${esc(url)}" rel="noopener" target="_blank">Ver en YouTube</a>`;
+      acciones += `<a class="btn btn--ghost" href="${esc(url)}" rel="noopener" target="_blank">Ver en YouTube</a>`;
     }
   } else if (partido.estado === "finalizado") {
     cruce = `${asturias}
@@ -165,8 +206,16 @@ function tarjetaPartido(partido, sel, { conSeleccion = false } = {}) {
       btns.push(`<a class="btn btn--ghost" href="${esc(partido.galeria)}" rel="noopener" target="_blank">Galería de fotos</a>`);
     }
     acciones = btns.join("");
-  } else { // programado
+  } else { // programado, aún sin emisión
+    if (enJuegoPorHorario(partido)) {
+      // Hora cumplida pero sin youtubeId: aviso honesto sin reproductor
+      cabecera = `<span class="badge-enjuego">En juego</span>`;
+    }
     cruce = `${asturias}<span class="vs">vs</span>${rival}`;
+    if (partido.youtubeId) {
+      // El directo ya está programado en YouTube: enlace para activar recordatorio
+      acciones = `<a class="btn btn--ghost" href="https://www.youtube.com/watch?v=${encodeURIComponent(partido.youtubeId)}" rel="noopener" target="_blank">Recordatorio en YouTube</a>`;
+    }
   }
 
   return `
@@ -193,9 +242,9 @@ function reproductor(partido) {
          <a href="${esc(p.url)}" rel="sponsored noopener" target="_blank"><img src="${esc(p.logo)}" alt="${esc(p.nombre)}"></a>
        </div>`
     : `<div class="patro-reproductor">
-         <a class="patro-placeholder--inline patro-placeholder" href="${esc(CONFIG.contactoPatrocinio)}" style="text-decoration:none">
-           <strong>Tu marca junto a cada directo</strong> · contactar
-         </a>
+         <span class="patro-placeholder--inline patro-placeholder">
+           <strong>Tu marca junto a cada directo</strong>
+         </span>
        </div>`;
 
   if (!partido.youtubeId) {
@@ -237,37 +286,93 @@ function todosLosPartidos() {
   );
 }
 
+const FMT_DIA_CORTO = new Intl.DateTimeFormat("es-ES", {
+  weekday: "short", day: "numeric", month: "short"
+});
+function diaCorto(iso) {
+  return FMT_DIA_CORTO.format(new Date(iso + "T12:00:00")).replace(/\./g, "");
+}
+
+/* Fila compacta de la agenda: el estado decide la última columna */
+function filaAgenda({ partido, sel }) {
+  const sede = sedeDe(partido.sede);
+  let estado;
+  if (partido.estado === "finalizado") {
+    estado = `<span class="marcador marcador--mini"><span>${partido.golesAsturias ?? "–"}</span><span>·</span><span>${partido.golesRival ?? "–"}</span></span>`;
+  } else if (emisionActiva(partido)) {
+    estado = `<span class="directo-badge directo-badge--mini"><span><span class="punto" aria-hidden="true"></span>Directo</span></span>`;
+  } else if (enJuegoPorHorario(partido)) {
+    estado = `<span class="badge-enjuego">En juego</span>`;
+  } else {
+    estado = sede ? `<span class="agenda-fila__sede">${esc(sede.municipio)}</span>` : "<span></span>";
+  }
+  return `
+    <a class="agenda-fila ${emisionActiva(partido) ? "agenda-fila--directo" : ""}" href="${sel.id}.html">
+      <span class="agenda-fila__hora">${esc(partido.hora)}</span>
+      <span class="agenda-fila__sel">${esc(sel.categoria)} ${sel.genero === "Masculina" ? "M" : "F"}</span>
+      <span class="agenda-fila__cruce">Asturias <span class="vs">–</span> ${esc(partido.rival)}</span>
+      ${estado}
+    </a>`;
+}
+
+let AGENDA = new Map();
+
+function renderAgendaDia(fecha) {
+  const cont = document.querySelector("#agenda-cuerpo");
+  if (!cont) return;
+  const filas = (AGENDA.get(fecha) || []).map(filaAgenda).join("");
+  cont.innerHTML = filas || `<div class="vacio">Sin partidos este día.</div>`;
+  document.querySelectorAll(".agenda-dia").forEach(b =>
+    b.setAttribute("aria-pressed", String(b.dataset.fecha === fecha)));
+}
+
+document.addEventListener("click", e => {
+  const b = e.target.closest(".agenda-dia");
+  if (b) renderAgendaDia(b.dataset.fecha);
+});
+
 function renderPortada() {
   const main = $("main");
   const hoy = hoyISO();
   const todos = todosLosPartidos();
 
-  // --- Hoy juegan ---
-  const deHoy = todos
-    .filter(({ partido }) => partido.fecha === hoy)
-    .sort((a, b) => {
-      // El directo manda; después, por hora
-      const d = (b.partido.estado === "directo") - (a.partido.estado === "directo");
-      return d || a.partido.hora.localeCompare(b.partido.hora);
-    });
+  // --- En emisión: directos manuales + programados cuya hora llegó con enlace ---
+  const enDirecto = todos.filter(t => emisionActiva(t.partido));
+  const directoHTML = enDirecto.length ? `
+    <section class="contenedor solapa" aria-labelledby="t-dir">
+      <p class="eyebrow" id="t-dir">Ahora mismo</p>
+      <div class="hoy-juegan__lista">
+        ${enDirecto.map(({ partido, sel }) => tarjetaPartido(partido, sel, { conSeleccion: true, sinReproductor: true })).join("")}
+      </div>
+    </section>` : "";
 
-  let contenidoHoy;
-  let tituloHoy = "Hoy juegan";
-  if (deHoy.length) {
-    contenidoHoy = deHoy.map(({ partido, sel }) =>
-      tarjetaPartido(partido, sel, { conSeleccion: true })).join("");
-  } else {
-    const proximos = todos
-      .filter(({ partido }) => partido.estado === "programado" && partido.fecha >= hoy)
-      .sort((a, b) => (a.partido.fecha + a.partido.hora).localeCompare(b.partido.fecha + b.partido.hora));
-    if (proximos.length) {
-      tituloHoy = "Próximo partido";
-      const { partido, sel } = proximos[0];
-      contenidoHoy = tarjetaPartido(partido, sel, { conSeleccion: true });
-    } else {
-      contenidoHoy = `<div class="vacio">El calendario se publicará próximamente.</div>`;
-    }
-  }
+  // --- Agenda: todos los partidos agrupados por día ---
+  AGENDA = new Map();
+  [...todos]
+    .sort((a, b) => (a.partido.fecha + a.partido.hora).localeCompare(b.partido.fecha + b.partido.hora))
+    .forEach(t => {
+      if (!AGENDA.has(t.partido.fecha)) AGENDA.set(t.partido.fecha, []);
+      AGENDA.get(t.partido.fecha).push(t);
+    });
+  const fechas = [...AGENDA.keys()];
+
+  // Día inicial: el del directo > hoy > el próximo con partidos > el último jugado
+  let fechaInicial = null;
+  if (enDirecto.length) fechaInicial = enDirecto[0].partido.fecha;
+  else if (AGENDA.has(hoy)) fechaInicial = hoy;
+  else fechaInicial = fechas.find(f => f >= hoy) ?? fechas[fechas.length - 1] ?? null;
+
+  const agendaHTML = `
+    <section class="contenedor" aria-labelledby="t-agenda">
+      <p class="eyebrow">Día a día</p>
+      <h2 id="t-agenda">Agenda del campeonato</h2>
+      ${fechas.length ? `
+        <div class="agenda-dias" role="group" aria-label="Elegir día">
+          ${fechas.map(f => `<button class="agenda-dia" type="button" data-fecha="${f}" aria-pressed="false">${diaCorto(f)}</button>`).join("")}
+        </div>
+        <div class="agenda-lista" id="agenda-cuerpo"></div>`
+      : `<div class="vacio">El calendario se publicará próximamente.</div>`}
+    </section>`;
 
   // --- Rejilla de selecciones ---
   const rejilla = SELECCIONES.map(s => `
@@ -277,53 +382,30 @@ function renderPortada() {
       <span class="seleccion-card__gen">${esc(s.genero)}</span>
     </a>`).join("");
 
-  // --- Últimos resultados ---
-  const finalizados = todos
-    .filter(({ partido }) => partido.estado === "finalizado")
-    .sort((a, b) => (b.partido.fecha + b.partido.hora).localeCompare(a.partido.fecha + a.partido.hora))
-    .slice(0, 6);
-
-  const resultados = finalizados.length
-    ? finalizados.map(({ partido, sel }) => `
-        <a class="resultado" href="${sel.id}.html">
-          <span class="resultado__sel">${esc(sel.categoria)} ${sel.genero === "Masculina" ? "M" : "F"}</span>
-          <span>Asturias – ${esc(partido.rival)}</span>
-          <span class="marcador"><span>${partido.golesAsturias}</span><span>·</span><span>${partido.golesRival}</span></span>
-        </a>`).join("")
-    : `<div class="vacio">Aún no hay resultados. Todo empieza en breve.</div>`;
-
   main.append(el(`
     <div class="heroe">
       <div class="contenedor">
         <div class="heroe__texto anim-entrada">
           <h1>Asturias,<br>rumbo al <span>CESA</span></h1>
-          <p>Seis selecciones. Una semana. Toda la cobertura del Campeonato de España
-             de Selecciones Autonómicas de balonmano: convocatorias, calendario,
-             resultados y todos los partidos en directo.</p>
+          <p>Toda la cobertura de las selecciones asturianas en el Campeonato de España: convocatorias, calendario, resultados y directos.</p>
         </div>
-        <img class="heroe__simbolo" src="img/marca/simbolo-amarillo.png" alt="" aria-hidden="true">
       </div>
     </div>
 
-    <section class="hoy-juegan contenedor" aria-labelledby="t-hoy">
-      <p class="eyebrow" id="t-hoy">${tituloHoy}</p>
-      <div class="hoy-juegan__lista">${contenidoHoy}</div>
-    </section>
+    ${directoHTML}
 
-    <section class="contenedor" aria-labelledby="t-sel">
+    <section class="contenedor ${enDirecto.length ? "" : "solapa"}" aria-labelledby="t-sel">
       <p class="eyebrow">Las seis selecciones</p>
       <h2 id="t-sel">Nuestros equipos</h2>
       <div class="selecciones-grid">${rejilla}</div>
     </section>
 
-    <section class="contenedor" aria-labelledby="t-res">
-      <p class="eyebrow">Marcadores</p>
-      <h2 id="t-res">Últimos resultados</h2>
-      <div class="resultados-lista">${resultados}</div>
-    </section>
+    ${agendaHTML}
 
     ${franjaPatrocinadores()}
   `));
+
+  if (fechaInicial) renderAgendaDia(fechaInicial);
 }
 
 /* --- Página de selección --------------------------------------------------- */
@@ -345,28 +427,72 @@ function renderSeleccion(id) {
     ? partidos.map(p => tarjetaPartido(p, sel)).join("")
     : `<div class="vacio">El calendario se publicará próximamente.</div>`;
 
-  const plantilla = sel.plantilla.length
-    ? sel.plantilla.map(j => `
-        <article class="ficha">
-          <div class="ficha__foto">
-            ${j.foto ? `<img src="${esc(j.foto)}" alt="${esc(j.nombre)}, dorsal ${j.dorsal}" loading="lazy">` : ""}
-            <span class="ficha__dorsal"><span>${j.dorsal}</span></span>
-          </div>
-          <div class="ficha__datos">
-            <div class="ficha__nombre">${esc(j.nombre)}</div>
-            <div class="ficha__pos">${esc(j.posicion)}</div>
-            <div class="ficha__club">${esc(j.club)}</div>
-          </div>
-        </article>`).join("")
-    : `<div class="vacio">La convocatoria se publicará próximamente.</div>`;
+  // Convocatoria: siempre 16 huecos. Los cubiertos, con ficha; el resto, en espera.
+  const PLAZAS = 16;
+  const convocados = [...sel.plantilla].sort((a, b) => (a.dorsal ?? 99) - (b.dorsal ?? 99));
+  const huecos = Math.max(0, PLAZAS - convocados.length);
 
-  const staff = sel.staff.length
-    ? sel.staff.map(m => `
-        <div class="staff-item">
+  const plantilla = convocados.map(j => `
+      <article class="ficha">
+        <div class="ficha__foto">
+          ${j.foto ? `<img src="${esc(j.foto)}" alt="${esc(j.nombre)}, dorsal ${j.dorsal}" loading="lazy">` : ""}
+          <span class="ficha__dorsal"><span>${j.dorsal}</span></span>
+        </div>
+        <div class="ficha__datos">
+          <div class="ficha__nombre">${esc(j.nombre)}</div>
+          <div class="ficha__pos">${esc(j.posicion)}</div>
+          <div class="ficha__club">${esc(j.club)}</div>
+        </div>
+      </article>`).join("")
+    + Array.from({ length: huecos }, () => `
+      <article class="ficha ficha--vacia" aria-label="Plaza pendiente de convocatoria">
+        <div class="ficha__foto"></div>
+        <div class="ficha__datos">
+          <div class="ficha__nombre">Por convocar</div>
+        </div>
+      </article>`).join("");
+
+  // Cuerpo técnico: tres cargos fijos (Seleccionador/a, Entrenador/a, Delegado/a).
+  // Se cubren buscando el rol en datos.js; el resto de roles (fisio, etc.) se añade detrás.
+  const norm = s => String(s ?? "").toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const cargoDe = m => {
+    const r = norm(m.rol);
+    if (r.startsWith("seleccionador")) return "seleccionador";
+    if (r.startsWith("delegad")) return "delegado";
+    if (r.startsWith("entrenador") && !r.includes("segund")) return "entrenador";
+    return null;
+  };
+  const CARGOS = [
+    { clave: "seleccionador", etiqueta: "Seleccionador/a" },
+    { clave: "entrenador",    etiqueta: "Entrenador/a" },
+    { clave: "delegado",      etiqueta: "Delegado/a" }
+  ];
+  const asignados = new Set();
+  const tarjetaStaff = m => `
+      <div class="staff-item">
+        ${m.foto ? `<img class="staff-item__foto" src="${esc(m.foto)}" alt="" loading="lazy">` : ""}
+        <div>
           <div class="staff-item__rol">${esc(m.rol)}</div>
           <div style="font-weight:700">${esc(m.nombre)}</div>
-        </div>`).join("")
-    : `<div class="vacio">El cuerpo técnico se publicará próximamente.</div>`;
+        </div>
+      </div>`;
+
+  const fijos = CARGOS.map(c => {
+    const m = sel.staff.find(x => cargoDe(x) === c.clave && !asignados.has(x));
+    if (m) { asignados.add(m); return tarjetaStaff(m); }
+    return `
+      <div class="staff-item staff-item--vacio">
+        <div class="staff-item__foto staff-item__foto--hueco" aria-hidden="true"></div>
+        <div>
+          <div class="staff-item__rol">${c.etiqueta}</div>
+          <div style="font-weight:700;color:var(--muted)">Por confirmar</div>
+        </div>
+      </div>`;
+  }).join("");
+
+  const extra = sel.staff.filter(m => !asignados.has(m)).map(tarjetaStaff).join("");
+  const staff = fijos + extra;
 
   main.append(el(`
     <div class="seleccion-hero">
@@ -398,29 +524,113 @@ function renderSeleccion(id) {
   `));
 }
 
+/* --- Sala del directo -------------------------------------------------------
+   Página propia (directo.html): reproductor grande + banners del patrocinador
+   principal arriba y abajo. Si hay varios partidos en emisión, chips para
+   cambiar. Sin emisión, muestra los partidos del día.
+---------------------------------------------------------------------------- */
+
+function bannerPatrocinador() {
+  const p = CONFIG.patrocinadorPrincipal;
+  if (p.activo) {
+    const creatividad = p.banner || p.logo;
+    return `
+    <a class="banner-patro" href="${esc(p.url)}" rel="sponsored noopener" target="_blank">
+      <img src="${esc(creatividad)}" alt="${esc(p.nombre)}">
+    </a>`;
+  }
+  return `
+    <div class="banner-patro banner-patro--hueco">
+      <strong>Tu marca aquí</strong>
+      <span>Banner del patrocinador principal durante cada directo</span>
+    </div>`;
+}
+
+let SALA_ACTIVOS = [];
+let salaIds = null;
+
+function pintarPartidoSala(id) {
+  const t = SALA_ACTIVOS.find(x => x.partido.id === id) || SALA_ACTIVOS[0];
+  const caja = document.querySelector("#sala-partido");
+  if (!caja || !t) return;
+  caja.innerHTML = tarjetaPartido(t.partido, t.sel, { conSeleccion: true });
+  document.querySelectorAll(".sala-chip").forEach(b =>
+    b.setAttribute("aria-pressed", String(b.dataset.id === t.partido.id)));
+}
+
+document.addEventListener("click", e => {
+  const b = e.target.closest(".sala-chip");
+  if (b) pintarPartidoSala(b.dataset.id);
+});
+
+function renderSalaDirecto() {
+  const main = $("main");
+  const todos = todosLosPartidos();
+  SALA_ACTIVOS = todos
+    .filter(t => emisionActiva(t.partido))
+    .sort((a, b) => (b.partido.estado === "directo") - (a.partido.estado === "directo"));
+
+  document.title = `En directo — ${CONFIG.nombreSitio}`;
+
+  const hoy = hoyISO();
+  const restoHoy = todos
+    .filter(t => t.partido.fecha === hoy && !emisionActiva(t.partido))
+    .sort((a, b) => a.partido.hora.localeCompare(b.partido.hora));
+
+  const chips = SALA_ACTIVOS.length > 1 ? `
+    <div class="agenda-dias" role="group" aria-label="Elegir partido">
+      ${SALA_ACTIVOS.map(t => `<button class="agenda-dia sala-chip" type="button" data-id="${esc(t.partido.id)}" aria-pressed="false">${esc(t.sel.categoria)} ${t.sel.genero === "Masculina" ? "M" : "F"}</button>`).join("")}
+    </div>` : "";
+
+  const cuerpo = SALA_ACTIVOS.length ? `
+      ${bannerPatrocinador()}
+      ${chips}
+      <div id="sala-partido"></div>
+      ${bannerPatrocinador()}`
+    : `
+      <div class="vacio">Ahora mismo no hay ningún partido en emisión.<br>
+      En cuanto empiece uno, se verá aquí.</div>`;
+
+  main.append(el(`
+    <div class="seleccion-hero">
+      <div class="contenedor anim-entrada">
+        <h1>${SALA_ACTIVOS.length ? `<span class="genero">En directo</span>` : "Directos"}</h1>
+      </div>
+    </div>
+    <section class="contenedor sala">${cuerpo}</section>
+    ${restoHoy.length ? `
+    <section class="contenedor" aria-labelledby="t-mas">
+      <p class="eyebrow">Hoy también</p>
+      <h2 id="t-mas">Más partidos del día</h2>
+      <div class="agenda-lista">${restoHoy.map(filaAgenda).join("")}</div>
+    </section>` : ""}
+    ${franjaPatrocinadores()}
+  `));
+
+  if (SALA_ACTIVOS.length) pintarPartidoSala(SALA_ACTIVOS[0].partido.id);
+  salaIds = SALA_ACTIVOS.map(t => t.partido.id).join(",");
+}
+
 /* --- Franja de patrocinadores (portada y selecciones) ---------------------- */
 
-function franjaPatrocinadores() {
-  if (!PATROCINADORES.length) {
+/* Celda de patrocinador habitual: con logo → enlace a su web; vacía → reservada */
+function huecoPatrocinador(p) {
+  if (p && p.logo) {
     return `
-      <section class="contenedor" aria-labelledby="t-patro">
-        <p class="eyebrow">Nos apoyan</p>
-        <h2 id="t-patro">Patrocinadores</h2>
-        <a class="patro-placeholder" href="${esc(CONFIG.contactoPatrocinio)}" style="text-decoration:none">
-          <strong>Súmate a la cobertura</strong>
-          <span>Tu marca acompañando a las selecciones asturianas durante toda la semana del campeonato.</span>
-        </a>
-      </section>`;
-  }
-  const logos = PATROCINADORES.map(p => `
     <a href="${esc(p.url)}" rel="sponsored noopener" target="_blank" aria-label="${esc(p.nombre)}">
       <img src="${esc(p.logo)}" alt="${esc(p.nombre)}" loading="lazy">
-    </a>`).join("");
+    </a>`;
+  }
+  return `<div class="patro-hueco" aria-hidden="true"></div>`;
+}
+
+function franjaPatrocinadores() {
+  const celdas = Array.from({ length: 6 }, (_, i) => huecoPatrocinador(PATROCINADORES[i])).join("");
   return `
     <section class="contenedor" aria-labelledby="t-patro">
       <p class="eyebrow">Nos apoyan</p>
       <h2 id="t-patro">Patrocinadores</h2>
-      <div class="patro-grid">${logos}</div>
+      <div class="patro-grid patro-grid--seis">${celdas}</div>
     </section>`;
 }
 
@@ -436,35 +646,17 @@ function renderPatrocinadores() {
            <img src="${esc(p.logo)}" alt="${esc(p.nombre)}" style="max-height:90px">
          </a>
        </div>`
-    : `<a class="patro-placeholder" href="${esc(CONFIG.contactoPatrocinio)}" style="text-decoration:none">
+    : `<div class="patro-placeholder">
          <strong>Patrocinador principal — espacio disponible</strong>
          <span>Presencia en la cabecera de todas las páginas, junto al reproductor de cada
          directo y en el cierre de cada página. La máxima visibilidad de la cobertura.</span>
-       </a>`;
+       </div>`;
 
-  // Agrupa por nivel si los niveles están definidos; si no, rejilla homogénea
-  const conNivel = PATROCINADORES.filter(x => x.nivel);
-  let resto = "";
-  if (PATROCINADORES.length) {
-    if (conNivel.length) {
-      const niveles = [...new Set(PATROCINADORES.map(x => x.nivel || "Colaboradores"))];
-      resto = niveles.map(n => `
-        <h2>${esc(n)}</h2>
-        <div class="patro-grid">
-          ${PATROCINADORES.filter(x => (x.nivel || "Colaboradores") === n).map(x => `
-            <a href="${esc(x.url)}" rel="sponsored noopener" target="_blank" aria-label="${esc(x.nombre)}">
-              <img src="${esc(x.logo)}" alt="${esc(x.nombre)}" loading="lazy">
-            </a>`).join("")}
-        </div>`).join("");
-    } else {
-      resto = `<h2>Colaboradores</h2><div class="patro-grid">
-        ${PATROCINADORES.map(x => `
-          <a href="${esc(x.url)}" rel="sponsored noopener" target="_blank" aria-label="${esc(x.nombre)}">
-            <img src="${esc(x.logo)}" alt="${esc(x.nombre)}" loading="lazy">
-          </a>`).join("")}
-      </div>`;
-    }
-  }
+  // Los 6 patrocinadores habituales de la federación
+  const celdas = Array.from({ length: 6 }, (_, i) => huecoPatrocinador(PATROCINADORES[i])).join("");
+  const resto = `
+    <h2>Patrocinadores de la federación</h2>
+    <div class="patro-grid patro-grid--seis">${celdas}</div>`;
 
   main.append(el(`
     <div class="seleccion-hero">
@@ -477,10 +669,70 @@ function renderPatrocinadores() {
       ${principal}
     </section>
     <section class="contenedor">
-      ${resto || `<div class="vacio">Los patrocinadores de la cobertura aparecerán aquí.</div>`}
+      ${resto}
     </section>
   `));
 }
+
+/* --- Actualización automática ----------------------------------------------
+   Cada 60 s (solo con la pestaña visible) se comprueba si datos.js cambió en
+   el servidor. Si cambió y no hay ningún directo reproduciéndose, la página
+   se recarga sola; si hay un reproductor abierto, no se corta la emisión:
+   aparece un aviso para actualizar cuando el espectador quiera.
+---------------------------------------------------------------------------- */
+
+let ultimaVersionDatos = null;
+
+async function comprobarNovedades() {
+  try {
+    const r = await fetch("js/datos.js?t=" + Date.now(), { cache: "no-store" });
+    if (!r.ok) return;
+    const txt = await r.text();
+    if (ultimaVersionDatos === null) { ultimaVersionDatos = txt; return; }
+    if (txt === ultimaVersionDatos) return;
+    ultimaVersionDatos = txt;
+    if (document.querySelector(".reproductor iframe")) {
+      mostrarAvisoNovedades();
+    } else {
+      location.reload();
+    }
+  } catch { /* sin red o vista local: se reintenta en el siguiente ciclo */ }
+}
+
+function mostrarAvisoNovedades() {
+  if (document.querySelector(".aviso-novedades")) return;
+  const b = document.createElement("button");
+  b.type = "button";
+  b.className = "aviso-novedades";
+  b.textContent = "Hay novedades — toca para actualizar";
+  b.addEventListener("click", () => location.reload());
+  document.body.append(b);
+}
+
+setInterval(() => { if (!document.hidden) comprobarNovedades(); }, 60000);
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) comprobarNovedades();
+});
+comprobarNovedades();
+
+/* La sala del directo vigila el reloj: si un partido entra o sale de emisión,
+   se refresca sola — salvo que haya un reproductor abierto (entonces, aviso). */
+setInterval(() => {
+  if (document.body.dataset.pagina !== "directo" || document.hidden) return;
+  const ids = SELECCIONES.flatMap(s => s.partidos).filter(p => emisionActiva(p)).map(p => p.id).join(",");
+  if (salaIds !== null && ids !== salaIds) {
+    salaIds = ids;
+    if (document.querySelector(".reproductor iframe")) mostrarAvisoNovedades();
+    else location.reload();
+  }
+}, 60000);
+
+/* Los chips "En juego" dependen del reloj: se refrescan solos cada minuto
+   re-renderizando la agenda visible (sin tocar reproductores). */
+setInterval(() => {
+  const activo = document.querySelector('.agenda-dia[aria-pressed="true"]');
+  if (activo && !document.hidden) renderAgendaDia(activo.dataset.fecha);
+}, 60000);
 
 /* --- Arranque --------------------------------------------------------------- */
 
@@ -489,6 +741,7 @@ renderCabecera();
 const pagina = document.body.dataset.pagina;
 if (pagina === "portada") renderPortada();
 else if (pagina === "seleccion") renderSeleccion(document.body.dataset.seleccion);
+else if (pagina === "directo") renderSalaDirecto();
 else if (pagina === "patrocinadores") renderPatrocinadores();
 
 renderPie();
