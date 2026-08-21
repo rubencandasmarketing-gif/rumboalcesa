@@ -1,0 +1,590 @@
+/* =============================================================================
+   ESTILO.CSS — Asturias, rumbo al CESA
+   Identidad FBMPA aplicada: azul #0168B3 + amarillo #FFE55D.
+   Sistema: tokens en :root → todo lo demás sale de aquí.
+   Firma visual: LA DIAGONAL (el brazo armado del símbolo FBMPA) — aparece en
+   chips, distintivos y cortes de sección con skew(-8deg).
+   ============================================================================= */
+
+:root {
+  /* --- Color: escala de marca (azul FBMPA #0168B3 como 700) --- */
+  --azul-950: #062338;
+  --azul-900: #083A5E;
+  --azul-800: #045189;
+  --azul-700: #0168B3;   /* azul oficial FBMPA */
+  --azul-500: #2E86C9;
+  --azul-300: #8FC1E4;
+  --azul-100: #D9EAF6;
+  --azul-50:  #F0F7FC;
+
+  /* --- Acento: amarillo oficial FBMPA (10%: directo, marcadores, CTAs) --- */
+  --amarillo:     #FFE55D;
+  --amarillo-600: #F2CE1E; /* borde/hover del amarillo */
+
+  /* --- Neutros tintados hacia el azul (nunca #000 / #fff puros) --- */
+  --ink:     #12222F;
+  --muted:   #4C6172;
+  --paper:   #F5F8FB;
+  --paper-2: #EAF1F7;
+  --line:    #D7E3EE;
+
+  /* --- Tipografía: una familia, contraste por peso extremo --- */
+  --font: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* --- Escala tipográfica fluida (ratio ~1.25) --- */
+  --step--1: clamp(.82rem, .78rem + .2vw, .9rem);
+  --step-0:  clamp(1rem, .96rem + .3vw, 1.1rem);
+  --step-1:  clamp(1.2rem, 1.08rem + .6vw, 1.5rem);
+  --step-2:  clamp(1.55rem, 1.3rem + 1.2vw, 2.1rem);
+  --step-3:  clamp(2.1rem, 1.65rem + 2.2vw, 3.2rem);
+  --step-4:  clamp(2.8rem, 1.9rem + 4.2vw, 4.6rem);
+
+  /* --- Espaciado, escala de 8px --- */
+  --sp-1: .5rem;  --sp-2: 1rem;  --sp-3: 1.5rem; --sp-4: 2rem;
+  --sp-6: 3rem;   --sp-8: 4rem;  --sp-12: 6rem;
+
+  /* --- Radios y sombras en capas (tinte azul) --- */
+  --r-sm: 6px; --r-md: 12px; --r-lg: 18px; --r-full: 999px;
+  --shadow-sm: 0 1px 2px rgba(8, 58, 94, .07);
+  --shadow-md: 0 4px 12px rgba(8, 58, 94, .09), 0 1px 3px rgba(8, 58, 94, .07);
+  --shadow-lg: 0 18px 40px -12px rgba(8, 58, 94, .25), 0 6px 14px rgba(8, 58, 94, .10);
+
+  --ease: cubic-bezier(.22, .61, .36, 1);
+  --measure: 62ch;
+  --skew: -8deg;          /* LA DIAGONAL */
+  --contenedor: 1140px;
+}
+
+/* =============================================================================
+   BASE
+   ============================================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font: 400 var(--step-0)/1.65 var(--font);
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+
+a { color: var(--azul-800); }
+a:focus-visible, button:focus-visible, summary:focus-visible {
+  outline: 3px solid var(--azul-500);
+  outline-offset: 3px;
+  border-radius: var(--r-sm);
+}
+
+h1, h2, h3 {
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -.015em;
+  margin: 0 0 var(--sp-2);
+  text-wrap: balance;
+}
+h1 { font-size: var(--step-4); text-transform: uppercase; }
+h2 { font-size: var(--step-2); text-transform: uppercase; }
+h3 { font-size: var(--step-1); }
+
+p { max-width: var(--measure); }
+
+.contenedor {
+  max-width: var(--contenedor);
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2.5rem);
+}
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* Eyebrow editorial con barra diagonal */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: .6em;
+  font-size: var(--step--1); font-weight: 700;
+  text-transform: uppercase; letter-spacing: .14em;
+  color: var(--azul-800);
+  margin-bottom: var(--sp-1);
+}
+.eyebrow::before {
+  content: ""; width: 1.1em; height: .55em;
+  background: var(--amarillo);
+  transform: skewX(var(--skew));
+}
+
+section { padding-block: var(--sp-8); }
+
+/* =============================================================================
+   CABECERA
+   ============================================================================= */
+
+/* Franja del patrocinador principal (hueco 1 de 3) */
+.franja-principal {
+  background: var(--azul-950);
+  color: var(--azul-100);
+  font-size: var(--step--1);
+}
+.franja-principal .contenedor {
+  display: flex; align-items: center; justify-content: center;
+  gap: var(--sp-2); min-height: 44px; padding-block: .35rem;
+}
+.franja-principal img { max-height: 30px; width: auto; }
+.franja-principal a { color: inherit; text-decoration: none; }
+.franja-principal a:hover { color: var(--amarillo); }
+
+.cabecera {
+  background: var(--azul-700);
+  color: #fff;
+  position: sticky; top: 0; z-index: 50;
+  box-shadow: var(--shadow-md);
+}
+.cabecera .contenedor {
+  display: flex; align-items: center; gap: var(--sp-3);
+  min-height: 64px;
+}
+.cabecera__marca {
+  display: flex; align-items: center; gap: var(--sp-2);
+  text-decoration: none; color: #fff; flex-shrink: 0;
+}
+.cabecera__marca img { height: 30px; width: auto; }
+.cabecera__titulo {
+  font-weight: 900; text-transform: uppercase;
+  letter-spacing: .02em; font-size: var(--step-0); line-height: 1.1;
+  border-left: 2px solid rgba(255,255,255,.35);
+  padding-left: var(--sp-2);
+}
+.cabecera__titulo b { color: var(--amarillo); }
+
+/* Nav horizontal con scroll (patrón de cobertura deportiva, móvil primero) */
+.nav {
+  margin-left: auto;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.nav::-webkit-scrollbar { display: none; }
+.nav ul {
+  display: flex; gap: .25rem; list-style: none;
+  margin: 0; padding: 0; white-space: nowrap;
+}
+.nav a {
+  display: inline-block; padding: .7em .9em;
+  color: #fff; text-decoration: none;
+  font-weight: 600; font-size: var(--step--1);
+  border-radius: var(--r-sm);
+  transition: background .2s var(--ease), color .2s var(--ease);
+}
+.nav a:hover { background: var(--azul-800); }
+.nav a[aria-current="page"] {
+  background: var(--amarillo); color: var(--azul-950);
+}
+
+/* =============================================================================
+   HÉROE (portada)
+   ============================================================================= */
+.heroe {
+  background:
+    radial-gradient(1200px 500px at 85% -10%, var(--azul-800), transparent 60%),
+    var(--azul-700);
+  color: #fff;
+  padding-block: var(--sp-8) var(--sp-12);
+  position: relative;
+  overflow: hidden;
+}
+.heroe::after {           /* corte diagonal inferior — la firma */
+  content: ""; position: absolute; inset: auto 0 -1px 0; height: 56px;
+  background: var(--paper);
+  clip-path: polygon(0 100%, 100% 100%, 100% 0);
+}
+.heroe .contenedor {
+  display: grid; gap: var(--sp-4);
+  grid-template-columns: 1.15fr .85fr;
+  align-items: center;
+}
+.heroe__texto p {
+  color: var(--azul-100); font-size: var(--step-1);
+  font-weight: 400; line-height: 1.45; margin-top: 0;
+}
+.heroe h1 span { color: var(--amarillo); }
+.heroe__simbolo {
+  justify-self: center;
+  width: min(300px, 60%);
+  opacity: .95;
+  filter: drop-shadow(0 12px 30px rgba(6, 35, 56, .45));
+}
+@media (max-width: 760px) {
+  .heroe .contenedor { grid-template-columns: 1fr; }
+  .heroe__simbolo { display: none; }
+}
+
+/* =============================================================================
+   TARJETA DE PARTIDO — el componente central. Manda `estado`.
+   ============================================================================= */
+.partido {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: box-shadow .25s var(--ease), transform .25s var(--ease);
+}
+.partido:hover { box-shadow: var(--shadow-md); }
+
+.partido__cuerpo { padding: var(--sp-3); }
+
+.partido__meta {
+  display: flex; flex-wrap: wrap; gap: .4em 1em;
+  font-size: var(--step--1); color: var(--muted);
+  margin-bottom: var(--sp-1);
+}
+.partido__fase { font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+
+.partido__cruce {
+  display: flex; align-items: center; gap: var(--sp-2);
+  font-weight: 700; font-size: var(--step-1);
+  flex-wrap: wrap;
+}
+.partido__equipo { min-width: 0; }
+
+/* Marcador: chip diagonal amarillo, números tabulares */
+.marcador {
+  display: inline-flex; gap: .35em;
+  background: var(--amarillo);
+  color: var(--azul-950);
+  font-weight: 900; font-size: var(--step-1);
+  font-variant-numeric: tabular-nums;
+  padding: .15em .6em;
+  transform: skewX(var(--skew));
+  border-radius: var(--r-sm);
+}
+.marcador > span { transform: skewX(calc(var(--skew) * -1)); }
+
+.vs { color: var(--muted); font-weight: 400; font-size: var(--step-0); }
+
+.partido__sede a { color: var(--muted); }
+.partido__sede a:hover { color: var(--azul-800); }
+
+/* Distintivo EN DIRECTO */
+.directo-badge {
+  display: inline-flex; align-items: center; gap: .5em;
+  background: var(--amarillo); color: var(--azul-950);
+  font-weight: 900; font-size: var(--step--1);
+  text-transform: uppercase; letter-spacing: .1em;
+  padding: .3em .8em;
+  transform: skewX(var(--skew));
+  border-radius: var(--r-sm);
+}
+.directo-badge > span { display: inline-flex; align-items: center; gap: .5em; transform: skewX(calc(var(--skew) * -1)); }
+.directo-badge .punto {
+  width: .55em; height: .55em; border-radius: 50%;
+  background: #D5261F;
+  animation: pulso 1.4s infinite var(--ease);
+}
+@keyframes pulso {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.35); opacity: .55; }
+}
+
+/* Partido en directo: borde y realce */
+.partido--directo {
+  border: 2px solid var(--amarillo-600);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Enlaces de acción de la tarjeta */
+.partido__acciones {
+  display: flex; flex-wrap: wrap; gap: var(--sp-1);
+  margin-top: var(--sp-2);
+}
+
+/* =============================================================================
+   REPRODUCTOR (fachada: el iframe solo se carga al pulsar)
+   ============================================================================= */
+.reproductor {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--azul-950);
+  border-radius: 0;
+}
+.reproductor iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+.reproductor__fachada {
+  position: absolute; inset: 0;
+  width: 100%; border: 0; padding: 0; cursor: pointer;
+  background: none; display: grid; place-items: center;
+}
+.reproductor__fachada img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; opacity: .85;
+}
+.reproductor__fachada::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(6,35,56,.15), rgba(6,35,56,.55));
+}
+.reproductor__play {
+  position: relative; z-index: 1;
+  width: 72px; height: 72px; border-radius: 50%;
+  background: var(--amarillo);
+  display: grid; place-items: center;
+  box-shadow: var(--shadow-lg);
+  transition: transform .2s var(--ease);
+}
+.reproductor__fachada:hover .reproductor__play { transform: scale(1.08); }
+.reproductor__play::before {
+  content: ""; margin-left: 5px;
+  border-style: solid; border-width: 14px 0 14px 24px;
+  border-color: transparent transparent transparent var(--azul-950);
+}
+
+/* Patrocinador junto al reproductor (hueco 2 de 3) */
+.patro-reproductor {
+  display: flex; align-items: center; justify-content: center; gap: var(--sp-2);
+  background: var(--azul-50);
+  border-top: 1px solid var(--line);
+  padding: var(--sp-1) var(--sp-3);
+  font-size: var(--step--1); color: var(--muted);
+}
+.patro-reproductor img { max-height: 34px; width: auto; }
+
+/* =============================================================================
+   BOTONES
+   ============================================================================= */
+.btn {
+  display: inline-flex; align-items: center; gap: .5em;
+  font: 700 var(--step--1)/1 var(--font);
+  letter-spacing: .02em;
+  padding: .85em 1.5em;
+  border-radius: var(--r-full);
+  border: 0; cursor: pointer; text-decoration: none;
+  background: var(--amarillo); color: var(--azul-950);
+  box-shadow: var(--shadow-sm);
+  transition: transform .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease);
+  min-height: 44px;
+}
+.btn:hover { background: var(--amarillo-600); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.btn:active { transform: translateY(0); }
+
+.btn--ghost {
+  background: transparent; color: var(--azul-800);
+  border: 1.5px solid currentColor; box-shadow: none;
+}
+.btn--ghost:hover { background: var(--azul-50); }
+
+/* =============================================================================
+   PORTADA: HOY JUEGAN
+   ============================================================================= */
+.hoy-juegan { margin-top: calc(var(--sp-8) * -1); position: relative; z-index: 2; padding-top: 0; }
+.hoy-juegan__lista { display: grid; gap: var(--sp-2); }
+
+/* =============================================================================
+   PORTADA: REJILLA DE SELECCIONES
+   ============================================================================= */
+.selecciones-grid {
+  display: grid; gap: var(--sp-2);
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+.seleccion-card {
+  display: flex; flex-direction: column; align-items: center; gap: var(--sp-1);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: var(--sp-3) var(--sp-2);
+  text-decoration: none; color: var(--ink);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease);
+}
+.seleccion-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--azul-300);
+}
+.seleccion-card img { width: 64px; height: 64px; object-fit: contain; }
+.seleccion-card__cat { font-weight: 900; text-transform: uppercase; font-size: var(--step-0); }
+.seleccion-card__gen {
+  font-size: var(--step--1); color: var(--azul-800); font-weight: 700;
+  text-transform: uppercase; letter-spacing: .08em;
+}
+
+/* =============================================================================
+   FICHAS DE JUGADORES
+   ============================================================================= */
+.plantilla-grid {
+  display: grid; gap: var(--sp-2);
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+}
+.ficha {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.ficha__foto {
+  aspect-ratio: 4 / 5;            /* reserva de espacio: sin saltos al cargar */
+  background: var(--azul-100);
+  position: relative;
+}
+.ficha__foto img { width: 100%; height: 100%; object-fit: cover; }
+.ficha__dorsal {
+  position: absolute; top: 0; left: 0;
+  background: var(--amarillo); color: var(--azul-950);
+  font-weight: 900; font-size: var(--step-1);
+  font-variant-numeric: tabular-nums;
+  padding: .1em .55em;
+  transform: skewX(var(--skew)) translateX(-3px);
+  border-bottom-right-radius: var(--r-sm);
+}
+.ficha__dorsal > span { display: inline-block; transform: skewX(calc(var(--skew) * -1)); }
+.ficha__datos { padding: var(--sp-1) var(--sp-2) var(--sp-2); }
+.ficha__nombre { font-weight: 700; line-height: 1.25; }
+.ficha__pos { font-size: var(--step--1); color: var(--azul-800); font-weight: 700; }
+.ficha__club { font-size: var(--step--1); color: var(--muted); }
+
+/* Staff: sin foto por defecto (pendiente nº 8); si hay foto, misma ficha */
+.staff-lista {
+  display: grid; gap: var(--sp-2);
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+}
+.staff-item {
+  background: #fff; border: 1px solid var(--line);
+  border-radius: var(--r-md); padding: var(--sp-2);
+  box-shadow: var(--shadow-sm);
+}
+.staff-item__rol {
+  font-size: var(--step--1); color: var(--azul-800);
+  font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+}
+
+/* =============================================================================
+   CABECERA DE SELECCIÓN
+   ============================================================================= */
+.seleccion-hero {
+  background: var(--azul-700); color: #fff;
+  padding-block: var(--sp-6);
+  position: relative; overflow: hidden;
+}
+.seleccion-hero::after {
+  content: ""; position: absolute; inset: auto 0 -1px 0; height: 40px;
+  background: var(--paper);
+  clip-path: polygon(0 100%, 100% 100%, 100% 0);
+}
+.seleccion-hero .contenedor { display: flex; align-items: center; gap: var(--sp-3); }
+.seleccion-hero img { width: 84px; height: 84px; object-fit: contain; }
+.seleccion-hero h1 { margin: 0; font-size: var(--step-3); }
+.seleccion-hero .genero { color: var(--amarillo); }
+
+/* =============================================================================
+   RESULTADOS (portada)
+   ============================================================================= */
+.resultados-lista { display: grid; gap: var(--sp-1); }
+.resultado {
+  display: flex; align-items: center; gap: var(--sp-2);
+  background: #fff; border: 1px solid var(--line);
+  border-radius: var(--r-md); padding: var(--sp-1) var(--sp-2);
+  text-decoration: none; color: var(--ink);
+  transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+.resultado:hover { border-color: var(--azul-300); box-shadow: var(--shadow-sm); }
+.resultado__sel {
+  font-size: var(--step--1); font-weight: 700; color: var(--azul-800);
+  text-transform: uppercase; letter-spacing: .04em;
+  min-width: 10ch;
+}
+.resultado .marcador { font-size: var(--step-0); margin-left: auto; }
+
+/* =============================================================================
+   PATROCINADORES
+   ============================================================================= */
+.patro-grid {
+  display: grid; gap: var(--sp-2);
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  align-items: center;
+}
+.patro-grid a {
+  display: grid; place-items: center;
+  background: #fff; border: 1px solid var(--line);
+  border-radius: var(--r-md); padding: var(--sp-2);
+  min-height: 90px;
+  transition: box-shadow .2s var(--ease);
+}
+.patro-grid a:hover { box-shadow: var(--shadow-md); }
+.patro-grid img { max-height: 56px; width: auto; }
+
+/* Placeholder "Este espacio puede ser tuyo" (huecos con activo:false) */
+.patro-placeholder {
+  display: flex; flex-direction: column; align-items: center; gap: var(--sp-1);
+  text-align: center;
+  border: 2px dashed var(--azul-300);
+  border-radius: var(--r-md);
+  background: var(--azul-50);
+  padding: var(--sp-3);
+  color: var(--azul-800);
+}
+.patro-placeholder strong {
+  font-weight: 900; text-transform: uppercase; letter-spacing: .05em;
+}
+.patro-placeholder--inline {
+  flex-direction: row; justify-content: center;
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: var(--r-sm);
+  font-size: var(--step--1);
+}
+.franja-principal .patro-placeholder--franja {
+  display: inline-flex; gap: .6em; align-items: center;
+  color: var(--azul-100); text-decoration: none;
+}
+.franja-principal .patro-placeholder--franja b { color: var(--amarillo); }
+
+/* Cierre pre-pie (hueco 3 de 3) */
+.patro-cierre { background: var(--paper-2); padding-block: var(--sp-6); }
+
+/* =============================================================================
+   PIE
+   ============================================================================= */
+.pie {
+  background: var(--azul-950); color: var(--azul-100);
+  padding-block: var(--sp-6);
+  font-size: var(--step--1);
+}
+.pie .contenedor {
+  display: flex; flex-wrap: wrap; gap: var(--sp-3);
+  align-items: center; justify-content: space-between;
+}
+.pie img { height: 34px; width: auto; }
+.pie a { color: var(--azul-100); }
+.pie a:hover { color: var(--amarillo); }
+
+/* =============================================================================
+   UTILIDADES Y ESTADOS VACÍOS
+   ============================================================================= */
+.vacio {
+  border: 1px dashed var(--line);
+  border-radius: var(--r-md);
+  background: #fff;
+  padding: var(--sp-3);
+  color: var(--muted);
+  text-align: center;
+}
+
+/* Animación de entrada sutil */
+@media (prefers-reduced-motion: no-preference) {
+  .anim-entrada { animation: entrada .5s var(--ease) both; }
+  @keyframes entrada {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: none; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
