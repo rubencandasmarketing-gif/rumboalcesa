@@ -42,9 +42,14 @@ hay enlace real.
 index.html                  Portada (héroe + directos + selecciones + agenda día a día)
 {seleccion}.html            6 páginas idénticas: solo cambia data-seleccion
 directo.html                Sala del directo: reproductor + banners del patrocinador
+tienda.html                 Tienda oficial (catálogo + pedido por transferencia)
 patrocinadores.html
 js/datos.js                 ← EL archivo
 js/app.js                   Render (no tocar en caliente)
+js/tienda-datos.js          Catálogo, precios (sin IVA), IBAN y endpoint de la tienda
+js/tienda.js                Lógica de la tienda (solo se carga en tienda.html)
+img/tienda/                 Imágenes de producto 4:5 (ahora ilustraciones SVG de relleno)
+apps-script.gs              Receptor de pedidos en Google Sheets (opcional, ver cabecera)
 css/estilo.css              Tokens FBMPA + componentes
 img/marca/                  Logos transparentes generados, favicon, OG
 img/jugadores/{seleccion}/  Fotos 4:5, WebP, ~600×750, 80-120 KB, «07-garcia.webp»
@@ -89,3 +94,14 @@ así que da igual que la foto tarde: no hay saltos de maquetación.
 - Enlaces de redes de la federación → `CONFIG.redes` (X, Instagram, Facebook; el pie los muestra solo)
 - Los 6 patrocinadores habituales → rellenar `nombre`, `logo` y `url` en `PATROCINADORES` (logos a `img/patrocinadores/`)
 - Escudos propios por selección si los hay → campo `escudo`
+
+## Tienda
+
+Catálogo y precios salen del BOASBA nº 9/26-27; los precios se guardan **sin IVA**
+en `js/tienda-datos.js` y la web los enseña con IVA. Pendiente de la federación:
+fotos reales de producto (sustituir los SVG de `img/tienda/`), IBAN, y confirmar
+el sistema de lotes mensuales (`corte`, `plazo`).
+
+Con `TIENDA.endpoint` vacío el comprador genera la hoja de pedido y la envía por
+correo. Para recibir pedidos en una hoja de cálculo: montar `apps-script.gs`
+(instrucciones en su cabecera) y pegar la URL en `endpoint`.
