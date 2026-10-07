@@ -35,7 +35,8 @@ function rangoPrecio(p) {
   return ps.length > 1 ? `desde ${eur(ps[0])}` : eur(ps[0]);
 }
 
-let cart = store.get('fbmpa.tienda.cart', []);
+// Descarta líneas guardadas de artículos que ya no están en el catálogo
+let cart = store.get('fbmpa.tienda.cart', []).filter(l => byId(l.pid));
 let form = store.get('fbmpa.tienda.form', {});
 let lastOrder = null;
 const sel = {}; // estado por tarjeta
@@ -46,14 +47,8 @@ const fmtDate = d => d.toLocaleDateString('es-ES', { day: 'numeric', month: 'lon
 
 /* ---------- Catálogo ---------- */
 function renderCatalog() {
-  const grupos = [...new Set(CATALOGO.map(p => p.grupo))];
-  $('#catalogo').innerHTML = grupos.map((g, i) => `
-    <section class="t-grupo" aria-labelledby="g${i}">
-      <h3 id="g${i}" class="t-grupo__h">${esc(g)}<span class="t-grupo__n">${CATALOGO.filter(p => p.grupo === g).length} artículos</span></h3>
-      <div class="t-grid">${CATALOGO.filter(p => p.grupo === g).map(card).join('')}</div>
-    </section>`).join('');
+  $('#catalogo').innerHTML = `<div class="t-grid">${CATALOGO.map(card).join('')}</div>`;
   bindCards($('#catalogo'));
-  $('#nav-grupos') && ($('#nav-grupos').innerHTML = grupos.map((g, i) => `<a href="#g${i}">${esc(g)}</a>`).join(''));
 }
 
 function card(p) {
@@ -66,9 +61,10 @@ function card(p) {
   const opciones = grupos.length
     ? grupos.map(g => `<optgroup label="${esc(g)}">${tallas.filter(t => t.g === g).map(opt).join('')}</optgroup>`).join('')
     : tallas.map(opt).join('');
-  return `<article class="t-card${p.destacado ? ' is-destacado' : ''}" id="c-${p.id}">
+  return `<article class="t-card" id="c-${p.id}">
     <div class="t-card__fig">
-      <img src="${p.foto}" alt="${esc(p.nombre)}" width="600" height="750" loading="lazy" decoding="async">
+      <img src="${p.foto}" alt="${esc(p.nombre)}" width="600" height="750" loading="lazy" decoding="async"
+        onerror="this.style.display='none'; this.parentElement.classList.add('is-pendiente')">
       ${p.etiqueta ? `<span class="t-tag">${esc(p.etiqueta)}</span>` : ''}
     </div>
     <div class="t-card__body">
@@ -88,7 +84,7 @@ function card(p) {
       <div class="t-row${tallas.length === 1 ? ' t-row--solo' : ''}">
         ${tallas.length > 1 ? `
         <div class="t-field">
-          <label for="sz-${p.id}">${esc(p.etiquetaTalla || 'Talla')}</label>
+          <label for="sz-${p.id}">Talla</label>
           <select id="sz-${p.id}" data-sz="${p.id}"><option value="">Elige</option>${opciones}</select>
         </div>` : ''}
         <div class="t-qty" aria-label="Cantidad">
@@ -135,7 +131,7 @@ function onCardAction(e) {
 
 function add(p, s) {
   const szEl = $('#sz-' + p.id);
-  if (szEl && !szEl.value) { szEl.focus(); szEl.closest('.t-row').classList.add('is-bad'); toast('Elige una ' + (p.etiquetaTalla || 'talla').toLowerCase()); return; }
+  if (szEl && !szEl.value) { szEl.focus(); szEl.closest('.t-row').classList.add('is-bad'); toast('Elige una talla'); return; }
   const perso = CFG.personalizacion.activa && p.personalizable && s.perso && (s.nombre || s.dorsal);
   const nombre = perso ? s.nombre.toUpperCase() : '', dorsal = perso ? s.dorsal : '';
   const key = [p.id, s.sz, s.color, nombre, dorsal].join('|');
@@ -160,7 +156,7 @@ function renderCart() {
   $('#count').textContent = n; $('#mcount').textContent = n; $('#mtot').textContent = eur(t.total);
   $('#lines').innerHTML = cart.length ? cart.map(l => { const p = byId(l.pid); return `
     <div class="t-line">
-      <img class="t-line__th" src="${p.foto}" alt="" width="44" height="55">
+      <img class="t-line__th" src="${p.foto}" alt="" width="44" height="55" onerror="this.style.visibility='hidden'">
       <div>
         <div class="t-line__nm">${esc(p.nombre)}</div>
         <div class="t-line__mt">${esc(lineMeta(l))}${lineMeta(l) ? ' · ' : ''}${l.q} ud.</div>
@@ -297,7 +293,7 @@ function marcado() {
       <div class="tienda-hero__texto">
         <p class="eyebrow eyebrow--claro">Tienda oficial</p>
         <h1>Viste la <span class="genero">selección</span></h1>
-        <p class="tienda-hero__lead">La camiseta de las selecciones asturianas, la ropa de la federación, balones y material. Pedido online, pago por transferencia y recogida en la FBMPA.</p>
+        <p class="tienda-hero__lead">La camiseta de las selecciones asturianas, la ropa de la federación y la bufanda. Pedido online, pago por transferencia y recogida en la FBMPA.</p>
       </div>
       <ol class="t-steps" aria-label="Cómo funciona">
         <li><div><b>Elige y añade</b><span>Color, talla y cantidad. Precios con IVA incluido.</span></div></li>
@@ -314,7 +310,6 @@ function marcado() {
         <p><b>Un solo punto de recogida.</b> Todos los pedidos se entregan en la ${esc(CFG.sede)}, ${esc(CFG.sedeDetalle)}. Te avisaremos por correo cuando esté disponible.</p>
       </div>
       <h2 class="visually-hidden">Catálogo</h2>
-      <nav class="t-grupos" id="nav-grupos" aria-label="Grupos del catálogo"></nav>
       <div id="catalogo"></div>
     </div>
 

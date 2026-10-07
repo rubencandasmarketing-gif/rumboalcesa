@@ -1408,22 +1408,6 @@ section { padding-block: var(--sp-8); }
 .t-notice__ico { width: 44px; height: 44px; border-radius: var(--r-sm); background: var(--azul-50); display: grid; place-items: center; color: var(--azul-700); }
 .t-notice p { margin: 0; font-size: var(--step--1); max-width: none; }
 .t-notice b { color: var(--ink); font-size: var(--step-0); }
-.t-grupos { display: flex; gap: .4rem; flex-wrap: wrap; margin-bottom: var(--sp-4); }
-.t-grupos a {
-  text-decoration: none; font-family: var(--font-display); font-weight: 700; font-size: var(--step-0);
-  text-transform: uppercase; letter-spacing: .03em; color: var(--azul-800);
-  background: var(--t-card); border: 1.5px solid var(--line); border-radius: var(--r-full);
-  padding: .4rem .9rem; min-height: 40px; display: inline-flex; align-items: center;
-  transition: background .2s var(--ease), border-color .2s var(--ease);
-}
-.t-grupos a:hover { background: var(--azul-50); border-color: var(--azul-300); }
-.t-grupo { margin-bottom: var(--sp-8); scroll-margin-top: calc(80px + var(--sp-2)); }
-.t-grupo__h {
-  font-size: var(--step-2); text-transform: uppercase; display: flex; align-items: baseline; gap: var(--sp-2);
-  padding-bottom: var(--sp-1); border-bottom: 2px solid var(--line); margin-bottom: var(--sp-3);
-}
-.t-grupo__h::before { content: ""; width: 14px; height: .75em; background: var(--azul-700); transform: skewX(var(--skew)); align-self: center; }
-.t-grupo__n { font-family: var(--font-body); font-size: var(--step--1); font-weight: 500; color: var(--muted); text-transform: none; }
 .t-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--sp-3); }
 
 /* Tarjeta de producto */
@@ -1432,15 +1416,24 @@ section { padding-block: var(--sp-8); }
   display: flex; flex-direction: column; transition: box-shadow .25s var(--ease), transform .25s var(--ease);
 }
 .t-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
-.t-card.is-destacado { grid-column: span 2; }
-@media (max-width: 560px) { .t-card.is-destacado { grid-column: auto; } }
-@media (min-width: 561px) {
-  .t-card.is-destacado { display: grid; grid-template-columns: 1fr 1fr; }
-  .t-card.is-destacado .t-card__fig { aspect-ratio: auto; height: 100%; }
+.t-card__fig { aspect-ratio: auto; height: 100%; }
 }
 .t-card__fig { aspect-ratio: 4/5; background: var(--azul-50); position: relative; overflow: hidden; }
 .t-card__fig img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
 .t-card:hover .t-card__fig img { transform: scale(1.03); }
+/* Sin foto real todavía: tienda.js añade .is-pendiente si la imagen no carga */
+.t-card__fig.is-pendiente {
+  background: var(--rayas-claras), var(--azul-50);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--sp-1);
+}
+.t-card__fig.is-pendiente::before {
+  content: ""; width: 64px; height: 64px; opacity: .35;
+  background: url("../img/marca/simbolo-amarillo.png") center / contain no-repeat;
+}
+.t-card__fig.is-pendiente::after {
+  content: "Foto pendiente"; font-family: var(--font-display); font-weight: 700;
+  text-transform: uppercase; letter-spacing: .06em; color: var(--muted);
+}
 .t-tag {
   position: absolute; top: 12px; left: 12px; font-family: var(--font-display); font-weight: 700; font-size: .85rem;
   letter-spacing: .06em; text-transform: uppercase; background: var(--amarillo); color: var(--azul-950);

@@ -3,7 +3,7 @@
    Único archivo que se toca. Catálogo y precios: página "Tienda" del
    BOASBA nº 9/26-27 (5 de octubre de 2026). Precios SIN IVA, tal como
    los publica la federación; la web los muestra con IVA.
-   Siguen siendo de relleno: fotos (SVG), IBAN, día de corte y plazo.
+   Siguen pendientes: fotos reales, IBAN, día de corte y plazo.
    ===================================================================== */
 
 export const TIENDA = {
@@ -14,7 +14,7 @@ export const TIENDA = {
   email: 'fbmpa@fbmpa.com',
   telefono: '985 39 51 72',
   sede: 'sede de la FBMPA',
-  sedeDetalle: 'C/ Espronceda 19, bajo · Oviedo',
+  sedeDetalle: 'C/ Espronceda 19, bajo · Gijón',
   iban: 'ES00 0000 0000 0000 0000 0000',  // PENDIENTE
   titular: 'Federación de Balonmano del Principado de Asturias',
 
@@ -46,116 +46,63 @@ export const TIENDA = {
 };
 
 /* ---------------------------------------------------------------------
-   CATÁLOGO
+   CATÁLOGO (solo ropa)
    - precio: sin IVA (ver preciosConIva). Si una talla lleva precio
      propio ({n, p}) manda sobre este.
    - tallas: 'adulto' | 'nino' | 'todas' | ['S','M'] | [{n, p}]
-   - etiquetaTalla: rótulo del selector ('Talla' por defecto; 'Formato'…)
    - colores: lista de nombres; con más de uno se elige en la ficha
    - etiqueta: distintivo sobre la foto
-   - guia: muestra el enlace a la guía de tallas (solo ropa)
-   - foto: 4:5 en /img/tienda/. Ahora ilustraciones SVG de relleno.
+   - guia: muestra el enlace a la guía de tallas
+   - foto: img/tienda/<id>.webp, 4:5 (ver img/tienda/LEEME.md). Mientras
+     no exista, la tarjeta enseña el marcador «Foto pendiente».
    --------------------------------------------------------------------- */
 export const CATALOGO = [
-  /* ---- Equipación de la selección ---- */
   {
-    id: 'camiseta-seleccion', grupo: 'Equipación de la selección', etiqueta: 'Hasta fin de existencias',
+    id: 'camiseta-seleccion', etiqueta: 'Hasta fin de existencias',
     nombre: 'Camiseta Selección Asturias',
     descripcion: 'La camiseta de juego de las selecciones asturianas. Todas las tallas.',
-    colores: ['Azul', 'Amarilla'], foto: 'img/tienda/camiseta-juego.svg',
-    tallas: 'todas', precio: 29.00, guia: true, destacado: true
+    colores: ['Azul', 'Amarilla'], foto: 'img/tienda/camiseta-seleccion.webp',
+    tallas: 'todas', precio: 29.00, guia: true
   },
   {
-    id: 'camiseta-playa', grupo: 'Equipación de la selección', etiqueta: 'Hasta fin de existencias',
+    id: 'camiseta-playa', etiqueta: 'Hasta fin de existencias',
     nombre: 'Camiseta Selección Balonmano Playa',
     descripcion: 'Camiseta de tirantes de la selección de balonmano playa.',
-    colores: ['Azul', 'Blanca', 'Negra'], foto: 'img/tienda/camiseta-playa.svg',
+    colores: ['Azul', 'Blanca', 'Negra'], foto: 'img/tienda/camiseta-playa.webp',
     tallas: ['XS', 'S', 'M', 'L', 'XL'], precio: 29.00, guia: true
   },
-
-  /* ---- Ropa FBMPA ---- */
   {
-    id: 'camiseta-fbmpa', grupo: 'Ropa FBMPA',
+    id: 'camiseta-fbmpa',
     nombre: 'Camiseta FBMPA azul marino',
     descripcion: 'Camiseta con el logo de la federación.',
-    colores: ['Azul marino'], foto: 'img/tienda/camiseta-marino.svg',
+    colores: ['Azul marino'], foto: 'img/tienda/camiseta-fbmpa.webp',
     tallas: ['S', 'M', 'L'], precio: 12.40, guia: true
   },
   {
-    id: 'sudadera', grupo: 'Ropa FBMPA',
+    id: 'sudadera',
     nombre: 'Sudadera de calentamiento FBMPA',
     descripcion: 'Media cremallera, azul con cuello amarillo.',
-    colores: ['Azul FBMPA'], foto: 'img/tienda/sudadera.svg',
+    colores: ['Azul FBMPA'], foto: 'img/tienda/sudadera.webp',
     tallas: ['M', 'L', 'XL'], precio: 16.50, guia: true
   },
   {
-    id: 'chandal', grupo: 'Ropa FBMPA',
+    id: 'chandal',
     nombre: 'Chándal FBMPA',
     descripcion: 'Chaqueta de chándal con cremallera completa.',
-    colores: ['Azul FBMPA'], foto: 'img/tienda/chaqueta.svg',
+    colores: ['Azul FBMPA'], foto: 'img/tienda/chandal.webp',
     tallas: ['M', 'L', 'XL'], precio: 41.30, guia: true
   },
   {
-    id: 'chaqueton', grupo: 'Ropa FBMPA',
+    id: 'chaqueton',
     nombre: 'Chaquetón FBMPA',
     descripcion: 'Chaquetón acolchado con capucha, azul marino.',
-    colores: ['Azul marino'], foto: 'img/tienda/chaqueton.svg',
+    colores: ['Azul marino'], foto: 'img/tienda/chaqueton.webp',
     tallas: ['S', 'M', 'L'], precio: 41.30, guia: true
   },
-
-  /* ---- Balones ---- */
   {
-    id: 'balon-trial-playa', grupo: 'Balones',
-    nombre: 'Balón Trial Playa modelo Última',
-    descripcion: 'Balón de balonmano playa. El precio depende de la talla.',
-    foto: 'img/tienda/balon-playa.svg',
-    tallas: [{ n: 'Talla 00', p: 16.50 }, { n: 'Talla 0', p: 16.50 }, { n: 'Talla 1', p: 17.40 }, { n: 'Talla 2', p: 18.20 }]
-  },
-  {
-    id: 'balon-joma-sgrip', grupo: 'Balones',
-    nombre: 'Balón Joma modelo S-Grip',
-    descripcion: 'Balón de entrenamiento y competición.',
-    foto: 'img/tienda/balon-sgrip.svg',
-    tallas: ['Talla 0', 'Talla 1', 'Talla 2', 'Talla 3'], precio: 21.50
-  },
-  {
-    id: 'balon-joma-jpro', grupo: 'Balones',
-    nombre: 'Balón Joma modelo J-Pro',
-    descripcion: 'Balón de competición.',
-    foto: 'img/tienda/balon-jpro.svg',
-    tallas: ['Talla 2', 'Talla 3'], precio: 23.20
-  },
-
-  /* ---- Material ---- */
-  {
-    id: 'pega-trimona', grupo: 'Material',
-    nombre: 'Pega Trimona Easy Clean',
-    descripcion: 'Resina de balonmano, fácil de limpiar.',
-    foto: 'img/tienda/pega.svg', etiquetaTalla: 'Formato',
-    tallas: [{ n: 'Bote 250 g', p: 16.50 }, { n: 'Bote 500 g', p: 20.50 }]
-  },
-  {
-    id: 'botiquin', grupo: 'Material',
-    nombre: 'Botiquín',
-    descripcion: 'Bolsa botiquín Joma.',
-    foto: 'img/tienda/botiquin.svg', tallas: ['Única'], precio: 20.70
-  },
-  {
-    id: 'botiquin-medico', grupo: 'Material',
-    nombre: 'Botiquín médico',
-    descripcion: 'Bolsa botiquín grande Joma.',
-    foto: 'img/tienda/botiquin-medico.svg', tallas: ['Única'], precio: 39.70
-  },
-  {
-    id: 'bolsa-portabalones', grupo: 'Material',
-    nombre: 'Bolsa portabalones',
-    descripcion: 'Bolsa de red Joma para balones.',
-    foto: 'img/tienda/bolsa-balones.svg', tallas: ['Única'], precio: 21.50
-  },
-  {
-    id: 'bufanda', grupo: 'Material', etiqueta: '¡Vamos guajes!',
+    id: 'bufanda', etiqueta: '¡Vamos guajes!',
     nombre: 'Bufanda FBMPA',
     descripcion: 'Bufanda azul y amarilla "Asturias balonmano".',
-    foto: 'img/tienda/bufanda.svg', tallas: ['Única'], precio: 12.40
+    foto: 'img/tienda/bufanda.webp', tallas: ['Única'], precio: 12.40
   }
 ];

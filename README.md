@@ -48,7 +48,7 @@ js/datos.js                 ← EL archivo
 js/app.js                   Render (no tocar en caliente)
 js/tienda-datos.js          Catálogo, precios (sin IVA), IBAN y endpoint de la tienda
 js/tienda.js                Lógica de la tienda (solo se carga en tienda.html)
-img/tienda/                 Imágenes de producto 4:5 (ahora ilustraciones SVG de relleno)
+img/tienda/                 Fotos de producto 4:5, WebP: «<id>.webp» (pendientes, ver LEEME.md)
 apps-script.gs              Receptor de pedidos en Google Sheets (opcional, ver cabecera)
 css/estilo.css              Tokens FBMPA + componentes
 img/marca/                  Logos transparentes generados, favicon, OG
@@ -97,10 +97,16 @@ así que da igual que la foto tarde: no hay saltos de maquetación.
 
 ## Tienda
 
-Catálogo y precios salen del BOASBA nº 9/26-27; los precios se guardan **sin IVA**
-en `js/tienda-datos.js` y la web los enseña con IVA. Pendiente de la federación:
-fotos reales de producto (sustituir los SVG de `img/tienda/`), IBAN, y confirmar
-el sistema de lotes mensuales (`corte`, `plazo`).
+Solo ropa: siete prendas (camiseta Selección Asturias, camiseta de balonmano
+playa, camiseta FBMPA azul marino, sudadera de calentamiento, chándal, chaquetón
+y bufanda) en una sola rejilla. Catálogo y precios salen del BOASBA nº 9/26-27;
+los precios se guardan **sin IVA** en `js/tienda-datos.js` y la web los enseña
+con IVA. Recogida en la sede de la FBMPA en Gijón.
+
+Pendiente de la federación: fotos reales de producto en `img/tienda/<id>.webp`
+(nombres y formato en `img/tienda/LEEME.md`; mientras falten, cada tarjeta
+enseña «Foto pendiente»), IBAN, y confirmar el sistema de lotes mensuales
+(`corte`, `plazo`).
 
 Con `TIENDA.endpoint` vacío el comprador genera la hoja de pedido y la envía por
 correo. Para recibir pedidos en una hoja de cálculo: montar `apps-script.gs`
