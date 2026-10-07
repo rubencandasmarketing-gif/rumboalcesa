@@ -19,4 +19,3 @@ Thumbs.db
 # dentro de un directorio excluido.
 .claude/*
 !.claude/settings.json
-
