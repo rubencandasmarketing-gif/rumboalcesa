@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 750" width="600" height="750"><defs>
+<radialGradient id="g" cx=".5" cy=".4" r=".7"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dbe9f6"/></radialGradient>
+<linearGradient id="sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".14"/></linearGradient>
+<filter id="ds" x="-15%" y="-15%" width="130%" height="140%"><feDropShadow dx="0" dy="16" stdDeviation="14" flood-color="#073c66" flood-opacity=".22"/></filter>
+<path id="body" d="M190 140l70-28c10 22 70 22 80 0l70 28 70 70-56 50-29-16v226H205V244l-29 16-56-50z"/><pattern id="w" width="140" height="36" patternUnits="userSpaceOnUse" patternTransform="translate(0 6)">
+<path d="M0 18c23-16 47-16 70 0s47 16 70 0" fill="none" stroke="#5ea2d9" stroke-width="8" stroke-opacity=".5"/>
+<path d="M0 36c23-16 47-16 70 0s47 16 70 0" fill="none" stroke="#5ea2d9" stroke-width="4" stroke-opacity=".3"/></pattern>
+<clipPath id="c"><use href="#body"/></clipPath>
+</defs><rect width="600" height="750" fill="#eef4fa"/><rect width="600" height="750" fill="url(#g)"/><g filter="url(#ds)" transform="translate(0 70)"><use href="#body" fill="#0168B3"/>
+<g clip-path="url(#c)"><rect x="100" y="80" width="400" height="560" fill="url(#w)"/><rect x="100" y="80" width="400" height="560" fill="url(#sh)"/>
+<path d="M480 210l-56 50M120 210l56 50" stroke="#FFE55D" stroke-width="14"/></g>
+<path d="M260 112c10 22 70 22 80 0l14 8c-14 26-94 26-108 0z" fill="#FFE55D"/>
+<text x="262" y="318" font-family="Arial Narrow,Arial,sans-serif" font-weight="700" font-size="72" fill="#FFE55D" text-anchor="middle">7</text>
+<g transform="translate(318 276) scale(1.35)" fill="#FFE55D"><circle cx="40" cy="8" r="7"/><path d="M4 14h24l-4 12H10z"/><path d="M8 30l20-6 4 10-18 20z"/><path d="M22 16l12 10-6 12-10-8z"/></g>
+<rect x="222" y="366" width="156" height="36" rx="6" fill="#FFE55D" opacity=".92"/>
+<text x="300" y="391" font-family="Arial,sans-serif" font-weight="700" font-size="17" fill="#073c66" text-anchor="middle" letter-spacing="2">PATROCINADOR</text>
+</g></svg>

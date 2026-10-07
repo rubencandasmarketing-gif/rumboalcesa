@@ -2,7 +2,7 @@
    APP.JS — Asturias, rumbo al CESA
    Render de plantillas. Lee TODO de datos.js: este archivo no se toca durante
    el campeonato. Cada página declara qué es con <body data-pagina="...">
-   (portada | seleccion | patrocinadores) y, si es selección,
+   (portada | seleccion | directo | tienda | patrocinadores) y, si es selección,
    data-seleccion="juvenil-masculina".
    ============================================================================= */
 
@@ -151,6 +151,7 @@ function renderCabecera() {
             </li>
             <li><a class="${hayDirecto ? "nav__directo" : ""}" href="directo.html">${
               hayDirecto ? '<span class="punto" aria-hidden="true"></span>' : ""}Directo</a></li>
+            <li><a href="tienda.html">Tienda</a></li>
             <li><a href="patrocinadores.html">Patrocinadores</a></li>
           </ul>
         </nav>
@@ -170,7 +171,7 @@ function renderCabecera() {
 
 /* --- Comportamiento de la navegación ---------------------------------------
    Escritorio: "Selecciones" es un desplegable que abre con ratón, con clic y
-   con teclado. Móvil (≤820px): la barra se pliega en un cajón lateral y
+   con teclado. Móvil (≤980px): la barra se pliega en un cajón lateral y
    "Selecciones" lleva a la franja de cintas de la portada.
 ---------------------------------------------------------------------------- */
 function cablearNavegacion() {
@@ -181,7 +182,7 @@ function cablearNavegacion() {
   const grupo = document.querySelector(".nav__grupo");
   const disparador = document.querySelector(".nav__disparador");
   const velo = document.querySelector(".nav-velo");
-  const movil = matchMedia("(max-width: 820px)");
+  const movil = matchMedia("(max-width: 980px)");
 
   // Si estamos en una página de selección, el desplegable queda marcado
   if (grupo.querySelector('a[aria-current="page"]')) grupo.classList.add("nav__grupo--activo");
@@ -286,6 +287,7 @@ function renderPie() {
             <li><a href="index.html">Portada</a></li>
             <li><a href="index.html#selecciones">Selecciones</a></li>
             <li><a href="directo.html">Directo</a></li>
+            <li><a href="tienda.html">Tienda</a></li>
             <li><a href="patrocinadores.html">Patrocinadores</a></li>
           </ul>
         </nav>
@@ -1102,5 +1104,10 @@ if (pagina === "portada") renderPortada();
 else if (pagina === "seleccion") renderSeleccion(document.body.dataset.seleccion);
 else if (pagina === "directo") renderSalaDirecto();
 else if (pagina === "patrocinadores") renderPatrocinadores();
+else if (pagina === "tienda") {
+  // La tienda vive en su propio módulo: solo se descarga en tienda.html
+  const { renderTienda } = await import("./tienda.js");
+  renderTienda($("main"));
+}
 
 renderPie();

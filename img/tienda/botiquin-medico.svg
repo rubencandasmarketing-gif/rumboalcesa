@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 750" width="600" height="750"><defs>
+<radialGradient id="g" cx=".5" cy=".4" r=".7"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dbe9f6"/></radialGradient>
+<linearGradient id="sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".14"/></linearGradient>
+<filter id="ds" x="-15%" y="-15%" width="130%" height="140%"><feDropShadow dx="0" dy="16" stdDeviation="14" flood-color="#073c66" flood-opacity=".22"/></filter>
+<rect id="body" x="150" y="180" width="300" height="240" rx="22"/>
+<clipPath id="c"><use href="#body"/></clipPath>
+</defs><rect width="600" height="750" fill="#eef4fa"/><rect width="600" height="750" fill="url(#g)"/><g filter="url(#ds)" transform="translate(0 70)">
+<path d="M225 180c0-40 150 -40 150 0" fill="none" stroke="#0e1b2d" stroke-width="12" stroke-linecap="round"/>
+<use href="#body" fill="#16222e"/>
+<g clip-path="url(#c)"><rect x="150" y="180" width="300" height="240" fill="url(#sh)"/><rect x="150" y="297" width="300" height="6" fill="#0168B3"/></g>
+<rect x="274" y="220" width="52" height="52" rx="8" fill="#b3261e"/><path d="M300 232v28M286 246h28" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+<text x="300" y="392" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="18" fill="#fff" text-anchor="middle" opacity=".8">joma</text>
+</g></svg>

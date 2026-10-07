@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 750" width="600" height="750"><defs>
+<radialGradient id="g" cx=".5" cy=".4" r=".7"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dbe9f6"/></radialGradient>
+<linearGradient id="sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".14"/></linearGradient>
+<filter id="ds" x="-15%" y="-15%" width="130%" height="140%"><feDropShadow dx="0" dy="16" stdDeviation="14" flood-color="#073c66" flood-opacity=".22"/></filter>
+<circle id="body" cx="300" cy="300" r="170"/>
+<clipPath id="c"><use href="#body"/></clipPath>
+</defs><rect width="600" height="750" fill="#eef4fa"/><rect width="600" height="750" fill="url(#g)"/><g filter="url(#ds)" transform="translate(0 70)"><use href="#body" fill="#f3f5f8"/>
+<g clip-path="url(#c)"><rect x="100" y="100" width="400" height="400" fill="url(#sh)"/>
+<g fill="none" stroke="#0168B3" stroke-width="10" stroke-linecap="round"><path d="M160 220c60 40 220 40 280 0M160 380c60-40 220-40 280 0M300 130v340"/><path d="M190 180c40-30 180-30 220 0M190 420c40 30 180 30 220 0" stroke-width="5" opacity=".6"/></g></g>
+<text x="300" y="310" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="26" fill="#0168B3" text-anchor="middle">S-GRIP</text>
+</g></svg>
