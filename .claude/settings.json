@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "git pull --ff-only 2>&1 || echo 'No se pudo sincronizar automaticamente (puede que haya cambios sin guardar). Pideme que lo revise.'",
+            "timeout": 60,
+            "statusMessage": "Sincronizando con GitHub..."
+          }
+        ]
+      }
+    ]
+  }
+}

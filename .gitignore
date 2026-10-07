@@ -13,5 +13,9 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Configuracion local de Claude Code
-.claude/
+# Claude Code: se comparte settings.json (hooks del proyecto, viaja entre
+# equipos) y se queda fuera settings.local.json (permisos de cada maquina).
+# Hay que excluir el contenido y no la carpeta: git no re-incluye ficheros
+# dentro de un directorio excluido.
+.claude/*
+!.claude/settings.json
