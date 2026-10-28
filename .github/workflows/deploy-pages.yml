@@ -29,6 +29,16 @@ jobs:
         with:
           enablement: true
 
+      # GitHub Pages deja cachear 10 min. Cada despliegue marca el CSS y los
+      # modulos JS con el commit (?v=abc1234): el navegador los ve como
+      # archivos nuevos y el cambio se ve al momento. Solo en la copia que
+      # se publica; el repositorio no cambia.
+      - name: Marcar version en CSS y JS
+        run: |
+          V="${GITHUB_SHA::7}"
+          sed -i -E "s#(href=\"css/estilo\.css)\"#\1?v=$V\"#; s#(src=\"js/app\.js)\"#\1?v=$V\"#" *.html
+          sed -i -E "s#(from +|import\()([\"'])(\./[^\"'?]+\.js)\2#\1\2\3?v=$V\2#g" js/*.js
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .
