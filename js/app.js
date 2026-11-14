@@ -35,6 +35,13 @@ function rutaCss(r) {
   return String(r ?? "").replace(/["'()\\\s]/g, "");
 }
 
+/** Ruta de imagen para una variable CSS (--foto). Se pasa a dirección
+    absoluta porque una url() relativa dentro de una variable se resuelve
+    desde css/estilo.css y no desde la página (acabaría en css/img/...). */
+function fotoCss(r) {
+  return new URL(rutaCss(r), document.baseURI).href;
+}
+
 /** Estado vacío: dice "esto llegará", no "esto está roto".
     Titular breve arriba y una línea de explicación debajo. */
 function vacio(titular, detalle = "") {
@@ -616,7 +623,7 @@ function renderPortada() {
 
     ${agendaHTML}
 
-    <div class="banda-foto" style="--foto: url('${rutaCss(BANDA.foto)}')">
+    <div class="banda-foto" style="--foto: url('${fotoCss(BANDA.foto)}')">
       <div class="contenedor"><p class="banda-foto__claim">${esc(BANDA.claim)}</p></div>
     </div>
 
@@ -761,7 +768,7 @@ function renderSeleccion(id) {
 
   main.append(el(`
     <div class="seleccion-hero${sel.portada ? " seleccion-hero--foto" : ""}"${
-      sel.portada ? ` style="--foto: url('${rutaCss(sel.portada)}')"` : ""}>
+      sel.portada ? ` style="--foto: url('${fotoCss(sel.portada)}')"` : ""}>
       <div class="contenedor anim-entrada">
         <img class="seleccion-hero__escudo"
              src="${sel.escudo ? esc(sel.escudo) : "img/marca/simbolo-amarillo.png"}" alt="">
