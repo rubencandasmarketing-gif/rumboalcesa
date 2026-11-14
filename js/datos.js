@@ -21,9 +21,12 @@
    youtubeId es SOLO el identificador, no la URL completa:
    https://www.youtube.com/watch?v=dQw4w9WgXcQ  →  youtubeId: "dQw4w9WgXcQ"
 
-   ⚠️ HAY DATOS DE EJEMPLO más abajo (marcados con "EJEMPLO"). Sirven para ver
-   los tres estados de partido funcionando y enseñar la web. Bórralos antes de
-   publicar datos reales.
+   Mientras no se publique el calendario, partidos: [] y la página muestra
+   los rivales del grupo con "Fechas y horas, cuando se publique el calendario".
+   Cada partido nuevo sigue este formato (sede: id de SEDES):
+     { id: "im-j1", fecha: "2027-01-04", hora: "10:00", fase: "Fase de grupos — J1",
+       rival: "Canarias", sede: "",
+       estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
    ============================================================================= */
 
 export const CONFIG = {
@@ -143,17 +146,7 @@ export const SELECCIONES = [
     ],
     staff: [],
     plantilla: [],
-    partidos: [
-      { id: "im-j1", fecha: "2027-01-04", hora: "10:00", fase: "Fase de grupos — J1",
-        rival: "Madrid", sede: "calella",
-        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
-      { id: "im-j2", fecha: "2027-01-05", hora: "10:00", fase: "Fase de grupos — J2",
-        rival: "Galicia", sede: "pineda",
-        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
-      { id: "im-j3", fecha: "2027-01-06", hora: "10:00", fase: "Fase de grupos — J3",
-        rival: "Cantabria", sede: "blanes",
-        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
-    ]
+    partidos: []
   },
   {
     id: "infantil-femenina",
@@ -169,17 +162,7 @@ export const SELECCIONES = [
     ],
     staff: [],
     plantilla: [],
-    partidos: [
-      { id: "if-j1", fecha: "2027-01-04", hora: "12:30", fase: "Fase de grupos — J1",
-        rival: "Cataluña", sede: "calella",
-        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
-      { id: "if-j2", fecha: "2027-01-05", hora: "12:30", fase: "Fase de grupos — J2",
-        rival: "Castilla y León", sede: "pineda",
-        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
-      { id: "if-j3", fecha: "2027-01-06", hora: "12:30", fase: "Fase de grupos — J3",
-        rival: "País Vasco", sede: "blanes",
-        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
-    ]
+    partidos: []
   },
   {
     id: "cadete-masculina",
@@ -193,25 +176,9 @@ export const SELECCIONES = [
       { letra: "B", equipos: ["Región de Murcia", "La Rioja", "Canarias"] },
       { letra: "C", equipos: ["Navarra", "Extremadura", "Asturias"] }
     ],
-    staff: [
-      // PRUEBA con foto real — completar nombre
-      { nombre: "Completar nombre", rol: "Entrenador", foto: "img/jugadores/cadete-masculina/staff-entrenador.webp" }
-    ],
-    plantilla: [
-      // PRUEBA con foto real — completar posición y club
-      { dorsal: 6, nombre: "Marco (completar apellidos)", posicion: "Completar posición", club: "Completar club", foto: "img/jugadores/cadete-masculina/06-marco.webp" }
-    ],
-    partidos: [
-      { id: "cm-j1", fecha: "2027-01-04", hora: "16:00", fase: "Fase de grupos — J1",
-        rival: "Andalucía", sede: "blanes",
-        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
-      { id: "cm-j2", fecha: "2027-01-05", hora: "16:00", fase: "Fase de grupos — J2",
-        rival: "Aragón", sede: "calella",
-        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
-      { id: "cm-j3", fecha: "2027-01-06", hora: "10:00", fase: "Fase de grupos — J3",
-        rival: "Navarra", sede: "pineda",
-        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
-    ]
+    staff: [],
+    plantilla: [],
+    partidos: []
   },
   {
     id: "cadete-femenina",
@@ -227,17 +194,7 @@ export const SELECCIONES = [
     ],
     staff: [],
     plantilla: [],
-    partidos: [
-      { id: "cf-j1", fecha: "2027-01-04", hora: "18:30", fase: "Fase de grupos — J1",
-        rival: "Comunidad Valenciana", sede: "blanes",
-        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
-      { id: "cf-j2", fecha: "2027-01-05", hora: "18:30", fase: "Fase de grupos — J2",
-        rival: "Murcia", sede: "calella",
-        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
-      { id: "cf-j3", fecha: "2027-01-06", hora: "12:30", fase: "Fase de grupos — J3",
-        rival: "Extremadura", sede: "pineda",
-        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
-    ]
+    partidos: []
   },
   {
     id: "juvenil-masculina",
@@ -251,27 +208,9 @@ export const SELECCIONES = [
       { letra: "B", equipos: ["Euskadi", "Melilla", "Extremadura"] },
       { letra: "C", equipos: ["Castilla y León", "Región de Murcia", "La Rioja"] }
     ],
-
-    staff: [
-      // EJEMPLO — borrar
-      { nombre: "Nombre Apellidos (EJEMPLO)", rol: "Entrenador", foto: "" }
-    ],
-
-    plantilla: [
-      // EJEMPLO — borrar. La foto sigue la nomenclatura acordada:
-      // img/jugadores/juvenil-masculina/07-garcia.webp
-      { dorsal: 1,  nombre: "Jugador Ejemplo Uno",  posicion: "Portero",     club: "Club EJEMPLO", foto: "" },
-      { dorsal: 7,  nombre: "Jugador Ejemplo Dos",  posicion: "Lateral izq.", club: "Club EJEMPLO", foto: "" }
-    ],
-
-    partidos: [
-      { id: "jm-j1", fecha: "2027-01-05", hora: "16:00", fase: "Fase de grupos — J1",
-        rival: "Galicia", sede: "blanes",
-        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
-      { id: "jm-j2", fecha: "2027-01-06", hora: "16:00", fase: "Fase de grupos — J2",
-        rival: "Madrid", sede: "calella",
-        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
-    ]
+    staff: [],
+    plantilla: [],
+    partidos: []
   },
   {
     id: "juvenil-femenina",
@@ -286,13 +225,6 @@ export const SELECCIONES = [
     ],
     staff: [],
     plantilla: [],
-    partidos: [
-      { id: "jf-j1", fecha: "2027-01-05", hora: "18:30", fase: "Fase de grupos — J1",
-        rival: "Castilla-La Mancha", sede: "blanes",
-        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
-      { id: "jf-j2", fecha: "2027-01-06", hora: "18:30", fase: "Fase de grupos — J2",
-        rival: "Canarias", sede: "calella",
-        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
-    ]
+    partidos: []
   }
 ];

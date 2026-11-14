@@ -647,12 +647,19 @@ function renderSeleccion(id) {
   const partidos = [...sel.partidos]
     .sort((a, b) => (a.fecha + a.hora).localeCompare(b.fecha + b.hora));
 
-  const calendario = partidos.length
-    ? partidos.map(p => tarjetaPartido(p, sel)).join("")
-    : vacio("El calendario, muy pronto", "Cuando se publique el calendario, los partidos aparecerán aquí.");
-
   // Grupos del sorteo: el de Asturias destacado; el resto, discreto debajo.
   const nuestro = grupoAsturias(sel);
+
+  // Sin calendario todavía: los rivales ya los dice el sorteo.
+  const rivales = nuestro ? nuestro.equipos.filter(e => e !== ASTURIAS) : [];
+  const listaRivales = rivales.length > 1
+    ? `${rivales.slice(0, -1).join(", ")} y ${rivales[rivales.length - 1]}`
+    : rivales.join("");
+  const calendario = partidos.length
+    ? partidos.map(p => tarjetaPartido(p, sel)).join("")
+    : rivales.length
+      ? vacio(`Contra ${listaRivales}`, "El orden de los partidos, las fechas y las horas, cuando se publique el calendario.")
+      : vacio("El calendario, muy pronto", "Cuando se publique el calendario, los partidos aparecerán aquí.");
   const otros = (sel.grupos ?? []).filter(g => g !== nuestro);
   const listaEquipos = (g, clase) => `
         <ol class="${clase}">
@@ -891,7 +898,7 @@ function renderSalaDirecto() {
 
      Un partido realmente en emisión SIEMPRE manda sobre la simulación.
      Cambiar los valores de DEMO para ajustar el partido de ejemplo. */
-  const DEMO_POR_DEFECTO = true;
+  const DEMO_POR_DEFECTO = false;
   const parametros = new URLSearchParams(location.search);
   const MODO_DEMO = parametros.has("demo") ||
                     (DEMO_POR_DEFECTO && !parametros.has("real"));
