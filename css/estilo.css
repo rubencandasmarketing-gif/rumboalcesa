@@ -922,6 +922,24 @@ section { padding-block: var(--sp-8); }
   transition: color .25s var(--ease);
 }
 
+/* Etiqueta del grupo del sorteo: chip diagonal pequeño */
+.cinta-sel__grupo {
+  margin-top: .35em;
+  padding: .15em .55em;
+  font-family: var(--font-display); font-weight: 700;
+  font-size: .78rem; line-height: 1.1;
+  text-transform: uppercase; letter-spacing: .1em; white-space: nowrap;
+  color: var(--azul-950); background: var(--amarillo);
+  transform: skewX(var(--skew));
+  border-radius: 3px;
+  transition: background .25s var(--ease), color .25s var(--ease);
+}
+.cinta-sel__grupo > span { display: inline-block; transform: skewX(calc(var(--skew) * -1)); }
+.cinta-sel:hover .cinta-sel__grupo,
+.cinta-sel:focus-visible .cinta-sel__grupo,
+.cinta-sel:active .cinta-sel__grupo,
+.cinta-sel[aria-current="page"] .cinta-sel__grupo { background: var(--azul-950); color: var(--amarillo); }
+
 /* Remate diagonal de la marca, al pie de cada cinta */
 .cinta-sel::after {
   content: "";
@@ -1080,6 +1098,154 @@ section { padding-block: var(--sp-8); }
   font-family: var(--font-display); font-weight: 600;
   font-size: var(--step-0); text-transform: uppercase; letter-spacing: .1em;
   color: var(--azul-100);
+}
+
+.seleccion-hero__competicion {
+  display: inline-block;
+  margin: var(--sp-2) 0 0;
+  padding: .2em .7em;
+  font-family: var(--font-display); font-weight: 700;
+  font-size: var(--step--1); text-transform: uppercase; letter-spacing: .12em;
+  color: var(--azul-950); background: var(--amarillo);
+  transform: skewX(var(--skew));
+  border-radius: var(--r-sm);
+}
+.seleccion-hero__competicion > span { display: inline-block; transform: skewX(calc(var(--skew) * -1)); }
+
+/* =============================================================================
+   GRUPOS DEL SORTEO (página de selección)
+   Destacado azul con la letra en el chip diagonal amarillo y la lista en el
+   orden oficial del sorteo. Asturias, en amarillo. Debajo, el resto de grupos
+   en tarjetas blancas discretas. Aguanta grupos de 3 y 4 y 2 o 3 grupos.
+   ============================================================================= */
+.seccion-grupo { padding-top: var(--sp-6); padding-bottom: 0; }
+
+.grupo-destacado {
+  position: relative; overflow: hidden;
+  display: grid; grid-template-columns: auto 1fr;
+  gap: var(--sp-4); align-items: center;
+  padding: var(--sp-4);
+  background: linear-gradient(135deg, var(--azul-900), var(--azul-700) 65%, var(--azul-800));
+  color: #fff;
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg);
+}
+.grupo-destacado::before {
+  content: ""; position: absolute; inset: 0;
+  background: var(--rayas), var(--grano);
+  pointer-events: none;
+}
+.grupo-destacado > * { position: relative; }
+
+.grupo-destacado__letra {
+  display: flex; flex-direction: column; align-items: center; gap: var(--sp-1);
+  min-width: 7.5rem;
+}
+.grupo-destacado__etiqueta {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: var(--step-0); text-transform: uppercase; letter-spacing: .2em;
+  color: var(--azul-100);
+}
+.grupo-destacado__clave {
+  display: inline-grid; place-items: center;
+  width: 1.25em; height: 1.1em;
+  font-family: var(--font-display); font-weight: 900; font-style: italic;
+  font-size: clamp(4rem, 3rem + 5vw, 6.5rem); line-height: 1;
+  background: var(--amarillo-deg); color: var(--azul-950);
+  transform: skewX(var(--skew));
+  border-radius: var(--r-md);
+  box-shadow: 0 10px 24px -8px rgba(6, 35, 56, .6);
+}
+.grupo-destacado__clave > span { transform: skewX(calc(var(--skew) * -1)); }
+
+.grupo-destacado__rivales {
+  margin: 0 0 var(--sp-2);
+  font-family: var(--font-display); font-weight: 600;
+  font-size: var(--step--1); text-transform: uppercase; letter-spacing: .14em;
+  color: var(--azul-100);
+}
+
+/* Equipos: rejilla que reparte 3 o 4 por igual en escritorio */
+.grupo-equipos {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: var(--sp-1);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  counter-reset: equipo;
+}
+.grupo-destacado--4 .grupo-equipos { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.grupo-equipos__equipo {
+  counter-increment: equipo;
+  display: flex; align-items: center; gap: .6em;
+  min-height: 3.5rem;
+  padding: var(--sp-1) var(--sp-2);
+  font-family: var(--font-display); font-weight: 700;
+  font-size: var(--step-1); line-height: 1.05; text-transform: uppercase;
+  background: rgba(255, 255, 255, .08);
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: var(--r-md);
+}
+.grupo-equipos__equipo::before {
+  content: counter(equipo);
+  font-size: var(--step--1); font-weight: 600;
+  color: var(--azul-300); font-variant-numeric: tabular-nums;
+}
+.grupo-equipos__equipo--asturias {
+  background: var(--amarillo-deg); color: var(--azul-950);
+  border-color: var(--amarillo-600);
+  box-shadow: 0 6px 16px -6px rgba(6, 35, 56, .55);
+}
+.grupo-equipos__equipo--asturias::before { color: var(--azul-800); }
+
+/* Resto de grupos: discreto */
+.grupos-resto__titulo {
+  margin: var(--sp-4) 0 var(--sp-2);
+  font-size: var(--step-0); text-transform: uppercase; letter-spacing: .1em;
+  color: var(--muted);
+}
+.grupos-resto {
+  display: grid; gap: var(--sp-2);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+}
+.grupo-mini {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: var(--sp-2);
+}
+.grupo-mini__letra {
+  display: inline-flex; align-items: center; gap: .5em;
+  margin: 0 0 var(--sp-1);
+  font-family: var(--font-display); font-weight: 700;
+  font-size: var(--step-0); text-transform: uppercase; letter-spacing: .08em;
+  color: var(--azul-800);
+}
+.grupo-mini__letra::before {
+  content: ""; width: .9em; height: .45em;
+  background: var(--azul-300);
+  transform: skewX(var(--skew));
+}
+.grupo-mini-equipos {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: .15rem;
+}
+.grupo-mini-equipos__equipo {
+  padding: .2em 0;
+  border-top: 1px solid var(--paper-2);
+  color: var(--ink); font-size: var(--step--1); font-weight: 600;
+}
+.grupo-mini-equipos__equipo:first-child { border-top: 0; }
+
+@media (max-width: 720px) {
+  .grupo-destacado {
+    grid-template-columns: 1fr;
+    gap: var(--sp-3);
+    padding: var(--sp-3);
+  }
+  .grupo-destacado__letra { flex-direction: row; justify-content: flex-start; gap: var(--sp-2); }
+  .grupo-destacado__clave { font-size: 3.6rem; }
+  .grupo-equipos,
+  .grupo-destacado--4 .grupo-equipos { grid-template-columns: 1fr; }
+  .grupo-equipos__equipo { min-height: 3rem; }
 }
 
 /* =============================================================================

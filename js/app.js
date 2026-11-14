@@ -60,6 +60,12 @@ function nombreSeleccion(sel) {
   return `${sel.categoria} ${sel.genero}`;
 }
 
+/** Grupo del sorteo en el que está Asturias (o null si aún no hay grupos). */
+const ASTURIAS = "Asturias";
+function grupoAsturias(sel) {
+  return (sel.grupos ?? []).find(g => g.equipos.includes(ASTURIAS)) || null;
+}
+
 const FMT_FECHA = new Intl.DateTimeFormat("es-ES", {
   weekday: "long", day: "numeric", month: "long"
 });
@@ -566,15 +572,19 @@ function renderPortada() {
           ${fechas.map(f => `<button class="agenda-dia" type="button" data-fecha="${f}" aria-pressed="false">${diaCorto(f)}</button>`).join("")}
         </div>
         <div class="agenda-lista" id="agenda-cuerpo"></div>`
-      : vacio("El calendario, muy pronto", "Cuando se publique el sorteo, los partidos aparecerán aquí.")}
+      : vacio("El calendario, muy pronto", "Cuando se publique el calendario, los partidos aparecerán aquí.")}
     </section>`;
 
   // --- Franja de selecciones ---
-  const cintas = SELECCIONES.map(s => `
+  const cintas = SELECCIONES.map(s => {
+    const g = grupoAsturias(s);
+    return `
     <a class="cinta-sel" href="${s.id}.html">
       <span class="cinta-sel__cat">${esc(s.categoria)}</span>
       <span class="cinta-sel__gen">${esc(s.genero)}</span>
-    </a>`).join("");
+      ${g ? `<span class="cinta-sel__grupo"><span>Grupo ${esc(g.letra)}</span></span>` : ""}
+    </a>`;
+  }).join("");
 
   main.append(el(`
     <div class="heroe">
@@ -639,7 +649,41 @@ function renderSeleccion(id) {
 
   const calendario = partidos.length
     ? partidos.map(p => tarjetaPartido(p, sel)).join("")
-    : vacio("El calendario, muy pronto", "Cuando se publique el sorteo, los partidos aparecerán aquí.");
+    : vacio("El calendario, muy pronto", "Cuando se publique el calendario, los partidos aparecerán aquí.");
+
+  // Grupos del sorteo: el de Asturias destacado; el resto, discreto debajo.
+  const nuestro = grupoAsturias(sel);
+  const otros = (sel.grupos ?? []).filter(g => g !== nuestro);
+  const listaEquipos = (g, clase) => `
+        <ol class="${clase}">
+          ${g.equipos.map(e => e === ASTURIAS
+            ? `<li class="${clase}__equipo ${clase}__equipo--asturias"><span>${esc(e)}</span></li>`
+            : `<li class="${clase}__equipo"><span>${esc(e)}</span></li>`).join("")}
+        </ol>`;
+  const gruposHTML = nuestro ? `
+    <section class="contenedor seccion-grupo" aria-labelledby="t-grupo">
+      <p class="eyebrow">${esc(sel.competicion || "Sorteo")}</p>
+      <h2 id="t-grupo">Nuestro grupo</h2>
+      <div class="grupo-destacado grupo-destacado--${nuestro.equipos.length}">
+        <div class="grupo-destacado__letra">
+          <span class="grupo-destacado__etiqueta">Grupo</span>
+          <span class="grupo-destacado__clave"><span>${esc(nuestro.letra)}</span></span>
+        </div>
+        <div class="grupo-destacado__cuerpo">
+          <p class="grupo-destacado__rivales">${nuestro.equipos.length - 1} rivales en la fase de grupos</p>
+          ${listaEquipos(nuestro, "grupo-equipos")}
+        </div>
+      </div>
+      ${otros.length ? `
+        <h3 class="grupos-resto__titulo">Resto de grupos · ${esc(nombreSeleccion(sel))}</h3>
+        <div class="grupos-resto">
+          ${otros.map(g => `
+            <div class="grupo-mini">
+              <p class="grupo-mini__letra">Grupo ${esc(g.letra)}</p>
+              ${listaEquipos(g, "grupo-mini-equipos")}
+            </div>`).join("")}
+        </div>` : ""}
+    </section>` : "";
 
   // Convocatoria: siempre 16 huecos. Los cubiertos, con ficha; el resto, en espera.
   const PLAZAS = 16;
@@ -719,9 +763,14 @@ function renderSeleccion(id) {
           ${convocados.length
             ? `<p class="seleccion-hero__dato">${convocados.length} convocad${sel.genero === "Femenina" ? "a" : "o"}${convocados.length === 1 ? "" : "s"}</p>`
             : ""}
+          ${nuestro
+            ? `<p class="seleccion-hero__competicion"><span>${esc(sel.competicion || "")}${sel.competicion ? " · " : ""}Grupo ${esc(nuestro.letra)}</span></p>`
+            : ""}
         </div>
       </div>
     </div>
+
+    ${gruposHTML}
 
     <section class="contenedor" aria-labelledby="t-cal">
       <p class="eyebrow">Calendario y directos</p>

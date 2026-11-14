@@ -123,7 +123,10 @@ export const PATROCINADORES = [
 /* --- SELECCIONES ---------------------------------------------------------- */
 /* Posiciones: Portero, Extremo izq., Lateral izq., Central, Pivote,
                Lateral der., Extremo der.
-   Roles staff fijos: Seleccionador/a, Entrenador/a, Delegado/a (siempre visibles;\n   otros roles como Fisioterapeuta se muestran a continuación si se añaden) */
+   Roles staff fijos: Seleccionador/a, Entrenador/a, Delegado/a (siempre visibles;\n   otros roles como Fisioterapeuta se muestran a continuación si se añaden)
+   Grupos: tal cual el orden oficial del sorteo. El de Asturias se detecta
+   solo (el que incluye "Asturias") y se destaca como "Nuestro grupo".
+   Valen grupos de 3 o 4 equipos y 2 o 3 grupos por categoría. */
 
 export const SELECCIONES = [
   {
@@ -132,6 +135,12 @@ export const SELECCIONES = [
     genero: "Masculina",
     escudo: "",
     portada: "",   // foto de ambiente propia para la cabecera (opcional): "img/ambiente/....webp"
+    competicion: "Copa de España",
+    grupos: [
+      { letra: "A", equipos: ["Región de Murcia", "Extremadura", "Baleares"] },
+      { letra: "B", equipos: ["Madrid", "Castilla y León", "Euskadi"] },
+      { letra: "C", equipos: ["Canarias", "La Rioja", "Melilla", "Asturias"] }
+    ],
     staff: [],
     plantilla: [],
     partidos: [
@@ -152,6 +161,12 @@ export const SELECCIONES = [
     genero: "Femenina",
     escudo: "",
     portada: "",   // foto de ambiente propia para la cabecera (opcional): "img/ambiente/....webp"
+    competicion: "Copa de España",
+    grupos: [
+      { letra: "A", equipos: ["Castilla-La Mancha", "La Rioja", "Navarra"] },
+      { letra: "B", equipos: ["Euskadi", "Aragón", "Extremadura"] },
+      { letra: "C", equipos: ["Asturias", "Baleares", "Región de Murcia", "Ceuta"] }
+    ],
     staff: [],
     plantilla: [],
     partidos: [
@@ -172,6 +187,12 @@ export const SELECCIONES = [
     genero: "Masculina",
     escudo: "",
     portada: "",   // foto de ambiente propia para la cabecera (opcional): "img/ambiente/....webp"
+    competicion: "Copa de España",
+    grupos: [
+      { letra: "A", equipos: ["Euskadi", "Castilla-La Mancha", "Baleares"] },
+      { letra: "B", equipos: ["Región de Murcia", "La Rioja", "Canarias"] },
+      { letra: "C", equipos: ["Navarra", "Extremadura", "Asturias"] }
+    ],
     staff: [
       // PRUEBA con foto real — completar nombre
       { nombre: "Completar nombre", rol: "Entrenador", foto: "img/jugadores/cadete-masculina/staff-entrenador.webp" }
@@ -198,6 +219,12 @@ export const SELECCIONES = [
     genero: "Femenina",
     escudo: "",
     portada: "",   // foto de ambiente propia para la cabecera (opcional): "img/ambiente/....webp"
+    competicion: "Copa de España",
+    grupos: [
+      { letra: "A", equipos: ["Asturias", "La Rioja", "Cantabria"] },
+      { letra: "B", equipos: ["Comunidad Valenciana", "Extremadura", "Baleares"] },
+      { letra: "C", equipos: ["Canarias", "Castilla y León", "Ceuta", "Región de Murcia"] }
+    ],
     staff: [],
     plantilla: [],
     partidos: [
@@ -218,6 +245,12 @@ export const SELECCIONES = [
     genero: "Masculina",
     escudo: "",
     portada: "",   // foto de ambiente propia para la cabecera (opcional): "img/ambiente/....webp"
+    competicion: "Copa de España",
+    grupos: [
+      { letra: "A", equipos: ["Cantabria", "Canarias", "Asturias"] },
+      { letra: "B", equipos: ["Euskadi", "Melilla", "Extremadura"] },
+      { letra: "C", equipos: ["Castilla y León", "Región de Murcia", "La Rioja"] }
+    ],
 
     staff: [
       // EJEMPLO — borrar
@@ -246,6 +279,11 @@ export const SELECCIONES = [
     genero: "Femenina",
     escudo: "",
     portada: "",   // foto de ambiente propia para la cabecera (opcional): "img/ambiente/....webp"
+    competicion: "Copa de España",
+    grupos: [
+      { letra: "A", equipos: ["Canarias", "Región de Murcia", "Asturias", "Cantabria"] },
+      { letra: "B", equipos: ["Andalucía", "Extremadura", "Aragón", "La Rioja"] }
+    ],
     staff: [],
     plantilla: [],
     partidos: [
