@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Asturias, rumbo al CESA — Próximamente</title>
+  <meta name="description" content="Muy pronto, toda la información de las selecciones asturianas de balonmano en el Campeonato de España de Selecciones Autonómicas.">
+  <link rel="canonical" href="https://rumboalcesa.es/">
+  <meta name="theme-color" content="#0168B3">
+
+  <link rel="icon" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <!-- Open Graph / Twitter: la imagen se sirve desde esta misma carpeta,
+       publicada en la raíz de rumboalcesa.es -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rumboalcesa.es/">
+  <meta property="og:title" content="Asturias, rumbo al CESA — Próximamente">
+  <meta property="og:description" content="Muy pronto, toda la información de las selecciones asturianas de balonmano en el Campeonato de España de Selecciones Autonómicas.">
+  <meta property="og:image" content="https://rumboalcesa.es/img/og-proximamente.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Asturias, rumbo al CESA — Próximamente">
+  <meta property="og:site_name" content="Asturias, rumbo al CESA">
+  <meta property="og:locale" content="es_ES">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Asturias, rumbo al CESA — Próximamente">
+  <meta name="twitter:description" content="Muy pronto, toda la información de las selecciones asturianas de balonmano en el Campeonato de España de Selecciones Autonómicas.">
+  <meta name="twitter:image" content="https://rumboalcesa.es/img/og-proximamente.jpg">
+  <meta name="twitter:image:alt" content="Asturias, rumbo al CESA — Próximamente">
+
+  <link rel="preload" href="fuentes/barlow-condensed-700.woff2" as="font" type="font/woff2" crossorigin>
+
+  <style>
+    /* Fuentes Barlow incluidas en la carpeta (subconjunto latino, licencia
+       SIL OFL: fuentes/OFL.txt). Sin peticiones a Google Fonts. */
+    @font-face {
+      font-family: "Barlow Condensed"; font-style: normal; font-weight: 700; font-display: swap;
+      src: url("fuentes/barlow-condensed-700.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "Barlow"; font-style: normal; font-weight: 400; font-display: swap;
+      src: url("fuentes/barlow-400.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "Barlow"; font-style: normal; font-weight: 600; font-display: swap;
+      src: url("fuentes/barlow-600.woff2") format("woff2");
+    }
+
+    /* Tokens copiados de css/estilo.css de la web */
+    :root {
+      --azul-950: #062338;
+      --azul-900: #083A5E;
+      --azul-800: #045189;
+      --azul-700: #0168B3;   /* azul oficial FBMPA */
+      --azul-100: #D9EAF6;
+      --amarillo: #FFE55D;   /* amarillo oficial FBMPA */
+      --amarillo-deg: linear-gradient(160deg, #FFEC7E, #FFE55D 45%, #F8D93E);
+      --font-display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+      --font-body: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --grano: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.06 0'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>");
+      --rayas: repeating-linear-gradient(82deg, rgba(255,255,255,.045) 0 2px, transparent 2px 16px);
+      --skew: -8deg;         /* LA DIAGONAL */
+      --ease: cubic-bezier(.22, .61, .36, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100svh;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      font: 400 clamp(1rem, .96rem + .3vw, 1.1rem)/1.65 var(--font-body);
+      color: #fff;
+      background: linear-gradient(135deg, var(--azul-900), var(--azul-700) 58%, var(--azul-800));
+      background-color: var(--azul-700);
+      -webkit-font-smoothing: antialiased;
+      position: relative;
+      overflow-x: hidden;
+    }
+    /* Textura de la marca: rayado a 82° + grano, como en las superficies azules */
+    body::before {
+      content: ""; position: fixed; inset: 0;
+      background: var(--rayas), var(--grano);
+      pointer-events: none;
+    }
+
+    .contenido {
+      position: relative;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+      padding: clamp(2rem, 6vh, 4rem) clamp(1rem, 5vw, 2.5rem);
+      text-shadow: 0 1px 12px rgba(6, 35, 56, .45);
+    }
+
+    .logo {
+      display: block;
+      width: clamp(150px, 36vw, 220px); height: auto;
+      margin-bottom: clamp(1.75rem, 5vh, 3rem);
+      filter: drop-shadow(0 6px 18px rgba(6, 35, 56, .35));
+    }
+
+    /* Etiqueta: chip diagonal amarillo, como el distintivo EN DIRECTO */
+    .etiqueta {
+      display: inline-block;
+      margin: 0 0 1.1rem;
+      padding: .3em .9em;
+      font: 700 clamp(.9rem, .82rem + .3vw, 1rem)/1.2 var(--font-display);
+      text-transform: uppercase; letter-spacing: .14em;
+      color: var(--azul-950);
+      background: var(--amarillo-deg);
+      border-radius: 6px;
+      transform: skewX(var(--skew));
+      text-shadow: none;
+    }
+    .etiqueta > span { display: inline-block; transform: skewX(calc(var(--skew) * -1)); }
+
+    h1 {
+      margin: 0;
+      font-family: var(--font-display); font-weight: 700;
+      font-size: clamp(2.5rem, 1.3rem + 6.4vw, 6rem);
+      line-height: .9; letter-spacing: .005em;
+      text-transform: uppercase;
+      text-wrap: balance;
+    }
+    h1 > span { display: block; }
+    .cesa { color: var(--amarillo); }
+
+    /* Remate diagonal amarillo bajo el titular: la firma de la marca */
+    .remate {
+      display: block;
+      width: 72px; height: 6px;
+      margin: clamp(1.25rem, 3.5vh, 2rem) auto;
+      background: var(--amarillo);
+      transform: skewX(var(--skew));
+    }
+
+    .texto {
+      max-width: 36ch;
+      margin: 0;
+      font-size: clamp(1.05rem, .95rem + .55vw, 1.35rem);
+      line-height: 1.5;
+      color: var(--azul-100);
+    }
+
+    .pie {
+      position: relative;
+      padding: 1.25rem 1rem calc(1.25rem + env(safe-area-inset-bottom));
+      text-align: center;
+      font: 600 .82rem/1.4 var(--font-body);
+      letter-spacing: .06em; text-transform: uppercase;
+      color: var(--azul-100);
+      background: rgba(6, 35, 56, .35);
+      border-top: 1px solid rgba(255, 255, 255, .1);
+    }
+    .pie p { margin: 0; }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .contenido > * { animation: entrada .7s var(--ease) both; }
+      .contenido > :nth-child(2) { animation-delay: .06s; }
+      .contenido > :nth-child(3) { animation-delay: .12s; }
+      .contenido > :nth-child(4) { animation-delay: .18s; }
+      .contenido > :nth-child(5) { animation-delay: .24s; }
+      @keyframes entrada { from { opacity: 0; transform: translateY(12px); } }
+      /* el chip conserva su inclinación durante la animación */
+      .contenido > .etiqueta { animation-name: entrada-chip; }
+      @keyframes entrada-chip { from { opacity: 0; transform: translateY(12px) skewX(var(--skew)); } }
+    }
+  </style>
+</head>
+<body>
+  <main class="contenido">
+    <img class="logo" src="img/fbmpa-blanco.png" width="913" height="193"
+         alt="Federación de Balonmano del Principado de Asturias">
+    <p class="etiqueta"><span>Próximamente</span></p>
+    <h1><span>Asturias,</span> <span>rumbo al <span class="cesa">CESA</span></span></h1>
+    <span class="remate" aria-hidden="true"></span>
+    <p class="texto">Muy pronto, toda la información de las selecciones asturianas de balonmano en el Campeonato de España de Selecciones Autonómicas.</p>
+  </main>
+  <footer class="pie">
+    <p>Federación de Balonmano del Principado de Asturias</p>
+  </footer>
+</body>
+</html>
