@@ -595,7 +595,7 @@ function renderPortada() {
             <span class="heroe__titular__clave">Selecciones</span>
             <span class="heroe__titular__remate">Durante el ${esc(CONFIG.edicion)}</span>
           </h1>
-          <p>Toda la cobertura de las selecciones asturianas en el Campeonato de España: convocatorias, calendario, resultados y directos.</p>
+          <p>Toda la cobertura de las selecciones asturianas en el CESA: convocatorias, calendario, resultados y directos.</p>
           <div class="heroe__acciones">
             <a class="btn" href="directo.html">Ver directos</a>
             <a class="btn btn--fantasma" href="#selecciones">Las selecciones</a>

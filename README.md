@@ -1,7 +1,12 @@
 # Asturias, rumbo al CESA
 
 Web oficial de la FBMPA para la cobertura de las selecciones asturianas de
-balonmano en el Campeonato de España de Selecciones Autonómicas.
+balonmano en el CESA.
+
+**Nombres:** el torneo se llama siempre **CESA** («CESA 2027» cuando se cita
+el año). Tiene dos divisiones: «Campeonato de España» (primera) y «Copa de
+España» (segunda, la que juegan las selecciones asturianas). No usar
+«Campeonato de España» para referirse al torneo entero.
 
 Sitio estático. Sin build, sin dependencias, sin CMS.
 
