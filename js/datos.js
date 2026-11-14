@@ -53,29 +53,11 @@ export const CONFIG = {
 };
 
 /* --- SEDES --------------------------------------------------------------- */
-export const SEDES = [
-  {
-    id: "calella",
-    nombre: "Pavelló Municipal de Calella",
-    municipio: "Calella",
-    direccion: "",
-    mapa: "https://maps.google.com/?q=Pavello+Municipal+Calella"
-  },
-  {
-    id: "blanes",
-    nombre: "Pavelló Municipal de Blanes",
-    municipio: "Blanes",
-    direccion: "",
-    mapa: "https://maps.google.com/?q=Pavello+Municipal+Blanes"
-  },
-  {
-    id: "pineda",
-    nombre: "Pavelló de Pineda de Mar",
-    municipio: "Pineda de Mar",
-    direccion: "",
-    mapa: "https://maps.google.com/?q=Pavello+Pineda+de+Mar"
-  }
-];
+/* Pendientes de confirmar. Cada sede sigue este formato y los partidos la
+   enlazan por su id (sede: "id"). Sin sede, el partido sale sin pabellón.
+     { id: "pabellon-1", nombre: "Pabellón ...", municipio: "...",
+       direccion: "", mapa: "https://maps.google.com/?q=..." } */
+export const SEDES = [];
 
 /* --- PATROCINADORES (todos los niveles) ---------------------------------- */
 /* 'nivel' queda listo para cuando la federación defina los niveles.
