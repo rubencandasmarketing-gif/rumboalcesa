@@ -21,3 +21,11 @@ GitHub Pages cachea 10 min. El workflow añade `?v=<commit>` al CSS y a los
 imports de los módulos JS solo en la copia publicada: en el repositorio las
 rutas van sin versión. Un import nuevo debe ir con ruta relativa
 (`./archivo.js`) para que se marque solo.
+
+## Entorno de la sesión
+
+Para el paso 4 hace falta abrir https://rubencandasmarketing-gif.github.io/.
+Solo lo permite el entorno en la nube **"rumboalcesa"** (env_01K9fAib1gJH4fu4K25SkdwN).
+Si la sesión arranca en otro entorno y el proxy bloquea esa web, no le pidas
+a Rubén que lo cambie a mano: llama a get_environment con ese id y propón
+switch_environment. Él solo tiene que aprobar la tarjeta.
