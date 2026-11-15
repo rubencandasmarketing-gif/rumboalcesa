@@ -1,7 +1,7 @@
 /* =============================================================================
    TIENDA.JS — Asturias, rumbo al CESA
    Catálogo, pedido y hoja de pedido. app.js lo importa solo en tienda.html.
-   Nada que editar aquí: lo variable (precios, tallas, IBAN, endpoint) vive
+   Nada que editar aquí: lo variable (precios, tallas, estados, endpoint) vive
    en tienda-datos.js.
    ============================================================================= */
 import { TIENDA as CFG, CATALOGO } from './tienda-datos.js';
@@ -35,15 +35,19 @@ function rangoPrecio(p) {
   return ps.length > 1 ? `desde ${eur(ps[0])}` : eur(ps[0]);
 }
 
-// Descarta líneas guardadas de artículos que ya no están en el catálogo
-let cart = store.get('fbmpa.tienda.cart', []).filter(l => byId(l.pid));
+/* Disponibilidad, tal como la publica la federación en el boletín */
+const ESTADOS = {
+  'disponible':   { txt: 'Disponible',   cls: 't-tag--ok' },
+  'bajo-pedido':  { txt: 'Bajo pedido',  cls: 't-tag--pedido' },
+  'proximamente': { txt: 'Próximamente', cls: 't-tag--pronto' }
+};
+const pedible = p => p && p.estado !== 'proximamente' && p.precio != null;
+
+// Descarta líneas guardadas de artículos que ya no están o no se pueden pedir
+let cart = store.get('fbmpa.tienda.cart', []).filter(l => pedible(byId(l.pid)));
 let form = store.get('fbmpa.tienda.form', {});
 let lastOrder = null;
 const sel = {}; // estado por tarjeta
-
-/* ---------- Lote mensual ---------- */
-const nextLote = (d = new Date()) => new Date(d.getFullYear(), d.getMonth() + (d.getDate() >= CFG.corte ? 1 : 0), CFG.corte);
-const fmtDate = d => d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
 
 /* ---------- Catálogo ---------- */
 function renderCatalog() {
@@ -52,6 +56,21 @@ function renderCatalog() {
 }
 
 function card(p) {
+  const est = ESTADOS[p.estado];
+  const tag = est ? `<span class="t-tag ${est.cls}">${est.txt}</span>` : '';
+  if (!pedible(p)) return `<article class="t-card t-card--pronto" id="c-${p.id}">
+    <div class="t-card__fig">
+      <img src="${p.foto}" alt="${esc(p.nombre)}" width="600" height="750" loading="lazy" decoding="async"
+        onerror="this.style.display='none'; this.parentElement.classList.add('is-pendiente')">
+      ${tag}
+    </div>
+    <div class="t-card__body">
+      <div class="t-card__head"><h4>${esc(p.nombre)}</h4></div>
+      <p class="t-card__desc">${esc(p.descripcion)}</p>
+      <div class="t-price"><span class="t-price__now">Próximamente</span></div>
+      <button type="button" class="btn btn--bloque" disabled>Aún no disponible</button>
+    </div>
+  </article>`;
   const tallas = tallasDe(p);
   const s = sel[p.id] || (sel[p.id] = { sz: tallas.length === 1 ? tallas[0].n : '', color: p.colores ? p.colores[0] : '', q: 1, nombre: '', dorsal: '', perso: false });
   const perso = CFG.personalizacion.activa && p.personalizable;
@@ -65,7 +84,7 @@ function card(p) {
     <div class="t-card__fig">
       <img src="${p.foto}" alt="${esc(p.nombre)}" width="600" height="750" loading="lazy" decoding="async"
         onerror="this.style.display='none'; this.parentElement.classList.add('is-pendiente')">
-      ${p.etiqueta ? `<span class="t-tag">${esc(p.etiqueta)}</span>` : ''}
+      ${tag}
     </div>
     <div class="t-card__body">
       <div class="t-card__head">
@@ -168,21 +187,18 @@ function renderCart() {
   $('#totals').innerHTML = cart.length ? `<dl class="t-tot">
     <dt>Base imponible</dt><dd>${eur(t.base)}</dd>
     <dt>IVA ${CFG.iva} %</dt><dd>${eur(t.iva)}</dd>
-    <dt class="t-tot__t">Total a ingresar</dt><dd class="t-tot__t"><b>${eur(t.total)}</b></dd></dl>` : '';
+    <dt class="t-tot__t">Total</dt><dd class="t-tot__t"><b>${eur(t.total)}</b></dd></dl>` : '';
 }
 
 function renderInstr() {
   $('#instr').innerHTML = `
-    <h4>Cómo se completa el pedido</h4>
+    <h4>¿Cómo comprar?</h4>
     <ol>
-      <li>Envía el pedido desde esta página. Recibirás un resumen con tu número de pedido.</li>
-      <li>Haz la transferencia del total a la cuenta de la FBMPA indicando tu nombre y el número de pedido.</li>
-      <li>El día ${CFG.corte} de cada mes se cierra el lote y se pide al proveedor todo lo pagado hasta esa fecha.</li>
-      <li>Plazo: ${esc(CFG.plazo)} desde el cierre. Recogida en la ${esc(CFG.sede)} (${esc(CFG.sedeDetalle)}).</li>
+      <li><b>Elige tu producto:</b> talla y cantidad.</li>
+      <li><b>Haz tu pedido:</b> envíalo desde aquí o escribe a <a href="mailto:${esc(CFG.email)}">${esc(CFG.email)}</a> · <a href="tel:${CFG.telefono.replace(/\s/g, '')}">${esc(CFG.telefono)}</a>.</li>
+      <li><b>Recoge en la ${esc(CFG.sede)}:</b> ${esc(CFG.sedeDetalle)}.</li>
     </ol>
-    <p class="t-lote">Si envías hoy el pedido, entra en el lote del <b>${fmtDate(nextLote())}</b>.</p>
-    <div class="t-iban"><span>${esc(CFG.iban)}</span><button type="button" id="copyIban">Copiar</button></div>`;
-  $('#copyIban').onclick = async () => { try { await navigator.clipboard.writeText(CFG.iban.replace(/\s/g, '')); toast('IBAN copiado'); } catch { toast('No se pudo copiar'); } };
+    <p class="t-note">Los artículos «bajo pedido» se encargan al reunir las reservas. Disponibilidad sujeta a existencias.</p>`;
 }
 
 /* ---------- Formulario ---------- */
@@ -205,29 +221,29 @@ function validate() {
 /* ---------- Construcción y envío ---------- */
 const makeId = d => 'FBMPA-' + d.getFullYear().toString().slice(2) + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0') + '-' + Math.random().toString(36).slice(2, 6).toUpperCase();
 function buildOrder() {
-  const d = new Date(), t = totals(), lote = nextLote(d);
+  const d = new Date(), t = totals();
   const lines = cart.map(l => { const p = byId(l.pid); return {
-    nombre: p.nombre, color: l.color || '', talla: l.sz || '',
+    nombre: p.nombre, estado: ESTADOS[p.estado]?.txt || '', color: l.color || '', talla: l.sz || '',
     personalizacion: [l.nombre, l.dorsal].filter(Boolean).join(' '), ud: l.q,
     precio: linePrice(l), importe: +(linePrice(l) * l.q).toFixed(2) }; });
-  return { id: makeId(d), fecha: d.toISOString(), fechaTxt: d.toLocaleString('es-ES'), lote: lote.toISOString().slice(0, 10), loteTxt: fmtDate(lote),
+  return { id: makeId(d), fecha: d.toISOString(), fechaTxt: d.toLocaleString('es-ES'),
     ...form, lines, base: +t.base.toFixed(2), iva: +t.iva.toFixed(2), total: +t.total.toFixed(2), status: 'off' };
 }
 function sheetHtml(o) {
   return `<!DOCTYPE html><html lang="es"><meta charset="utf-8"><title>Pedido ${o.id}</title>
 <style>body{font:15px/1.5 Arial,sans-serif;color:#16222e;max-width:760px;margin:30px auto;padding:0 20px}h1{color:#0168B3;border-bottom:4px solid #FFE55D;padding-bottom:6px}table{width:100%;border-collapse:collapse;margin:16px 0}th,td{border:1px solid #d6e0ea;padding:6px 8px;text-align:left;font-size:14px}th{background:#eef4fa}td.n{text-align:right}.tot td{font-weight:bold}.box{background:#eef4fa;padding:12px 16px;border-radius:8px}</style>
 <h1>Hoja de pedido · ${o.id}</h1>
-<p><b>${esc(CFG.titular)}</b><br>Fecha: ${o.fechaTxt} · Lote: ${o.loteTxt}</p>
+<p><b>${esc(CFG.titular)}</b><br>Fecha: ${o.fechaTxt}</p>
 <p><b>${esc(o.name)}</b> · ${esc(o.role)}<br>${esc(o.mail)} · ${esc(o.tel)}${o.obs ? '<br>Observaciones: ' + esc(o.obs) : ''}</p>
-<table><tr><th>Artículo</th><th>Color</th><th>Talla</th><th>Nombre / dorsal</th><th>Ud.</th><th>Precio</th><th>Importe</th></tr>
-${o.lines.map(l => `<tr><td>${esc(l.nombre)}</td><td>${esc(l.color) || '—'}</td><td>${esc(l.talla) || '—'}</td><td>${esc(l.personalizacion) || '—'}</td><td class="n">${l.ud}</td><td class="n">${eur(l.precio)}</td><td class="n">${eur(l.importe)}</td></tr>`).join('')}
-<tr><td colspan="6">Base imponible</td><td class="n">${eur(o.base)}</td></tr><tr><td colspan="6">IVA ${CFG.iva} %</td><td class="n">${eur(o.iva)}</td></tr><tr class="tot"><td colspan="6">Total a ingresar</td><td class="n">${eur(o.total)}</td></tr></table>
-<div class="box"><b>Transferencia:</b> ${esc(CFG.iban)} (${esc(CFG.titular)})<br>Concepto: ${o.id} · ${esc(o.name)}<br>Envía el justificante a ${esc(CFG.email)}. Recogida en la ${esc(CFG.sede)}, ${esc(CFG.sedeDetalle)}. Plazo: ${esc(CFG.plazo)} desde el lote del ${o.loteTxt}.</div></html>`;
+<table><tr><th>Artículo</th><th>Disponibilidad</th><th>Color</th><th>Talla</th><th>Nombre / dorsal</th><th>Ud.</th><th>Precio</th><th>Importe</th></tr>
+${o.lines.map(l => `<tr><td>${esc(l.nombre)}</td><td>${esc(l.estado) || '—'}</td><td>${esc(l.color) || '—'}</td><td>${esc(l.talla) || '—'}</td><td>${esc(l.personalizacion) || '—'}</td><td class="n">${l.ud}</td><td class="n">${eur(l.precio)}</td><td class="n">${eur(l.importe)}</td></tr>`).join('')}
+<tr><td colspan="7">Base imponible</td><td class="n">${eur(o.base)}</td></tr><tr><td colspan="7">IVA ${CFG.iva} %</td><td class="n">${eur(o.iva)}</td></tr><tr class="tot"><td colspan="7">Total</td><td class="n">${eur(o.total)}</td></tr></table>
+<div class="box">Envía esta hoja a ${esc(CFG.email)} (teléfono ${esc(CFG.telefono)}). Recogida en la ${esc(CFG.sede)}, ${esc(CFG.sedeDetalle)}. Los artículos «bajo pedido» se encargan al reunir las reservas.</div></html>`;
 }
 function textOf(o) {
   return `PEDIDO ${o.id} · Tienda FBMPA\n${o.fechaTxt}\n${o.name} · ${o.role}\n${o.mail} · ${o.tel}\n\n` +
-    o.lines.map(l => `${l.ud} × ${l.nombre}${l.color ? ' · ' + l.color : ''}${l.talla && l.talla !== 'Única' ? ' · ' + l.talla : ''}${l.personalizacion ? ' · ' + l.personalizacion : ''} · ${eur(l.importe)}`).join('\n') +
-    `\n\nTotal: ${eur(o.total)} (IVA incl.)\nTransferencia a ${CFG.iban} · Concepto: ${o.id}\nLote: ${o.loteTxt}` + (o.obs ? `\nObservaciones: ${o.obs}` : '');
+    o.lines.map(l => `${l.ud} × ${l.nombre}${l.estado === 'Bajo pedido' ? ' (bajo pedido)' : ''}${l.color ? ' · ' + l.color : ''}${l.talla && l.talla !== 'Única' ? ' · ' + l.talla : ''}${l.personalizacion ? ' · ' + l.personalizacion : ''} · ${eur(l.importe)}`).join('\n') +
+    `\n\nTotal: ${eur(o.total)} (IVA incl.)\nRecogida en la ${CFG.sede}, ${CFG.sedeDetalle}` + (o.obs ? `\nObservaciones: ${o.obs}` : '');
 }
 function download(name, content, type) {
   try { const b = new Blob([content], { type }), u = URL.createObjectURL(b), a = document.createElement('a');
@@ -243,11 +259,11 @@ function renderDone() {
   const o = lastOrder, el = $('#done'); el.hidden = false;
   const msg = {
     sending: ['', 'Enviando tu pedido…', ''],
-    sent: ['is-ok', 'Pedido enviado', `Hemos registrado tu pedido y te enviaremos una copia a <b>${esc(o.mail)}</b>. Haz ahora la transferencia de <b>${eur(o.total)}</b> con el concepto <code>${o.id}</code>.`],
-    off: ['is-off', 'Pedido generado', `Envía la hoja de pedido por correo a <b>${esc(CFG.email)}</b> y haz la transferencia de <b>${eur(o.total)}</b> con el concepto <code>${o.id}</code>. Cuando recibamos el justificante, tu pedido entra en el lote.`],
-    error: ['is-err', 'No se pudo enviar automáticamente', `Envía la hoja de pedido por correo a <b>${esc(CFG.email)}</b> junto con el justificante. Tu pedido es el <code>${o.id}</code>.`]
+    sent: ['is-ok', 'Pedido enviado', `Hemos registrado tu pedido <code>${o.id}</code> y te enviaremos una copia a <b>${esc(o.mail)}</b>. La federación te avisará para recogerlo.`],
+    off: ['is-off', 'Pedido preparado', `Último paso: pulsa <b>Enviar por correo</b> para mandarlo a <b>${esc(CFG.email)}</b>. Tu pedido es el <code>${o.id}</code>. Si prefieres, llama al ${esc(CFG.telefono)}.`],
+    error: ['is-err', 'No se pudo enviar automáticamente', `Envía la hoja de pedido por correo a <b>${esc(CFG.email)}</b> o llama al ${esc(CFG.telefono)}. Tu pedido es el <code>${o.id}</code>.`]
   }[o.status];
-  el.innerHTML = `<div class="t-done ${msg[0]}"><h4>${msg[1]}</h4>${msg[2] ? `<p>${msg[2]}</p><p><b>Lote:</b> ${o.loteTxt}</p>
+  el.innerHTML = `<div class="t-done ${msg[0]}"><h4>${msg[1]}</h4>${msg[2] ? `<p>${msg[2]}</p>
     <div class="t-done__btns">
       <a class="btn" href="mailto:${encodeURIComponent(CFG.email)}?subject=${encodeURIComponent('Pedido ' + o.id)}&body=${encodeURIComponent(textOf(o))}">Enviar por correo</a>
       <button type="button" class="btn btn--ghost" id="dlHtml">Descargar hoja</button>
@@ -293,12 +309,12 @@ function marcado() {
       <div class="tienda-hero__texto">
         <p class="eyebrow eyebrow--claro">Tienda oficial</p>
         <h1>Viste la <span class="genero">selección</span></h1>
-        <p class="tienda-hero__lead">La camiseta de las selecciones asturianas, la ropa de la federación y la bufanda. Pedido online, pago por transferencia y recogida en la FBMPA.</p>
+        <p class="tienda-hero__lead">Equipación oficial de la Federación de Balonmano del Principado de Asturias. Haz tu pedido y recógelo en la Federación, en Gijón.</p>
       </div>
       <ol class="t-steps" aria-label="Cómo funciona">
-        <li><div><b>Elige y añade</b><span>Color, talla y cantidad. Precios con IVA incluido.</span></div></li>
-        <li><div><b>Envía y transfiere</b><span>Recibes un número de pedido y haces la transferencia.</span></div></li>
-        <li><div><b>Recoge en la FBMPA</b><span>Los pedidos se agrupan el día ${CFG.corte} de cada mes.</span></div></li>
+        <li><div><b>Elige tu producto</b><span>Talla y cantidad. Precios con IVA incluido.</span></div></li>
+        <li><div><b>Haz tu pedido</b><span>Desde aquí, en ${esc(CFG.email)} o al ${esc(CFG.telefono)}.</span></div></li>
+        <li><div><b>Recoge en la Federación</b><span>${esc(CFG.sedeDetalle)}.</span></div></li>
       </ol>
     </div>
   </div>
@@ -307,7 +323,7 @@ function marcado() {
     <div>
       <div class="t-notice" role="note">
         <span class="t-notice__ico" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-6.3 7-12a7 7 0 0 0-14 0c0 5.7 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
-        <p><b>Un solo punto de recogida.</b> Todos los pedidos se entregan en la ${esc(CFG.sede)}, ${esc(CFG.sedeDetalle)}. Te avisaremos por correo cuando esté disponible.</p>
+        <p><b>Recogida en la Federación.</b> Todos los pedidos se entregan en ${esc(CFG.sedeDetalle)}. Lo «disponible» está en la Federación; lo «bajo pedido» se encarga al reunir las reservas.</p>
       </div>
       <h2 class="visually-hidden">Catálogo</h2>
       <div id="catalogo"></div>

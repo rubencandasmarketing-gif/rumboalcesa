@@ -47,13 +47,13 @@ hay enlace real.
 index.html                  Portada (héroe + directos + selecciones + agenda día a día)
 {seleccion}.html            6 páginas idénticas: solo cambia data-seleccion
 directo.html                Sala del directo: reproductor + banners del patrocinador
-tienda.html                 Tienda oficial (catálogo + pedido por transferencia)
+tienda.html                 Tienda oficial (catálogo + pedido y recogida en la federación)
 patrocinadores.html
 js/datos.js                 ← EL archivo
 js/app.js                   Render (no tocar en caliente)
-js/tienda-datos.js          Catálogo, precios (sin IVA), IBAN y endpoint de la tienda
+js/tienda-datos.js          Catálogo, precios (sin IVA), disponibilidad y endpoint de la tienda
 js/tienda.js                Lógica de la tienda (solo se carga en tienda.html)
-img/tienda/                 Fotos de producto 4:5, WebP: «<id>.webp» (pendientes, ver LEEME.md)
+img/tienda/                 Fotos de producto 4:5, WebP: «<id>.webp» (ver LEEME.md)
 apps-script.gs              Receptor de pedidos en Google Sheets (opcional, ver cabecera)
 css/estilo.css              Tokens FBMPA + componentes
 img/marca/                  Logos transparentes generados, favicon, OG
@@ -102,16 +102,19 @@ así que da igual que la foto tarde: no hay saltos de maquetación.
 
 ## Tienda
 
-Solo ropa: siete prendas (camiseta Selección Asturias, camiseta de balonmano
-playa, camiseta FBMPA azul marino, sudadera de calentamiento, chándal, chaquetón
-y bufanda) en una sola rejilla. Catálogo y precios salen del BOASBA nº 9/26-27;
-los precios se guardan **sin IVA** en `js/tienda-datos.js` y la web los enseña
-con IVA. Recogida en la sede de la FBMPA en Gijón.
+Solo ropa: siete prendas (chaquetón, chándal, sudadera de calentamiento,
+camiseta de juego Selección, camiseta de juego Playa, camiseta de paseo y
+bufanda) en una sola rejilla. Catálogo, precios, disponibilidad («disponible»,
+«bajo pedido», «próximamente») y forma de compra salen de la página "Tienda
+FBMPA" del BOASBA nº 14/26-27; los precios se guardan **sin IVA** en
+`js/tienda-datos.js` y la web los enseña con IVA. Cómo comprar: elegir talla y
+cantidad, hacer el pedido (fbmpa@fbmpa.com · 985 395 172) y recoger en la
+federación (C/ Espronceda 19, bajo, Gijón). Lo «bajo pedido» se encarga al
+reunir las reservas. La camiseta de juego Selección (nuevo modelo CESA 2027)
+sale como «Próximamente» y no se puede pedir hasta que tenga precio.
 
-Pendiente de la federación: fotos reales de producto en `img/tienda/<id>.webp`
-(nombres y formato en `img/tienda/LEEME.md`; mientras falten, cada tarjeta
-enseña «Foto pendiente»), IBAN, y confirmar el sistema de lotes mensuales
-(`corte`, `plazo`).
+Las fotos de `img/tienda/` están sacadas del propio boletín (baja resolución):
+conviene cambiarlas por fotos de producto reales cuando las haya.
 
 Con `TIENDA.endpoint` vacío el comprador genera la hoja de pedido y la envía por
 correo. Para recibir pedidos en una hoja de cálculo: montar `apps-script.gs`

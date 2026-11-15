@@ -16,10 +16,10 @@ function doPost(e) {
     const o = data.pedido;
     const ss = SpreadsheetApp.openById(SHEET_ID);
     const hoja = ss.getSheetByName('Pedidos') || ss.insertSheet('Pedidos');
-    if (hoja.getLastRow() === 0) hoja.appendRow(['Pedido','Fecha','Lote','Nombre','Rol','Correo','Teléfono','Artículo','Color','Talla','Nombre/dorsal','Ud.','Precio','Importe','Total pedido','Observaciones','Pagado']);
-    o.lines.forEach(l => hoja.appendRow([o.id, o.fechaTxt, o.lote, o.name, o.role, o.mail, o.tel, l.nombre, l.color, l.talla, l.personalizacion, l.ud, l.precio, l.importe, o.total, o.obs || '', '']));
-    const resumen = o.lines.map(l => `${l.ud} × ${l.nombre}${l.color ? ' · ' + l.color : ''}${l.talla && l.talla !== 'Única' ? ' · ' + l.talla : ''}${l.personalizacion ? ' · ' + l.personalizacion : ''} · ${l.importe.toFixed(2)} €`).join('\n');
-    const cuerpo = `Pedido ${o.id}\nLote: ${o.loteTxt}\n\n${resumen}\n\nTotal a ingresar: ${o.total.toFixed(2)} € (IVA incl.)\nConcepto de la transferencia: ${o.id}\n\nRecogida en la sede de la FBMPA cuando te avisemos por correo.`;
+    if (hoja.getLastRow() === 0) hoja.appendRow(['Pedido','Fecha','Nombre','Rol','Correo','Teléfono','Artículo','Disponibilidad','Color','Talla','Nombre/dorsal','Ud.','Precio','Importe','Total pedido','Observaciones','Entregado']);
+    o.lines.forEach(l => hoja.appendRow([o.id, o.fechaTxt, o.name, o.role, o.mail, o.tel, l.nombre, l.estado || '', l.color, l.talla, l.personalizacion, l.ud, l.precio, l.importe, o.total, o.obs || '', '']));
+    const resumen = o.lines.map(l => `${l.ud} × ${l.nombre}${l.estado === 'Bajo pedido' ? ' (bajo pedido)' : ''}${l.color ? ' · ' + l.color : ''}${l.talla && l.talla !== 'Única' ? ' · ' + l.talla : ''}${l.personalizacion ? ' · ' + l.personalizacion : ''} · ${l.importe.toFixed(2)} €`).join('\n');
+    const cuerpo = `Pedido ${o.id}\n\n${resumen}\n\nTotal: ${o.total.toFixed(2)} € (IVA incl.)\n\nRecogida en la Federación (C/ Espronceda 19, bajo, Gijón) cuando te avisemos. Los artículos «bajo pedido» se encargan al reunir las reservas.`;
     MailApp.sendEmail({ to: o.mail, subject: `Tu pedido ${o.id} · Tienda FBMPA`, body: cuerpo });
     MailApp.sendEmail({ to: AVISO_A, subject: `Nuevo pedido ${o.id} · ${o.name}`, body: `${o.name} · ${o.role}\n${o.mail} · ${o.tel}\n\n${cuerpo}` });
     return ContentService.createTextOutput(JSON.stringify({ ok: true, id: o.id })).setMimeType(ContentService.MimeType.JSON);
