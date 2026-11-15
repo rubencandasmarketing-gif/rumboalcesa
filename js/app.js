@@ -700,20 +700,22 @@ function renderSeleccion(id) {
     </section>` : "";
 
   // Convocatoria: siempre 16 huecos. Los cubiertos, con ficha; el resto, en espera.
+  // Dorsal y posición son opcionales: sin ellos la ficha sale con nombre y club,
+  // en el orden de datos.js (el de la convocatoria oficial).
   const PLAZAS = 16;
   const convocados = [...sel.plantilla].sort((a, b) => (a.dorsal ?? 99) - (b.dorsal ?? 99));
   const huecos = Math.max(0, PLAZAS - convocados.length);
 
   const plantilla = convocados.map(j => `
-      <article class="ficha">
+      <article class="ficha${j.foto ? "" : " ficha--sin-foto"}">
         <div class="ficha__foto">
-          ${j.foto ? `<img src="${esc(j.foto)}" alt="${esc(j.nombre)}, dorsal ${j.dorsal}" loading="lazy">` : ""}
-          <span class="ficha__dorsal"><span>${j.dorsal}</span></span>
+          ${j.foto ? `<img src="${esc(j.foto)}" alt="${esc(j.nombre)}${j.dorsal != null ? `, dorsal ${j.dorsal}` : ""}" loading="lazy">` : ""}
+          ${j.dorsal != null ? `<span class="ficha__dorsal"><span>${j.dorsal}</span></span>` : ""}
         </div>
         <div class="ficha__datos">
           <div class="ficha__nombre">${esc(j.nombre)}</div>
-          <div class="ficha__pos">${esc(j.posicion)}</div>
-          <div class="ficha__club">${esc(j.club)}</div>
+          ${j.posicion ? `<div class="ficha__pos">${esc(j.posicion)}</div>` : ""}
+          ${j.club ? `<div class="ficha__club">${esc(j.club)}</div>` : ""}
         </div>
       </article>`).join("")
     + Array.from({ length: huecos }, () => `
@@ -724,8 +726,9 @@ function renderSeleccion(id) {
         </div>
       </article>`).join("");
 
-  // Cuerpo técnico: tres cargos fijos (Seleccionador/a, Entrenador/a, Delegado/a).
-  // Se cubren buscando el rol en datos.js; el resto de roles (fisio, etc.) se añade detrás.
+  // Cuerpo técnico. Con el staff ya cargado en datos.js se muestra tal cual, en
+  // su orden (el oficial de la federación). Mientras esté vacío, tres cargos
+  // fijos en espera (Seleccionador/a, Entrenador/a, Delegado/a).
   const norm = s => String(s ?? "").toLowerCase()
     .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   const cargoDe = m => {
@@ -763,8 +766,7 @@ function renderSeleccion(id) {
       </div>`;
   }).join("");
 
-  const extra = sel.staff.filter(m => !asignados.has(m)).map(tarjetaStaff).join("");
-  const staff = fijos + extra;
+  const staff = sel.staff.length ? sel.staff.map(tarjetaStaff).join("") : fijos;
 
   main.append(el(`
     <div class="seleccion-hero${sel.portada ? " seleccion-hero--foto" : ""}"${

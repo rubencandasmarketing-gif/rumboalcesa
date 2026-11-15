@@ -1010,6 +1010,13 @@ section { padding-block: var(--sp-8); }
 .ficha__pos { font-size: var(--step--1); color: var(--azul-800); font-weight: 700; }
 .ficha__club { font-size: var(--step--1); color: var(--muted); }
 
+/* Ficha con jugador pero aún sin foto: símbolo de la federación en el hueco */
+.ficha--sin-foto .ficha__foto {
+  background:
+    url("../img/marca/simbolo-blanco.png") center 45% / 46% auto no-repeat,
+    var(--azul-100);
+}
+
 /* Ficha vacía: plaza de convocatoria pendiente */
 .ficha--vacia {
   border-style: dashed;
