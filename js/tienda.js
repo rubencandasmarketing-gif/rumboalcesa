@@ -16,7 +16,9 @@ const eur = n => n.toFixed(2).replace('.', ',') + ' €';
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const byId = id => CATALOGO.find(p => p.id === id);
 const IVA = 1 + CFG.iva / 100;
-const conIva = n => CFG.preciosConIva ? n : +(n * IVA).toFixed(2);
+// Los precios se enseñan SIN IVA, como en el boletín («21,50 € + IVA»);
+// el IVA se suma solo en el total del pedido.
+const conIva = n => CFG.preciosConIva ? +(n / IVA).toFixed(2) : n;
 
 /* Tallas de un producto normalizadas a [{n, p?, g?}] */
 function tallasDe(p) {
@@ -94,7 +96,7 @@ function card(p) {
       <p class="t-card__desc">${esc(p.descripcion)}</p>
       <div class="t-price">
         <span class="t-price__now" id="pr-${p.id}">${precio}</span>
-        <span class="t-price__iva">IVA incluido</span>
+        <span class="t-price__iva">+ IVA</span>
       </div>
       ${p.colores && p.colores.length > 1 ? `
       <div class="t-chips" role="radiogroup" aria-label="Color">
@@ -165,9 +167,9 @@ function add(p, s) {
 /* ---------- Pedido ---------- */
 const linePrice = l => precioDe(byId(l.pid), l.sz) + ((l.nombre || l.dorsal) ? conIva(CFG.personalizacion.precio) : 0);
 function totals() {
-  const total = cart.reduce((a, l) => a + linePrice(l) * l.q, 0);
-  const base = total / IVA;
-  return { total, base, iva: total - base };
+  const base = cart.reduce((a, l) => a + linePrice(l) * l.q, 0);
+  const iva = +(base * CFG.iva / 100).toFixed(2);
+  return { base, iva, total: base + iva };
 }
 const lineMeta = l => [l.color, l.sz !== 'Única' ? l.sz : '', [l.nombre, l.dorsal].filter(Boolean).join(' ')].filter(Boolean).join(' · ');
 function renderCart() {
@@ -235,7 +237,7 @@ function sheetHtml(o) {
 <h1>Hoja de pedido · ${o.id}</h1>
 <p><b>${esc(CFG.titular)}</b><br>Fecha: ${o.fechaTxt}</p>
 <p><b>${esc(o.name)}</b> · ${esc(o.role)}<br>${esc(o.mail)} · ${esc(o.tel)}${o.obs ? '<br>Observaciones: ' + esc(o.obs) : ''}</p>
-<table><tr><th>Artículo</th><th>Disponibilidad</th><th>Color</th><th>Talla</th><th>Nombre / dorsal</th><th>Ud.</th><th>Precio</th><th>Importe</th></tr>
+<table><tr><th>Artículo</th><th>Disponibilidad</th><th>Color</th><th>Talla</th><th>Nombre / dorsal</th><th>Ud.</th><th>Precio (sin IVA)</th><th>Importe</th></tr>
 ${o.lines.map(l => `<tr><td>${esc(l.nombre)}</td><td>${esc(l.estado) || '—'}</td><td>${esc(l.color) || '—'}</td><td>${esc(l.talla) || '—'}</td><td>${esc(l.personalizacion) || '—'}</td><td class="n">${l.ud}</td><td class="n">${eur(l.precio)}</td><td class="n">${eur(l.importe)}</td></tr>`).join('')}
 <tr><td colspan="7">Base imponible</td><td class="n">${eur(o.base)}</td></tr><tr><td colspan="7">IVA ${CFG.iva} %</td><td class="n">${eur(o.iva)}</td></tr><tr class="tot"><td colspan="7">Total</td><td class="n">${eur(o.total)}</td></tr></table>
 <div class="box">Envía esta hoja a ${esc(CFG.email)} (teléfono ${esc(CFG.telefono)}). Recogida en la ${esc(CFG.sede)}, ${esc(CFG.sedeDetalle)}. Los artículos «bajo pedido» se encargan al reunir las reservas.</div></html>`;
@@ -312,7 +314,7 @@ function marcado() {
         <p class="tienda-hero__lead">Equipación oficial de la Federación de Balonmano del Principado de Asturias. Haz tu pedido y recógelo en la Federación, en Gijón.</p>
       </div>
       <ol class="t-steps" aria-label="Cómo funciona">
-        <li><div><b>Elige tu producto</b><span>Talla y cantidad. Precios con IVA incluido.</span></div></li>
+        <li><div><b>Elige tu producto</b><span>Talla y cantidad. Precios + IVA, como en el boletín.</span></div></li>
         <li><div><b>Haz tu pedido</b><span>Desde aquí, en ${esc(CFG.email)} o al ${esc(CFG.telefono)}.</span></div></li>
         <li><div><b>Recoge en la Federación</b><span>${esc(CFG.sedeDetalle)}.</span></div></li>
       </ol>

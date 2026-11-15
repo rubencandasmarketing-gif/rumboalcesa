@@ -107,7 +107,8 @@ camiseta de juego Selección, camiseta de juego Playa, camiseta de paseo y
 bufanda) en una sola rejilla. Catálogo, precios, disponibilidad («disponible»,
 «bajo pedido», «próximamente») y forma de compra salen de la página "Tienda
 FBMPA" del BOASBA nº 14/26-27; los precios se guardan **sin IVA** en
-`js/tienda-datos.js` y la web los enseña con IVA. Cómo comprar: elegir talla y
+`js/tienda-datos.js` y la web los enseña igual que el boletín («+ IVA»);
+el IVA se suma solo en el total del pedido. Cómo comprar: elegir talla y
 cantidad, hacer el pedido (fbmpa@fbmpa.com · 985 395 172) y recoger en la
 federación (C/ Espronceda 19, bajo, Gijón). Lo «bajo pedido» se encarga al
 reunir las reservas. La camiseta de juego Selección (nuevo modelo CESA 2027)

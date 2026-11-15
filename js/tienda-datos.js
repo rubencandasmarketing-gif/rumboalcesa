@@ -3,7 +3,7 @@
    Único archivo que se toca. Catálogo, precios y forma de compra: página
    "Tienda FBMPA" del BOASBA nº 14/26-27 (9 de noviembre de 2026).
    Precios SIN IVA, tal como los publica la federación; la web los muestra
-   con IVA.
+   igual («21,50 € + IVA») y suma el IVA solo en el total del pedido.
    ===================================================================== */
 
 export const TIENDA = {
