@@ -7,10 +7,7 @@
    ===================================================================== */
 
 export const TIENDA = {
-  /* URL de la aplicación web de Google Apps Script (ver apps-script.gs).
-     Vacía → la tienda genera la hoja de pedido y la deja enviar por correo. */
-  endpoint: '',
-
+  /* Los pedidos se hacen por correo a la federación */
   email: 'fbmpa@fbmpa.com',
   telefono: '985 395 172',
   sede: 'Federación',
@@ -20,14 +17,10 @@ export const TIENDA = {
   iva: 21,
   preciosConIva: false,     // los precios del catálogo están sin IVA
 
-  /* Nombre y dorsal estampados. El boletín no lo ofrece: apagado. */
-  personalizacion: { activa: false, precio: 6, maxNombre: 12 },
-
-  roles: ['Jugador/a de selección', 'Familia', 'Entrenador/a o técnico/a', 'Club', 'Personal federativo', 'Otro'],
-
   /* Grupos de tallas reutilizables. En cada producto, `tallas` puede ser
      'adulto' | 'nino' | 'todas' (niño + adulto), una lista ['S','M','L']
-     o una lista con precio propio [{n:'Talla 0', p:16.5}]. */
+     o una lista con precio propio [{n:'Talla 0', p:16.5}]. La guía de
+     tallas se abre desde las prendas con guia: true. */
   tallajes: {
     adulto: ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL'],
     nino:   ['6-8', '8-10', '10-12', '12-14', '14-16']
@@ -46,7 +39,7 @@ export const TIENDA = {
    CATÁLOGO (solo ropa)
    - estado: 'disponible' | 'bajo-pedido' | 'proximamente', como en el
      boletín. Lo "bajo pedido" se encarga al reunir las reservas; lo
-     "proximamente" se enseña pero aún no se puede pedir.
+     "proximamente" se enseña sin botón de pedido.
    - precio: sin IVA (ver preciosConIva). Si una talla lleva precio
      propio ({n, p}) manda sobre este.
    - tallas: 'adulto' | 'nino' | 'todas' | ['S','M'] | [{n, p}]

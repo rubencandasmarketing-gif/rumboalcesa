@@ -47,14 +47,13 @@ hay enlace real.
 index.html                  Portada (héroe + directos + selecciones + agenda día a día)
 {seleccion}.html            6 páginas idénticas: solo cambia data-seleccion
 directo.html                Sala del directo: reproductor + banners del patrocinador
-tienda.html                 Tienda oficial (catálogo + pedido y recogida en la federación)
+tienda.html                 Tienda oficial (catálogo; pedidos por correo a la federación)
 patrocinadores.html
 js/datos.js                 ← EL archivo
 js/app.js                   Render (no tocar en caliente)
-js/tienda-datos.js          Catálogo, precios (sin IVA), disponibilidad y endpoint de la tienda
+js/tienda-datos.js          Catálogo, precios (sin IVA), disponibilidad y correo de la tienda
 js/tienda.js                Lógica de la tienda (solo se carga en tienda.html)
 img/tienda/                 Fotos de producto 4:5, WebP: «<id>.webp» (ver LEEME.md)
-apps-script.gs              Receptor de pedidos en Google Sheets (opcional, ver cabecera)
 css/estilo.css              Tokens FBMPA + componentes
 img/marca/                  Logos transparentes generados, favicon, OG
 img/jugadores/{seleccion}/  Fotos 4:5, WebP, ~600×750, 80-120 KB, «07-garcia.webp»
@@ -107,9 +106,9 @@ camiseta de juego Selección, camiseta de juego Playa, camiseta de paseo y
 bufanda) en una sola rejilla. Catálogo, precios, disponibilidad («disponible»,
 «bajo pedido», «próximamente») y forma de compra salen de la página "Tienda
 FBMPA" del BOASBA nº 14/26-27; los precios se guardan **sin IVA** en
-`js/tienda-datos.js` y la web los enseña igual que el boletín («+ IVA»);
-el IVA se suma solo en el total del pedido. Cómo comprar: elegir talla y
-cantidad, hacer el pedido (fbmpa@fbmpa.com · 985 395 172) y recoger en la
+`js/tienda-datos.js` y la web los enseña igual que el boletín («+ IVA»).
+Cómo comprar: elegir talla y
+cantidad, hacer el pedido por correo (fbmpa@fbmpa.com) y recoger en la
 federación (C/ Espronceda 19, bajo, Gijón). Lo «bajo pedido» se encarga al
 reunir las reservas. La camiseta de juego Selección (nuevo modelo CESA 2027)
 sale como «Próximamente» y no se puede pedir hasta que tenga precio.
@@ -117,6 +116,6 @@ sale como «Próximamente» y no se puede pedir hasta que tenga precio.
 Las fotos de `img/tienda/` están sacadas del propio boletín (baja resolución):
 conviene cambiarlas por fotos de producto reales cuando las haya.
 
-Con `TIENDA.endpoint` vacío el comprador genera la hoja de pedido y la envía por
-correo. Para recibir pedidos en una hoja de cálculo: montar `apps-script.gs`
-(instrucciones en su cabecera) y pegar la URL en `endpoint`.
+La web no recoge pedidos: todo se pide por correo a la federación. Cada prenda
+tiene un botón «Pedir por correo» que abre un correo a `TIENDA.email` con la
+prenda y el precio ya escritos, y huecos para talla, cantidad, nombre y teléfono.
