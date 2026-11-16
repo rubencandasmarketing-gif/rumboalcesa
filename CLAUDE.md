@@ -33,8 +33,12 @@ su CSS y su JS dentro; las reglas y la dificultad están ajustadas a propósito,
 no tocarlo sin que Rubén lo pida. La carpeta es autocontenida (favicon, fuentes
 Barlow y Press Start 2P, `img/og-rumbo-al-cesa.jpg` para la vista previa del
 enlace) y
-no hace peticiones externas. El workflow genera `404.html` a partir de ese
+no hace más petición externa que la de las estadísticas. El workflow genera `404.html` a partir de ese
 index, así que su `<head>` debe seguir en una línea propia.
+
+Todas las páginas HTML (la web real y `proximamente/index.html`) llevan el
+fragmento de Cloudflare Web Analytics justo antes de `</body>`. Una página
+nueva debe llevarlo también.
 
 No enlazar la vista previa desde ningún sitio. Para lanzar la web real, ver
 el comentario "PARA LANZAR" en el workflow.
