@@ -310,10 +310,26 @@ canvas:focus-visible{box-shadow:inset 0 0 0 3px var(--amarillo)}
   let ac = null, sonido = leer(CLAVE_SONIDO) !== 'no';
   function pintarSonido(){ ui.sonido.textContent = 'SONIDO: ' + (sonido ? 'SÍ' : 'NO'); ui.sonido.setAttribute('aria-pressed', String(sonido)); }
   pintarSonido();
+  // Se llama en cada toque o tecla: los móviles solo dejan sonar tras un gesto,
+  // y iOS deja el audio "suspendido" (al crearlo o al volver a la pestaña)
+  // hasta que se reanuda dentro de un gesto.
+  let silencio = null;
   function abrirAudio(){
-    if (ac || !sonido) return;
-    try { const A = window.AudioContext || window.webkitAudioContext; if (A) ac = new A(); } catch(e){ ac = null; }
+    if (!sonido) return;
+    try {
+      // iPhone: que los pitidos suenen aunque el interruptor lateral esté en silencio
+      if (navigator.audioSession) navigator.audioSession.type = 'playback';
+      if (!ac) { const A = window.AudioContext || window.webkitAudioContext; if (A) ac = new A(); }
+      if (ac && ac.state !== 'running') { const r = ac.resume(); if (r && r.catch) r.catch(() => {}); }
+      // iOS sin audioSession: un audio mudo en bucle hace el mismo efecto
+      if (!navigator.audioSession && /iP(hone|ad|od)/.test(navigator.userAgent) && !silencio) {
+        silencio = new Audio('data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==');
+        silencio.loop = true; silencio.setAttribute('playsinline', '');
+        const r = silencio.play(); if (r && r.catch) r.catch(() => { silencio = null; });
+      }
+    } catch(e){}
   }
+  ['pointerdown', 'touchend', 'keydown', 'click'].forEach(ev => document.addEventListener(ev, abrirAudio, { capture: true, passive: true }));
   function tono(f, dur, tipo, vol, espera, f2){
     if (!sonido || !ac) return;
     try {
@@ -821,6 +837,7 @@ canvas:focus-visible{box-shadow:inset 0 0 0 3px var(--amarillo)}
   ui.sonido.addEventListener('click', () => {
     sonido = !sonido; guardar(CLAVE_SONIDO, sonido ? 'si' : 'no'); pintarSonido();
     if (sonido) { abrirAudio(); suena.tic(); }
+    else if (silencio) { silencio.pause(); silencio = null; }
   });
   $('btn-enlace').addEventListener('click', async () => {
     try { await navigator.clipboard.writeText(URL_WEB); ui.fAviso.textContent = 'Enlace copiado. Pégalo donde quieras.'; }
