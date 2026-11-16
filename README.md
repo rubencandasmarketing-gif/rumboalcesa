@@ -47,6 +47,8 @@ hay enlace real.
 index.html                  Portada (héroe + directos + selecciones + agenda día a día)
 {seleccion}.html            6 páginas idénticas: solo cambia data-seleccion
 directo.html                Sala del directo: reproductor + banners del patrocinador
+proximamente/               Lo que se ve en rumboalcesa.es hasta el lanzamiento: el juego
+                            arcade "Asturias rumbo al CESA" (7 metros). Autocontenido.
 tienda.html                 Tienda oficial (catálogo; pedidos por correo a la federación)
 patrocinadores.html
 js/datos.js                 ← EL archivo

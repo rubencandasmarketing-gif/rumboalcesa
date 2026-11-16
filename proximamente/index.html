@@ -1,187 +1,832 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Asturias, rumbo al CESA — Próximamente</title>
-  <meta name="description" content="Muy pronto, toda la información de las selecciones asturianas de balonmano en el CESA 2027.">
-  <link rel="canonical" href="https://rumboalcesa.es/">
-  <meta name="theme-color" content="#0168B3">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Asturias rumbo al CESA</title>
+<meta name="description" content="Muy pronto, toda la información de las selecciones asturianas de balonmano en el CESA 2027. Mientras llega, juega a la recreativa de lanzamientos de 7 metros.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rumboalcesa.es/">
+<meta property="og:title" content="Asturias rumbo al CESA: ¿cuántos goles metes en 45 segundos?">
+<meta property="og:description" content="Muy pronto, toda la información de las selecciones asturianas de balonmano en el CESA 2027. Mientras llega, juega a la recreativa de 7 metros y reta a tu equipo.">
+<meta property="og:image" content="https://rumboalcesa.es/img/og-juego.png">
+<meta property="og:image:alt" content="Asturias rumbo al CESA: recreativa de lanzamientos de 7 metros">
+<meta property="og:site_name" content="Asturias, rumbo al CESA">
+<meta property="og:locale" content="es_ES">
+<meta name="twitter:image" content="https://rumboalcesa.es/img/og-juego.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://rumboalcesa.es/">
+<meta name="theme-color" content="#0168B3">
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="fuentes/press-start-2p-400.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* Fuentes incluidas en la carpeta (licencia SIL OFL). Sin peticiones a Google Fonts. */
+@font-face{font-family:"Press Start 2P"; font-style:normal; font-weight:400; font-display:swap; src:url("fuentes/press-start-2p-400.woff2") format("woff2")}
+@font-face{font-family:"Barlow Condensed"; font-style:normal; font-weight:700; font-display:swap; src:url("fuentes/barlow-condensed-700.woff2") format("woff2")}
+@font-face{font-family:"Barlow"; font-style:normal; font-weight:400; font-display:swap; src:url("fuentes/barlow-400.woff2") format("woff2")}
+@font-face{font-family:"Barlow"; font-style:normal; font-weight:600; font-display:swap; src:url("fuentes/barlow-600.woff2") format("woff2")}
+:root{
+  /* Layout: una máquina recreativa centrada en una sala oscura. Marquesina, pantalla CRT, panel de mandos. */
+  color-scheme: dark;
+  --sala:#04101d;
+  --mueble:#0168B3;
+  --mueble-osc:#014578;
+  --amarillo:#FFE55D;
+  --tinta:#050d18;
+  --papel:#eef6fc;
+  --rival:#ff7a3d;
 
-  <link rel="icon" href="favicon.png">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  --font-pixel:"Press Start 2P","Courier New",monospace;
+  --font-cond:"Barlow Condensed","Arial Narrow",sans-serif;
+  --font-body:"Barlow","Segoe UI",system-ui,sans-serif;
 
-  <!-- Open Graph / Twitter: la imagen se sirve desde esta misma carpeta,
-       publicada en la raíz de rumboalcesa.es -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://rumboalcesa.es/">
-  <meta property="og:title" content="Asturias, rumbo al CESA — Próximamente">
-  <meta property="og:description" content="Muy pronto, toda la información de las selecciones asturianas de balonmano en el CESA 2027.">
-  <meta property="og:image" content="https://rumboalcesa.es/img/og-proximamente.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Asturias, rumbo al CESA — Próximamente">
-  <meta property="og:site_name" content="Asturias, rumbo al CESA">
-  <meta property="og:locale" content="es_ES">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Asturias, rumbo al CESA — Próximamente">
-  <meta name="twitter:description" content="Muy pronto, toda la información de las selecciones asturianas de balonmano en el CESA 2027.">
-  <meta name="twitter:image" content="https://rumboalcesa.es/img/og-proximamente.jpg">
-  <meta name="twitter:image:alt" content="Asturias, rumbo al CESA — Próximamente">
+  --px-1:.5rem; --px-2:.625rem; --px-3:.75rem; --px-4:1rem; --px-5:1.75rem;
+  --sp-1:.5rem; --sp-2:1rem; --sp-3:1.5rem;
+  --r:14px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; color:var(--papel);
+  background:
+    radial-gradient(60rem 30rem at 50% -6rem, rgba(1,104,179,.5), transparent 70%),
+    var(--sala);
+  font:400 1rem/1.55 var(--font-body);
+  -webkit-font-smoothing:antialiased;
+}
+.pagina{
+  width:min(100%, 27rem); margin-inline:auto;
+  padding:var(--sp-2) var(--sp-2) var(--sp-3);
+  display:flex; flex-direction:column; align-items:center; gap:var(--sp-2);
+}
+.aviso-web{
+  align-self:stretch; margin:0; display:flex; align-items:flex-start; gap:.75rem;
+  font:600 .8rem/1.3 var(--font-body); letter-spacing:.12em; text-transform:uppercase; color:var(--amarillo);
+}
+.aviso-web img{width:40px; height:40px; border-radius:10px; border:1.5px solid rgba(255,255,255,.3); flex:none}
+.aviso-web span span{display:block; color:rgba(238,246,252,.8); letter-spacing:.04em; text-transform:none; font-weight:400; font-size:.9rem}
 
-  <link rel="preload" href="fuentes/barlow-condensed-700.woff2" as="font" type="font/woff2" crossorigin>
+/* ---------- Máquina ---------- */
+.maquina{
+  width:min(100%, max(15rem, calc((100dvh - 17.5rem) * .667 + 1.5rem)));
+  padding:.75rem; border-radius:20px 20px 12px 12px;
+  background:
+    repeating-linear-gradient(82deg, rgba(255,255,255,.06) 0 3px, transparent 3px 30px),
+    linear-gradient(180deg, var(--mueble) 0%, var(--mueble-osc) 100%);
+  border:2px solid #012a4a;
+  box-shadow:0 30px 60px -20px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.08) inset, 0 0 70px -10px rgba(1,104,179,.7);
+  display:flex; flex-direction:column; gap:.6rem;
+}
+.marquesina{
+  margin:0; padding:.8rem .5rem .7rem; text-align:center; border-radius:10px;
+  background:var(--tinta); border:2px solid var(--amarillo);
+  box-shadow:0 0 18px rgba(255,229,93,.45), 0 0 10px rgba(255,229,93,.25) inset;
+}
+.marquesina h1{
+  margin:0; font:400 clamp(.85rem, 4.6vw, 1.2rem)/1.2 var(--font-pixel); color:var(--amarillo);
+  text-shadow:0 0 10px rgba(255,229,93,.8), 3px 3px 0 #b3261d;
+}
+.marquesina h1 span{display:block; margin-bottom:.45rem; font-size:.7em; color:var(--papel); text-shadow:0 0 8px rgba(238,246,252,.6)}
+.marquesina p{margin:.55rem 0 0; font:400 var(--px-1)/1.4 var(--font-pixel); color:var(--papel); letter-spacing:.06em}
 
-  <style>
-    /* Fuentes Barlow incluidas en la carpeta (subconjunto latino, licencia
-       SIL OFL: fuentes/OFL.txt). Sin peticiones a Google Fonts. */
-    @font-face {
-      font-family: "Barlow Condensed"; font-style: normal; font-weight: 700; font-display: swap;
-      src: url("fuentes/barlow-condensed-700.woff2") format("woff2");
-    }
-    @font-face {
-      font-family: "Barlow"; font-style: normal; font-weight: 400; font-display: swap;
-      src: url("fuentes/barlow-400.woff2") format("woff2");
-    }
-    @font-face {
-      font-family: "Barlow"; font-style: normal; font-weight: 600; font-display: swap;
-      src: url("fuentes/barlow-600.woff2") format("woff2");
-    }
+.pantalla{
+  position:relative; background:#000; border-radius:12px; overflow:hidden;
+  border:6px solid #060b12; box-shadow:0 0 0 2px #1b2733, 0 0 26px rgba(0,0,0,.9) inset;
+}
+.marcador{
+  margin:0; display:grid; grid-template-columns:repeat(3,1fr); background:#000;
+  padding:.5rem .6rem .45rem; font-family:var(--font-pixel);
+}
+.marcador div:nth-child(2){text-align:center}
+.marcador div:nth-child(3){text-align:right}
+.marcador dt{font-size:var(--px-1); color:#ff5a4d; letter-spacing:.04em}
+.marcador dd{margin:.35rem 0 0; font-size:var(--px-4); color:var(--papel)}
+.marcador .tiempo dd{color:var(--amarillo)}
+.marcador .tiempo.apura dd{color:#ff5a4d; animation:parpadeo .5s steps(2) infinite}
 
-    /* Tokens copiados de css/estilo.css de la web */
-    :root {
-      --azul-950: #062338;
-      --azul-900: #083A5E;
-      --azul-800: #045189;
-      --azul-700: #0168B3;   /* azul oficial FBMPA */
-      --azul-100: #D9EAF6;
-      --amarillo: #FFE55D;   /* amarillo oficial FBMPA */
-      --amarillo-deg: linear-gradient(160deg, #FFEC7E, #FFE55D 45%, #F8D93E);
-      --font-display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
-      --font-body: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
-      --grano: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.06 0'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>");
-      --rayas: repeating-linear-gradient(82deg, rgba(255,255,255,.045) 0 2px, transparent 2px 16px);
-      --skew: -8deg;         /* LA DIAGONAL */
-      --ease: cubic-bezier(.22, .61, .36, 1);
-    }
+.campo{position:relative}
+canvas{
+  display:block; width:100%; aspect-ratio:180/270;
+  image-rendering:pixelated; image-rendering:crisp-edges; image-rendering:pixelated;
+  touch-action:none; -webkit-user-select:none; user-select:none; cursor:crosshair; outline:none;
+}
+canvas:focus-visible{box-shadow:inset 0 0 0 3px var(--amarillo)}
+.crt{
+  position:absolute; inset:0; pointer-events:none; z-index:3;
+  background:
+    repeating-linear-gradient(180deg, rgba(0,0,0,.2) 0 1px, transparent 1px 3px),
+    radial-gradient(120% 90% at 50% 50%, transparent 62%, rgba(0,0,0,.5) 100%);
+}
 
-    *, *::before, *::after { box-sizing: border-box; }
-    html, body { height: 100%; }
+/* Paneles dentro de la pantalla */
+.panel{
+  position:absolute; inset:0; z-index:2; display:flex; flex-direction:column; justify-content:center;
+  gap:.8rem; padding:1rem 1.1rem; overflow-y:auto;
+  background:rgba(3,12,24,.86);
+}
+.panel[hidden]{display:none}
+.pixel{font-family:var(--font-pixel); font-weight:400}
+.panel .sobre{margin:0; font-size:var(--px-1); color:#ff5a4d; line-height:1.6; letter-spacing:.04em}
+.panel h2{margin:0; font:400 var(--px-4)/1.5 var(--font-pixel); color:var(--amarillo); text-shadow:2px 2px 0 #b3261d}
+.reglas{margin:0; padding:0; list-style:none; display:grid; gap:.35rem; font:600 1.05rem/1.25 var(--font-cond); letter-spacing:.02em}
+.reglas li{padding-left:.7rem; border-left:4px solid var(--amarillo)}
+.teclado{display:none}
+@media (hover:hover) and (pointer:fine){ .teclado{display:block} }
+.puntos-final{margin:0; font:400 2.3rem/1 var(--font-pixel); color:var(--papel); text-shadow:3px 3px 0 #b3261d}
+.puntos-final small{display:block; margin-top:.6rem; font-size:var(--px-2); color:var(--amarillo); text-shadow:none}
+.detalle{margin:0; font:600 1.05rem/1.3 var(--font-cond)}
+.estado{margin:0; min-height:1.3em; font:600 .95rem/1.3 var(--font-cond); color:var(--amarillo)}
+.acciones{display:flex; flex-wrap:wrap; gap:.7rem}
+.btn{
+  font:400 var(--px-3)/1 var(--font-pixel); min-height:48px; padding:1em 1.2em; cursor:pointer;
+  color:var(--tinta); background:var(--amarillo); border:0; border-radius:4px;
+  box-shadow:0 5px 0 #b3961a, 0 5px 0 2px var(--tinta);
+  transition:transform .08s, box-shadow .08s, background-color .15s;
+}
+.btn:hover{background:#fff2a3}
+.btn:active{transform:translateY(4px); box-shadow:0 1px 0 #b3961a, 0 1px 0 2px var(--tinta)}
+.btn:focus-visible{outline:3px solid var(--papel); outline-offset:4px}
+.btn{display:inline-flex; align-items:center; justify-content:center; text-decoration:none}
+.compartir .btn{font-size:var(--px-2); min-height:48px; padding:1em 1.1em}
+.btn--2{background:transparent; color:var(--papel); box-shadow:0 0 0 2px var(--papel) inset}
+.btn--2:hover{background:rgba(238,246,252,.14)}
+.btn--2:active{transform:translateY(2px); box-shadow:0 0 0 2px var(--papel) inset}
+.parpadea{animation:parpadeo 1s steps(2) infinite}
+@keyframes parpadeo{50%{opacity:.25}}
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      min-height: 100svh;
-      display: grid;
-      grid-template-rows: 1fr auto;
-      font: 400 clamp(1rem, .96rem + .3vw, 1.1rem)/1.65 var(--font-body);
-      color: #fff;
-      background: linear-gradient(135deg, var(--azul-900), var(--azul-700) 58%, var(--azul-800));
-      background-color: var(--azul-700);
-      -webkit-font-smoothing: antialiased;
-      position: relative;
-      overflow-x: hidden;
-    }
-    /* Textura de la marca: rayado a 82° + grano, como en las superficies azules */
-    body::before {
-      content: ""; position: fixed; inset: 0;
-      background: var(--rayas), var(--grano);
-      pointer-events: none;
-    }
+/* Panel de mandos */
+.mandos{
+  display:flex; align-items:center; justify-content:space-between; gap:.75rem;
+  padding:.55rem .7rem; border-radius:8px; background:var(--tinta);
+  border:1px solid rgba(255,255,255,.14);
+}
+.mandos p{margin:0; font:400 var(--px-1)/1.6 var(--font-pixel); color:var(--papel)}
+.mandos button{
+  flex:none; font:400 var(--px-1)/1 var(--font-pixel); min-height:44px; padding:0 .8em; cursor:pointer;
+  color:var(--amarillo); background:transparent; border:2px solid var(--amarillo); border-radius:4px;
+  transition:background-color .15s;
+}
+.mandos button:hover{background:rgba(255,229,93,.16)}
+.mandos button:focus-visible{outline:3px solid var(--papel); outline-offset:3px}
 
-    .contenido {
-      position: relative;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      text-align: center;
-      padding: clamp(2rem, 6vh, 4rem) clamp(1rem, 5vw, 2.5rem);
-      text-shadow: 0 1px 12px rgba(6, 35, 56, .45);
-    }
+.pie{align-self:stretch; margin:0; font-size:.875rem; color:rgba(238,246,252,.7); line-height:1.4}
 
-    .logo {
-      display: block;
-      width: clamp(150px, 36vw, 220px); height: auto;
-      margin-bottom: clamp(1.75rem, 5vh, 3rem);
-      filter: drop-shadow(0 6px 18px rgba(6, 35, 56, .35));
-    }
-
-    /* Etiqueta: chip diagonal amarillo, como el distintivo EN DIRECTO */
-    .etiqueta {
-      display: inline-block;
-      margin: 0 0 1.1rem;
-      padding: .3em .9em;
-      font: 700 clamp(.9rem, .82rem + .3vw, 1rem)/1.2 var(--font-display);
-      text-transform: uppercase; letter-spacing: .14em;
-      color: var(--azul-950);
-      background: var(--amarillo-deg);
-      border-radius: 6px;
-      transform: skewX(var(--skew));
-      text-shadow: none;
-    }
-    .etiqueta > span { display: inline-block; transform: skewX(calc(var(--skew) * -1)); }
-
-    h1 {
-      margin: 0;
-      font-family: var(--font-display); font-weight: 700;
-      font-size: clamp(2.5rem, 1.3rem + 6.4vw, 6rem);
-      line-height: .9; letter-spacing: .005em;
-      text-transform: uppercase;
-      text-wrap: balance;
-    }
-    h1 > span { display: block; }
-    .cesa { color: var(--amarillo); }
-
-    /* Remate diagonal amarillo bajo el titular: la firma de la marca */
-    .remate {
-      display: block;
-      width: 72px; height: 6px;
-      margin: clamp(1.25rem, 3.5vh, 2rem) auto;
-      background: var(--amarillo);
-      transform: skewX(var(--skew));
-    }
-
-    .texto {
-      max-width: 36ch;
-      margin: 0;
-      font-size: clamp(1.05rem, .95rem + .55vw, 1.35rem);
-      line-height: 1.5;
-      color: var(--azul-100);
-    }
-
-    .pie {
-      position: relative;
-      padding: 1.25rem 1rem calc(1.25rem + env(safe-area-inset-bottom));
-      text-align: center;
-      font: 600 .82rem/1.4 var(--font-body);
-      letter-spacing: .06em; text-transform: uppercase;
-      color: var(--azul-100);
-      background: rgba(6, 35, 56, .35);
-      border-top: 1px solid rgba(255, 255, 255, .1);
-    }
-    .pie p { margin: 0; }
-
-    @media (prefers-reduced-motion: no-preference) {
-      .contenido > * { animation: entrada .7s var(--ease) both; }
-      .contenido > :nth-child(2) { animation-delay: .06s; }
-      .contenido > :nth-child(3) { animation-delay: .12s; }
-      .contenido > :nth-child(4) { animation-delay: .18s; }
-      .contenido > :nth-child(5) { animation-delay: .24s; }
-      @keyframes entrada { from { opacity: 0; transform: translateY(12px); } }
-      /* el chip conserva su inclinación durante la animación */
-      .contenido > .etiqueta { animation-name: entrada-chip; }
-      @keyframes entrada-chip { from { opacity: 0; transform: translateY(12px) skewX(var(--skew)); } }
-    }
-  </style>
+@media (prefers-reduced-motion: reduce){ .parpadea,.marcador .tiempo.apura dd{animation:none} *{transition:none!important} }
+</style>
 </head>
 <body>
-  <main class="contenido">
-    <img class="logo" src="img/fbmpa-blanco.png" width="913" height="193"
-         alt="Federación de Balonmano del Principado de Asturias">
-    <p class="etiqueta"><span>Próximamente</span></p>
-    <h1><span>Asturias,</span> <span>rumbo al <span class="cesa">CESA</span></span></h1>
-    <span class="remate" aria-hidden="true"></span>
-    <p class="texto">Muy pronto, toda la información de las selecciones asturianas de balonmano en el CESA 2027.</p>
-  </main>
-  <footer class="pie">
-    <p>Federación de Balonmano del Principado de Asturias</p>
-  </footer>
+<main class="pagina">
+  <p class="aviso-web">
+    <img src="data:image/jpeg;base64,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" alt="Federación de Balonmano del Principado de Asturias" width="40" height="40">
+    <span>Próximamente<span>Muy pronto, toda la información de las selecciones asturianas de balonmano en el CESA 2027. Mientras llega, ¿cuántos goles metes?</span></span>
+  </p>
+
+  <section class="maquina" aria-label="Máquina arcade Asturias rumbo al CESA">
+    <header class="marquesina">
+      <h1><span>ASTURIAS</span> RUMBO AL CESA</h1>
+      <p>LANZAMIENTOS DE 7 METROS</p>
+    </header>
+
+    <div class="pantalla">
+      <dl class="marcador">
+        <div class="tiempo" id="celda-tiempo"><dt>TIEMPO</dt><dd id="m-tiempo">45</dd></div>
+        <div><dt>PUNTOS</dt><dd id="m-puntos">000</dd></div>
+        <div><dt>RÉCORD</dt><dd id="m-record">000</dd></div>
+      </dl>
+      <div class="campo">
+        <canvas id="pista" tabindex="0" aria-label="Pista de juego. Desliza hacia la portería para lanzar, o usa las flechas para apuntar y la barra espaciadora para lanzar."></canvas>
+
+        <div class="panel" id="panel-inicio">
+          <p class="sobre pixel">1 JUGADOR</p>
+          <h2>45 SEGUNDOS.<br>TODOS LOS GOLES QUE PUEDAS.</h2>
+          <ul class="reglas">
+            <li>Desliza el dedo hacia la portería y suelta para lanzar.</li>
+            <li>Gol, 1 punto. Escuadra, 3 puntos.</li>
+            <li>Desde el tercer gol seguido, puntos dobles.</li>
+            <li>Cada 3 goles sube el nivel y el portero adivina mejor.</li>
+            <li class="teclado">Con teclado: flechas para apuntar, espacio para lanzar.</li>
+          </ul>
+          <div class="acciones"><button class="btn" id="btn-jugar" type="button">JUGAR</button></div>
+        </div>
+
+        <div class="panel" id="panel-final" hidden>
+          <p class="sobre pixel" id="f-sobre">FIN DEL TIEMPO</p>
+          <p class="puntos-final"><span id="f-puntos">000</span><small id="f-unidad">PUNTOS</small></p>
+          <p class="detalle" id="f-detalle"></p>
+          <div class="acciones"><button class="btn" id="btn-otra" type="button">OTRA PARTIDA</button></div>
+          <p class="sobre pixel">RETA A TU EQUIPO</p>
+          <div class="acciones compartir">
+            <a class="btn btn--2" id="btn-whatsapp" href="https://wa.me/" target="_blank" rel="noopener">WHATSAPP</a>
+            <button class="btn btn--2" id="btn-enlace" type="button">COPIAR ENLACE</button>
+          </div>
+          <p class="estado" id="f-aviso" role="status" aria-live="polite"></p>
+        </div>
+
+        <div class="crt" aria-hidden="true"></div>
+      </div>
+    </div>
+
+    <div class="mandos">
+      <p>DESLIZA HACIA LA PORTERÍA Y SUELTA</p>
+      <button type="button" id="btn-sonido" aria-pressed="true">SONIDO: SÍ</button>
+    </div>
+  </section>
+
+  <p class="pie">Federación de Balonmano del Principado de Asturias. Infantil, cadete y juvenil, masculina y femenina.</p>
+</main>
+
+<script>
+(() => {
+  'use strict';
+
+  // ---------- Ajustes del juego (fáciles de tocar) ----------
+  const DURACION = 45;            // segundos por partida
+  const VUELO = 0.38;             // segundos que tarda el balón en llegar
+  const ARMADO = 0.1;             // segundos entre soltar el dedo y que el balón sale de la mano
+  const PUNTOS_GOL = 1, PUNTOS_ESCUADRA = 3, RACHA_DOBLE = 3;
+  const PORTERO_VEL_BASE = 55, PORTERO_VEL_POR_GOL = 7, PORTERO_VEL_MAX = 165; // píxeles de juego por segundo
+  // Inteligencia del portero: sube con cada gol hasta llegar al máximo en GOLES_TOPE
+  const GOLES_TOPE = 12;
+  const LEE_MIN = .25, LEE_MAX = .8;          // probabilidad de adivinar el lanzamiento
+  const REACCION_LENTA = .24, REACCION_RAPIDA = .14;   // segundos que tarda en reaccionar
+  const ESTIRADA_MIN = 60, ESTIRADA_MAX = 130;         // velocidad lateral al tirarse
+  const ALCANCE_MIN = .6, ALCANCE_MAX = 1;             // cuánto estira brazo o pierna (1 = del todo)
+  const SIGUE_MIRA_DESDE = 2;                 // goles a partir de los que te sigue mientras apuntas
+  const GOLES_POR_NIVEL = 3;
+  const CLAVE_RECORD = 'rumboalcesa_record', CLAVE_SONIDO = 'rumboalcesa_sonido';
+  const URL_WEB = 'https://rumboalcesa.es';
+
+  // ---------- Geometría (píxeles de juego: la pantalla mide 180 x 270) ----------
+  const LW = 180, LH = 270;
+  const G = { l: 25, r: 155, t: 45, b: 131, g: 4 };    // portería de 3 x 2 m y grosor del poste
+  const ESC = { w: 25, h: 23 };                         // zona de escuadra
+  const ORIGEN = { x: 90, y: 226 };                     // referencia para apuntar
+  const C = {
+    borde:'#0b1420', pared:'#0c2c4d', pared2:'#0a2440', azul:'#0168B3', azul2:'#014f8a', amarillo:'#FFE55D',
+    blanco:'#f4f7fa', rojo:'#e23b2e', parquet:'#d9a55d', parquet2:'#c48e47', parquet3:'#e6b874',
+    rival:'#ff7a3d', rival2:'#d85a22', pant:'#1d2733', piel:'#f0b98d', piel2:'#d99a6c', pelo:'#3a2416', tinta:'#050d18'
+  };
+
+  const cv = document.getElementById('pista');
+  const ctx = cv.getContext('2d');
+  const lienzo = document.createElement('canvas'); lienzo.width = LW; lienzo.height = LH;
+  const fondoC = document.createElement('canvas'); fondoC.width = LW; fondoC.height = LH;
+  const gradaC = document.createElement('canvas'); gradaC.width = LW; gradaC.height = 26;
+  const gJuego = lienzo.getContext('2d');
+  let g = gJuego;                                       // contexto sobre el que pintan las primitivas
+
+  const $ = id => document.getElementById(id);
+  const ui = {
+    tiempo: $('m-tiempo'), puntos: $('m-puntos'), record: $('m-record'), celdaTiempo: $('celda-tiempo'),
+    inicio: $('panel-inicio'), final: $('panel-final'), sonido: $('btn-sonido'),
+    fPuntos: $('f-puntos'), fUnidad: $('f-unidad'), fDetalle: $('f-detalle'), fSobre: $('f-sobre'), fAviso: $('f-aviso')
+  };
+  const pocoMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const tres = n => String(n).padStart(3, '0');
+
+  function leer(clave){ try { return localStorage.getItem(clave); } catch(e){ return null; } }
+  function guardar(clave, v){ try { localStorage.setItem(clave, String(v)); } catch(e){} }
+
+  const S = {
+    modo: 'inicio',               // inicio | cuenta | jugando | final
+    reloj: 0, cuenta: 0,
+    tiempo: DURACION, puntos: 0, goles: 0, tiros: 0, escuadras: 0, racha: 0,
+    record: parseInt(leer(CLAVE_RECORD), 10) || 0,
+    portero: { x: 90, dir: 1, cambio: 1, fase: 0, lee: false, reac: 0, vel: 0, fmax: 0 },
+    alcance: null,                // hacia dónde se estira el portero { x, y, f }
+    balon: null,                  // { pre, t, ox, oy, tx, ty, hecho, espera, res, x, y, vx, vy }
+    brazo: null,                  // segundos desde que empezó el gesto de lanzar
+    dirTiro: 0,
+    mira: null, arrastre: null,
+    rotulo: null, red: 0, ultimoSeg: 99
+  };
+
+  // ---------- Sonido (pitidos de recreativa) ----------
+  let ac = null, sonido = leer(CLAVE_SONIDO) !== 'no';
+  function pintarSonido(){ ui.sonido.textContent = 'SONIDO: ' + (sonido ? 'SÍ' : 'NO'); ui.sonido.setAttribute('aria-pressed', String(sonido)); }
+  pintarSonido();
+  function abrirAudio(){
+    if (ac || !sonido) return;
+    try { const A = window.AudioContext || window.webkitAudioContext; if (A) ac = new A(); } catch(e){ ac = null; }
+  }
+  function tono(f, dur, tipo, vol, espera, f2){
+    if (!sonido || !ac) return;
+    try {
+      const t = ac.currentTime + (espera || 0), o = ac.createOscillator(), ga = ac.createGain();
+      o.type = tipo || 'square'; o.frequency.setValueAtTime(f, t);
+      if (f2) o.frequency.exponentialRampToValueAtTime(f2, t + dur);
+      ga.gain.setValueAtTime(vol || .05, t); ga.gain.exponentialRampToValueAtTime(.0001, t + dur);
+      o.connect(ga); ga.connect(ac.destination); o.start(t); o.stop(t + dur + .02);
+    } catch(e){}
+  }
+  const suena = {
+    inicio(){ tono(440,.09); tono(440,.09,'square',.05,.45); tono(880,.25,'square',.05,.9); },
+    tiro(){ tono(520,.12,'square',.04,0,170); },
+    gol(){ tono(660,.08); tono(880,.08,'square',.05,.08); tono(1320,.16,'square',.05,.16); },
+    escuadra(){ [660,880,1100,1320,1760].forEach((f,i) => tono(f,.09,'square',.05,i*.07)); },
+    parada(){ tono(170,.2,'sawtooth',.06,0,70); },
+    poste(){ tono(1250,.07,'triangle',.08); tono(940,.12,'triangle',.06,.06); },
+    fuera(){ tono(230,.18,'square',.04,0,110); },
+    tic(){ tono(1000,.05,'square',.04); },
+    fin(){ tono(660,.14); tono(520,.14,'square',.05,.15); tono(392,.34,'square',.05,.3); }
+  };
+
+  // ---------- Primitivas de píxel ----------
+  function rect(x, y, w, h, c){ g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h)); }
+  function disco(cx, cy, r, c, d0, d1){
+    g.fillStyle = c; cx = Math.round(cx); cy = Math.round(cy);
+    const R = r + .4, n = Math.floor(R);
+    for (let dy = Math.max(-n, d0 === undefined ? -n : d0); dy <= Math.min(n, d1 === undefined ? n : d1); dy++) {
+      const h = Math.floor(Math.sqrt(R * R - dy * dy));
+      g.fillRect(cx - h, cy + dy, 2 * h + 1, 1);
+    }
+  }
+  function hueso(x0, y0, x1, y1, r, c){
+    const n = Math.max(1, Math.ceil(Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0))));
+    for (let i = 0; i <= n; i++) disco(x0 + (x1 - x0) * i / n, y0 + (y1 - y0) * i / n, r, c);
+  }
+  function mediaElipse(cx, cy, rx, ry, c){
+    g.fillStyle = c;
+    for (let dy = 0; dy <= ry; dy++) {
+      const h = Math.round(rx * Math.sqrt(1 - (dy * dy) / (ry * ry)));
+      g.fillRect(cx - h, cy + dy, 2 * h, 1);
+    }
+  }
+  function texto(s, x, y, c, tam, alin, sombra){
+    g.font = (tam || 8) + "px 'Press Start 2P', monospace"; g.textAlign = alin || 'center'; g.textBaseline = 'middle';
+    const o = Math.max(1, (tam || 8) / 8);
+    if (sombra !== false) { g.fillStyle = sombra || C.tinta; g.fillText(s, x + o, y + o); }
+    g.fillStyle = c; g.fillText(s, x, y);
+  }
+  // Figura: lista de piezas. Primero se pinta el contorno oscuro de todas y después el color.
+  const H = (x0, y0, x1, y1, r, c) => ({ k:'h', x0, y0, x1, y1, r, c });
+  const D = (x, y, r, c, d0, d1, sinBorde) => ({ k:'d', x, y, r, c, d0, d1, sinBorde });
+  const R = (x, y, w, h, c, sinBorde) => ({ k:'r', x, y, w, h, c, sinBorde });
+  function pieza(p, extra, c){
+    if (p.k === 'h') hueso(p.x0, p.y0, p.x1, p.y1, p.r + extra, c);
+    else if (p.k === 'd') disco(p.x, p.y, p.r + extra, c, p.d0, p.d1);
+    else rect(p.x - extra, p.y - extra, p.w + 2 * extra, p.h + 2 * extra, c);
+  }
+  function figura(piezas){
+    for (const p of piezas) if (!p.sinBorde) pieza(p, 1, C.borde);
+    for (const p of piezas) pieza(p, 0, p.c);
+  }
+  // Articulación de dos huesos (hombro-codo-mano o cadera-rodilla-pie)
+  function ik(ax, ay, tx, ty, l1, l2, px, py){
+    let dx = tx - ax, dy = ty - ay, d = Math.hypot(dx, dy) || .001;
+    const dd = clamp(d, Math.abs(l1 - l2) + .01, l1 + l2 - .01);
+    dx = dx / d; dy = dy / d;
+    const a = (l1 * l1 - l2 * l2 + dd * dd) / (2 * dd), h = Math.sqrt(Math.max(0, l1 * l1 - a * a));
+    const mx = ax + dx * a, my = ay + dy * a;
+    const e1 = { x: mx - dy * h, y: my + dx * h }, e2 = { x: mx + dy * h, y: my - dx * h };
+    const e = (e1.x * px + e1.y * py) >= (e2.x * px + e2.y * py) ? e1 : e2;
+    return { ex: e.x, ey: e.y, hx: ax + dx * dd, hy: ay + dy * dd };
+  }
+
+  // ---------- Decorado fijo ----------
+  function azar(n){ const x = Math.sin(n * 127.1) * 43758.5453; return x - Math.floor(x); }
+  function pintarGrada(){
+    g = gradaC.getContext('2d');
+    rect(0, 0, LW, 26, '#071a30');
+    const tonos = [C.azul, '#3d8fd1', C.amarillo, C.blanco, C.piel, '#0a3d6b', C.azul, C.amarillo];
+    let n = 0;
+    for (let fila = 0; fila < 5; fila++) for (let x = (fila % 2) * 2 - 1; x < LW; x += 4) {
+      const y = 2 + fila * 5; n++;
+      rect(x, y + 2, 3, 3, tonos[Math.floor(azar(n) * tonos.length)]);
+      rect(x + 1, y, 2, 2, azar(n + 500) > .5 ? C.piel : C.piel2);
+    }
+    g = gJuego;
+  }
+  function pintarFondo(){
+    g = fondoC.getContext('2d');
+    // pared y valla publicitaria
+    rect(0, 0, LW, G.b, C.pared);
+    rect(0, 100, LW, G.b - 100, C.pared2);
+    rect(0, 24, LW, 2, '#9fb6cc');
+    rect(0, 28, LW, 11, C.amarillo); rect(0, 28, LW, 1, '#fff6c2'); rect(0, 38, LW, 1, '#b3961a');
+    g.font = "8px 'Press Start 2P', monospace"; g.textAlign = 'center'; g.textBaseline = 'middle';
+    g.fillStyle = C.azul2; g.fillText('RUMBO AL CESA', 90, 34);
+    // parquet
+    rect(0, G.b, LW, LH - G.b, C.parquet);
+    let y = G.b, alto = 4, fila = 0;
+    while (y < LH) {
+      rect(0, y, LW, 1, C.parquet2);
+      for (let x = Math.floor(azar(fila) * 30); x < LW; x += 26 + Math.floor(azar(fila * 7 + x) * 22)) rect(x, y, 1, alto, C.parquet2);
+      if (fila % 3 === 1) rect(0, y + 1, LW, 1, C.parquet3);
+      y += Math.round(alto); alto *= 1.16; fila++;
+    }
+    // área de 6 m pintada de azul, con su línea
+    mediaElipse(90, G.b, 118, 48, C.blanco);
+    mediaElipse(90, G.b, 116, 46, C.azul);
+    rect(0, G.b, LW, 1, C.blanco);
+    // línea discontinua de 9 m
+    for (let i = 0; i < 80; i++) {
+      if (i % 4 > 1) continue;
+      const a = Math.PI * (i + .5) / 80, x = 90 + Math.cos(a) * 164, yy = G.b + Math.sin(a) * 84;
+      if (x > -2 && x < LW + 2) rect(x - 1, yy, 3, 2, C.blanco);
+    }
+    // línea de 7 m
+    rect(73, 193, 34, 2, C.blanco);
+    g = gJuego;
+  }
+
+  // ---------- Portero (de frente) ----------
+  function porteroPiezas(k, fase, alc){
+    const F = G.b, s = Math.sin(fase), bote = Math.round(Math.abs(s) * 1.4);
+    let lado = 0, inclina = 0, estiraBrazo = false, estiraPierna = false;
+    if (alc) { lado = alc.x >= k ? 1 : -1; inclina = lado * 3 * alc.f; if (alc.y < 98) estiraBrazo = true; else estiraPierna = true; }
+    const cx = k + inclina, cad = 95 + bote, hom = 69 + bote, cab = 60 + bote;
+    const P = [];
+    for (const sd of [-1, 1]) {                       // piernas: pantalón largo y zapatilla
+      let px = k + sd * 13, py = F - 2 - Math.max(0, sd * s) * 2;
+      if (estiraPierna && sd === lado) { px = lerp(px, alc.x, alc.f); py = lerp(py, alc.y, alc.f); }
+      const L = ik(cx + sd * 4, cad, px, py, 18, 18, sd, -.2);
+      P.push(H(cx + sd * 4, cad, L.ex, L.ey, 4, C.pant), H(L.ex, L.ey, L.hx, L.hy, 3, C.pant), H(L.hx, L.hy, L.hx + sd * 3, L.hy, 2, C.blanco));
+    }
+    P.push(H(cx, hom + 2, cx, cad - 4, 7, C.rival));   // tronco
+    P.push(H(cx - 8, hom, cx + 8, hom, 3, C.rival));   // hombros
+    P.push(H(cx - 4, cad - 1, cx + 4, cad - 1, 5, C.pant));
+    P.push(R(cx - 7, hom + 9, 15, 2, C.rival2, true)); // franja de la camiseta
+    for (const sd of [-1, 1]) {                       // brazos: manga larga y mano
+      let mx = k + sd * 19, my = 57 + bote;
+      if (estiraBrazo && sd === lado) { mx = lerp(mx, alc.x, alc.f); my = lerp(my, alc.y, alc.f); }
+      const A = ik(cx + sd * 8, hom, mx, my, 11, 11, sd, .6);
+      P.push(H(cx + sd * 8, hom, A.ex, A.ey, 3, C.rival), H(A.ex, A.ey, A.hx, A.hy, 3, C.rival), D(A.hx, A.hy, 2, C.piel));
+    }
+    P.push(R(cx - 2, cab + 4, 4, 4, C.piel2));        // cuello
+    P.push(D(cx, cab, 5, C.piel));                    // cabeza
+    P.push(D(cx, cab, 5, C.pelo, -5, -3, true));      // pelo
+    P.push(R(cx - 3, cab, 1, 2, C.tinta, true), R(cx + 2, cab, 1, 2, C.tinta, true));
+    return P;
+  }
+  function distSeg(px, py, a, b, c, d){
+    const vx = c - a, vy = d - b, l2 = vx * vx + vy * vy;
+    const t = l2 ? clamp(((px - a) * vx + (py - b) * vy) / l2, 0, 1) : 0;
+    return Math.hypot(px - (a + vx * t), py - (b + vy * t));
+  }
+  function tocaPortero(x, y){
+    for (const p of porteroPiezas(S.portero.x, S.portero.fase, S.alcance)) {
+      if (p.sinBorde) continue;
+      if (p.k === 'h' && distSeg(x, y, p.x0, p.y0, p.x1, p.y1) <= p.r + 2.4) return true;
+      if (p.k === 'd' && Math.hypot(x - p.x, y - p.y) <= p.r + 2.4) return true;
+    }
+    return false;
+  }
+
+  // ---------- Lanzador (de espaldas, en primer plano) ----------
+  const HOMBRO = { x: 90, y: 231 }, MANO_LISTA = { x: 104, y: 207 };
+  function manoLanzador(){
+    const d = S.dirTiro, suelta = { x: 95 + d * 6, y: 196 }, sigue = { x: 82 + d * 7, y: 204 };
+    const a = S.brazo;
+    if (a !== null) {
+      if (a < ARMADO) { const t = a / ARMADO; return { x: lerp(108, suelta.x, t * t), y: lerp(214, suelta.y, t * t) }; }
+      if (a < .3) { const t = (a - ARMADO) / (.3 - ARMADO); return { x: lerp(suelta.x, sigue.x, t), y: lerp(suelta.y, sigue.y, t) }; }
+      const t = clamp((a - .3) / .3, 0, 1); return { x: lerp(sigue.x, MANO_LISTA.x, t), y: lerp(sigue.y, MANO_LISTA.y, t) };
+    }
+    if (S.mira) return { x: 108 + (S.mira.x - 90) * .03, y: 214 };      // brazo armado atrás mientras apuntas
+    return MANO_LISTA;
+  }
+  function lanzadorPiezas(m){
+    const P = [], giro = S.brazo !== null && S.brazo < .3 ? 2 : 0;       // el hombro acompaña el lanzamiento
+    const I = ik(52, 232, 43, 257, 14, 14, -1, 0);                       // brazo izquierdo, de equilibrio
+    P.push(H(52, 232, I.ex, I.ey, 4, C.azul), H(I.ex, I.ey, I.hx, I.hy, 3, C.piel), D(I.hx, I.hy, 3, C.piel));
+    P.push(H(71, 236, 71, LH + 6, 16, C.azul));                          // espalda
+    P.push(H(55, 230, 87, 230 - giro, 5, C.azul));                       // hombros
+    P.push(R(56, 226, 5, 2, C.amarillo, true), R(82, 226 - giro, 5, 2, C.amarillo, true));
+    P.push(R(65, 242, 13, 3, C.amarillo, true), H(76, 246, 70, 260, 1, C.amarillo)); // dorsal 7
+    P[P.length - 1].sinBorde = true;
+    P.push(R(67, 219, 9, 6, C.piel2));                                   // cuello
+    P.push(D(71, 211, 8, C.pelo));                                       // cabeza, vista por detrás
+    P.push(R(62, 211, 1, 4, C.piel, true), R(80, 211, 1, 4, C.piel, true));
+    const hx = HOMBRO.x, hy = HOMBRO.y - giro;
+    const A = ik(hx, hy, m.x, m.y, 15, 15, 1, .5);                       // brazo de lanzamiento
+    P.push(H(hx, hy, A.ex, A.ey, 4, C.azul), H(A.ex, A.ey, A.hx, A.hy, 3, C.piel), D(A.hx, A.hy, 3, C.piel));
+    return { piezas: P, mano: { x: A.hx, y: A.hy } };
+  }
+
+  function balon(x, y, r, giro){
+    disco(x, y, r + 1, C.borde); disco(x, y, r, C.amarillo);
+    if (r >= 3) {
+      const cx = Math.cos(giro), sy = Math.sin(giro);
+      hueso(x - cx * (r - 1), y - sy * (r - 1), x + cx * (r - 1), y + sy * (r - 1), 0, C.borde);
+      if (r >= 5) rect(x - 2, y - r + 1, 2, 2, '#fff8cf');
+    }
+  }
+
+  // ---------- Partida ----------
+  function empezar(){
+    abrirAudio();
+    Object.assign(S, { modo:'cuenta', cuenta:1.35, tiempo:DURACION, puntos:0, goles:0, tiros:0, escuadras:0, racha:0,
+      balon:null, brazo:null, mira:null, arrastre:null, rotulo:null, red:0, alcance:null, ultimoSeg:99 });
+    S.portero.x = 90; S.portero.dir = Math.random() < .5 ? -1 : 1;
+    ui.inicio.hidden = true; ui.final.hidden = true; ui.fAviso.textContent = '';
+    suena.inicio();
+    try { cv.focus({ preventScroll: true }); } catch(e){}
+  }
+
+  function terminar(){
+    S.modo = 'final'; S.mira = null; S.arrastre = null;
+    const nuevo = S.puntos > S.record;
+    if (nuevo) { S.record = S.puntos; guardar(CLAVE_RECORD, S.record); }
+    ui.fSobre.textContent = nuevo ? 'FIN DEL TIEMPO. ¡NUEVO RÉCORD!' : 'FIN DEL TIEMPO';
+    ui.fSobre.classList.toggle('parpadea', nuevo);
+    ui.fPuntos.textContent = tres(S.puntos);
+    ui.fUnidad.textContent = S.puntos === 1 ? 'PUNTO' : 'PUNTOS';
+    const go = S.goles === 1 ? '1 gol' : S.goles + ' goles';
+    const ti = S.tiros === 1 ? '1 lanzamiento' : S.tiros + ' lanzamientos';
+    const es = S.escuadras === 1 ? '1 a la escuadra' : S.escuadras + ' a la escuadra';
+    ui.fDetalle.textContent = go + ' en ' + ti + ', ' + es + '.' + (nuevo ? '' : ' Tu récord: ' + S.record + '.');
+    ui.final.hidden = false; suena.fin(); prepararCompartir();
+    $('btn-otra').focus({ preventScroll: true });
+  }
+
+  const dificultad = () => Math.min(1, S.goles / GOLES_TOPE);
+  const nivel = () => 1 + Math.floor(S.goles / GOLES_POR_NIVEL);
+
+  function lanzar(obj){
+    if (S.modo !== 'jugando' || S.balon) return;
+    S.dirTiro = clamp((obj.x - 90) / 65, -1, 1);
+    S.brazo = 0;
+    S.balon = { pre: ARMADO, t: 0, ox: 0, oy: 0, tx: obj.x, ty: obj.y, hecho: false, espera: 0, res: null, x: 0, y: 0, vx: 0, vy: 0 };
+    S.tiros++; S.mira = null; suena.tiro();
+    // ¿adivina el portero este lanzamiento?
+    const d = dificultad(), p = S.portero;
+    p.lee = Math.random() < lerp(LEE_MIN, LEE_MAX, d);
+    p.reac = lerp(REACCION_LENTA, REACCION_RAPIDA, d);
+    p.vel = lerp(ESTIRADA_MIN, ESTIRADA_MAX, d);
+    p.fmax = lerp(ALCANCE_MIN, ALCANCE_MAX, d);
+  }
+
+  function resolver(b){
+    const x = b.tx, y = b.ty; let res;
+    const poste = (y > G.t - G.g && (Math.abs(x - (G.l - 2)) <= 3.5 || Math.abs(x - (G.r + 2)) <= 3.5)) ||
+                  (Math.abs(y - (G.t - 2)) <= 3.5 && x > G.l - 5 && x < G.r + 5);
+    const dentro = x > G.l + 1.5 && x < G.r - 1.5 && y > G.t + 1.5;
+    if (poste) res = 'poste';
+    else if (!dentro) res = 'fuera';
+    else if (tocaPortero(x, y)) res = 'parada';
+    else res = (y < G.t + ESC.h && (x < G.l + ESC.w || x > G.r - ESC.w)) ? 'escuadra' : 'gol';
+
+    b.res = res; b.hecho = true; b.espera = .45; b.x = x; b.y = y;
+    const lado = x >= S.portero.x ? 1 : -1;
+    if (res === 'gol' || res === 'escuadra') {
+      S.racha++; S.goles++;
+      let p = res === 'escuadra' ? PUNTOS_ESCUADRA : PUNTOS_GOL;
+      if (res === 'escuadra') S.escuadras++;
+      if (S.racha >= RACHA_DOBLE) p *= 2;
+      S.puntos += p; S.red = 1;
+      const sube = S.goles % GOLES_POR_NIVEL === 0;
+      S.rotulo = { texto: res === 'escuadra' ? '¡ESCUADRA!' : '¡GOL!', sub: '+' + p + (sube ? '  NIVEL ' + nivel() : ''), color: C.amarillo, vida: 1 };
+      suena[res]();
+    } else {
+      S.racha = 0;
+      if (res === 'parada') { S.alcance = { x, y, f: 1 }; b.vx = lado * 45; b.vy = -25; }
+      else if (res === 'poste') { b.vx = (x < 90 ? -1 : 1) * 30; b.vy = 20; }
+      else { b.vx = 0; b.vy = 30; }
+      S.rotulo = { texto: res === 'parada' ? 'PARADA' : res === 'poste' ? 'AL POSTE' : 'FUERA', sub: '',
+                   color: res === 'parada' ? C.rival : C.blanco, vida: 1 };
+      suena[res]();
+    }
+  }
+
+  function moverPortero(dt, v){
+    const p = S.portero;
+    p.x += p.dir * v * dt; p.fase += v * dt * .16;
+    if (p.x < 44) { p.x = 44; p.dir = 1; }
+    if (p.x > 136) { p.x = 136; p.dir = -1; }
+  }
+  function irHacia(dt, x, v){
+    const p = S.portero, dx = clamp(x, 44, 136) - p.x, paso = Math.min(Math.abs(dx), v * dt);
+    if (Math.abs(dx) > .5) { p.dir = dx > 0 ? 1 : -1; p.x += p.dir * paso; p.fase += paso * .16; }
+  }
+  function porteroEnJuego(dt){
+    const p = S.portero, b = S.balon;
+    const v = Math.min(PORTERO_VEL_BASE + PORTERO_VEL_POR_GOL * S.goles, PORTERO_VEL_MAX);
+    if (b && b.pre <= 0 && !b.hecho) {              // balón en el aire
+      const pasado = b.t * VUELO - p.reac;
+      if (p.lee && pasado > 0) {                    // lo ha adivinado: se tira hacia el balón
+        irHacia(dt, b.tx, p.vel);
+        S.alcance = { x: b.tx, y: b.ty, f: p.fmax * clamp(pasado / (VUELO - p.reac), 0, 1) };
+      } else if (!p.lee) moverPortero(dt, v);
+      return;
+    }
+    if (b) return;                                  // armando el brazo o balón ya resuelto: se queda
+    if (S.mira && S.goles >= SIGUE_MIRA_DESDE) { irHacia(dt, S.mira.x, v * lerp(.5, 1, dificultad())); return; }
+    moverPortero(dt, v);
+    if (S.goles >= 6) {                             // a partir de 6 goles, amaga
+      p.cambio -= dt;
+      if (p.cambio <= 0) { if (Math.random() < .5) p.dir *= -1; p.cambio = .5 + Math.random() * .9; }
+    }
+  }
+
+  function actualizar(dt){
+    S.reloj += dt;
+    const p = S.portero;
+    if (S.modo === 'cuenta') {
+      S.cuenta -= dt; moverPortero(dt, 30);
+      if (S.cuenta <= 0) S.modo = 'jugando';
+    } else if (S.modo === 'jugando') {
+      S.tiempo = Math.max(0, S.tiempo - dt);
+      const seg = Math.ceil(S.tiempo);
+      if (seg !== S.ultimoSeg) { S.ultimoSeg = seg; if (seg <= 5 && seg > 0) suena.tic(); }
+      porteroEnJuego(dt);
+      const b = S.balon;
+      if (b) {
+        if (b.pre > 0) {
+          b.pre -= dt;
+          if (b.pre <= 0) { const m = lanzadorPiezas(manoLanzador()).mano; b.ox = m.x; b.oy = m.y - 7; }
+        } else if (!b.hecho) {
+          b.t += dt / VUELO;
+          if (b.t >= 1) { b.t = 1; resolver(b); }
+        } else {
+          b.espera -= dt;
+          if (b.res !== 'gol' && b.res !== 'escuadra') { b.vy += 260 * dt; b.x += b.vx * dt; b.y += b.vy * dt; }
+          if (b.espera <= 0) { S.balon = null; S.alcance = null; }
+        }
+      }
+      if (S.tiempo <= 0 && !S.balon) terminar();
+    } else if (S.modo === 'inicio' && !pocoMovimiento) {
+      moverPortero(dt, 30);
+    }
+    if (S.brazo !== null) { S.brazo += dt; if (S.brazo > .6) S.brazo = null; }
+    if (S.rotulo) { S.rotulo.vida -= dt / .9; if (S.rotulo.vida <= 0) S.rotulo = null; }
+    if (S.red > 0) S.red = Math.max(0, S.red - dt / .5);
+  }
+
+  // ---------- Dibujo de cada fotograma ----------
+  function porteria(){
+    rect(G.l, G.t, G.r - G.l, G.b - G.t, S.red > 0 && Math.floor(S.reloj * 14) % 2 ? 'rgba(255,255,255,.22)' : 'rgba(0,0,0,.28)');
+    g.fillStyle = 'rgba(255,255,255,.26)';
+    for (let x = G.l + 4; x < G.r; x += 5) g.fillRect(x, G.t, 1, G.b - G.t);
+    for (let y = G.t + 4; y < G.b; y += 5) g.fillRect(G.l, y, G.r - G.l, 1);
+    // escuadras: valen triple
+    const luz = Math.floor(S.reloj * 3) % 2 ? C.amarillo : '#fff6c2';
+    for (const sd of [-1, 1]) {
+      const x0 = sd < 0 ? G.l + 1 : G.r - ESC.w, x1 = x0 + ESC.w - 1, y1 = G.t + ESC.h - 1;
+      rect(x0, G.t, ESC.w, ESC.h, 'rgba(255,229,93,.16)');
+      for (let i = 0; i < ESC.w; i += 4) rect(x0 + i, y1, 2, 1, luz);
+      for (let i = 0; i < ESC.h; i += 4) rect(sd < 0 ? x1 : x0, G.t + i, 1, 2, luz);
+      texto('x3', x0 + ESC.w / 2 - (sd < 0 ? 1 : -1), G.t + 11, luz, 8);
+    }
+  }
+  function postes(){
+    const t = G.g, tramo = 8;
+    for (let i = 0, y = G.b; y > G.t - t; y -= tramo, i++) {
+      const h = Math.min(tramo, y - (G.t - t)), c = i % 2 ? C.rojo : C.blanco;
+      rect(G.l - t, y - h, t, h, c); rect(G.r, y - h, t, h, c);
+    }
+    for (let i = 0, x = G.l - t; x < G.r + t; x += tramo, i++) rect(x, G.t - t, Math.min(tramo, G.r + t - x), t, i % 2 ? C.blanco : C.rojo);
+    rect(G.l - t - 1, G.t - t - 1, G.r - G.l + 2 * t + 2, 1, C.borde);
+    rect(G.l - t - 1, G.t - t, 1, G.b - G.t + t, C.borde); rect(G.r + t, G.t - t, 1, G.b - G.t + t, C.borde);
+  }
+  function mira(desde){
+    const m = S.mira; if (!m) return;
+    const d = Math.hypot(m.x - desde.x, m.y - desde.y), n = Math.floor(d / 6), corre = Math.floor(S.reloj * 10);
+    for (let i = 1; i < n; i++) {
+      const t = i / n;
+      rect(lerp(desde.x, m.x, t) - 1, lerp(desde.y, m.y, t) - 1, 2, 2, (i + corre) % 3 ? C.blanco : C.amarillo);
+    }
+    const c = Math.floor(S.reloj * 8) % 2 ? C.amarillo : C.blanco, x = Math.round(m.x), y = Math.round(m.y);
+    rect(x - 6, y - 1, 13, 3, C.borde); rect(x - 1, y - 6, 3, 13, C.borde);
+    rect(x - 5, y, 4, 1, c); rect(x + 2, y, 4, 1, c); rect(x, y - 5, 1, 4, c); rect(x, y + 2, 1, 4, c);
+  }
+
+  function escena(){
+    g = gJuego;
+    g.drawImage(fondoC, 0, 0);
+    g.drawImage(gradaC, 0, S.red > 0 && !pocoMovimiento && Math.floor(S.reloj * 12) % 2 ? -2 : 0);   // la grada salta con el gol
+    rect(0, 24, LW, 2, '#9fb6cc');
+    porteria();
+    const b = S.balon, enRed = b && b.hecho && (b.res === 'gol' || b.res === 'escuadra');
+    if (enRed) balon(b.tx, b.ty, 3, 1);
+    // sombra y portero
+    rect(S.portero.x - 14, G.b + 1, 28, 2, 'rgba(5,13,24,.35)');
+    figura(porteroPiezas(S.portero.x, S.portero.fase, S.alcance));
+    postes();
+
+    const L = lanzadorPiezas(manoLanzador());
+    const enMano = { x: L.mano.x, y: L.mano.y - 7 };
+    if (S.modo === 'jugando' && !b) mira(enMano);
+    rect(40, LH - 3, 64, 3, 'rgba(5,13,24,.3)');
+    figura(L.piezas);
+
+    if (b && !enRed) {
+      if (b.pre > 0) balon(enMano.x, enMano.y, 7, 0);
+      else if (!b.hecho) {
+        const e = 1 - Math.pow(1 - b.t, 1.5);
+        const x = lerp(b.ox, b.tx, e), y = lerp(b.oy, b.ty, e) - Math.sin(Math.PI * e) * 10, r = Math.round(lerp(7, 3, e));
+        const sy = lerp(250, G.b + 2, e);
+        if (sy > y + r) rect(x - r, sy, r * 2, 2, 'rgba(5,13,24,.3)');
+        balon(x, y, r, e * 14);
+      } else balon(b.x, b.y, 3, S.reloj * 20);
+    } else if (!b && S.brazo === null) {
+      balon(enMano.x, enMano.y, 7, 0);
+    } else if (!b && S.brazo !== null && S.brazo > .45) {
+      balon(enMano.x, enMano.y, 7, 0);
+    }
+
+    if (S.rotulo) {
+      const r = S.rotulo, alterna = Math.floor(S.reloj * 12) % 2;
+      texto(r.texto, 90, 158, alterna && r.color === C.amarillo ? C.blanco : r.color, 16);
+      if (r.sub) texto(r.sub, 90, 177, C.blanco, 8);
+    }
+    if (S.modo === 'cuenta') texto(S.cuenta > .45 ? '¡LISTOS!' : '¡YA!', 90, 158, C.amarillo, 16);
+    if (S.modo === 'jugando' || S.modo === 'cuenta') texto('NIVEL ' + nivel(), 176, 237, C.blanco, 8, 'right');
+    if (S.racha >= RACHA_DOBLE && S.modo === 'jugando' && Math.floor(S.reloj * 4) % 4) {
+      texto('RACHA', 176, 250, C.amarillo, 8, 'right'); texto('x2', 176, 261, C.blanco, 8, 'right');
+    }
+  }
+  function dibujar(){
+    escena();
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(lienzo, 0, 0, cv.width, cv.height);
+  }
+
+  const textoReto = () => 'He hecho ' + S.puntos + (S.puntos === 1 ? ' punto' : ' puntos') +
+    ' en ASTURIAS RUMBO AL CESA, la recreativa de 7 metros de las selecciones asturianas de balonmano. ¿Me superas? ' + URL_WEB;
+  function prepararCompartir(){
+    $('btn-whatsapp').href = 'https://wa.me/?text=' + encodeURIComponent(textoReto());
+  }
+
+  const vistos = {};
+  function pon(el, clave, v){ if (vistos[clave] !== v) { vistos[clave] = v; el.textContent = v; } }
+  function marcador(){
+    pon(ui.tiempo, 't', String(Math.ceil(S.tiempo)).padStart(2, '0'));
+    pon(ui.puntos, 'p', tres(S.puntos));
+    pon(ui.record, 'r', tres(Math.max(S.record, S.puntos)));
+    const apura = S.modo === 'jugando' && S.tiempo <= 5;
+    if (vistos.a !== apura) { vistos.a = apura; ui.celdaTiempo.classList.toggle('apura', apura); }
+  }
+
+  function ajustar(){
+    const w = cv.clientWidth || 360, dpr = Math.min(window.devicePixelRatio || 1, 3);
+    cv.width = Math.round(w * dpr); cv.height = Math.round(w * LH / LW * dpr);
+  }
+  window.addEventListener('resize', ajustar);
+  ajustar(); pintarGrada(); pintarFondo();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { pintarFondo(); ajustar(); });
+
+  let antes = performance.now();
+  function bucle(ahora){
+    const dt = Math.min(.1, (ahora - antes) / 1000); antes = ahora;
+    actualizar(dt); dibujar(); marcador();
+    requestAnimationFrame(bucle);
+  }
+  requestAnimationFrame(bucle);
+
+  // ---------- Controles ----------
+  function punto(e){
+    const r = cv.getBoundingClientRect();
+    return { x: (e.clientX - r.left) * LW / r.width, y: (e.clientY - r.top) * LH / r.height };
+  }
+  const limita = m => ({ x: clamp(m.x, 5, LW - 5), y: clamp(m.y, 30, G.b - 4) });
+  cv.addEventListener('pointerdown', e => {
+    if (S.modo !== 'jugando' || S.balon) return;
+    e.preventDefault();
+    S.arrastre = punto(e); S.mira = null;
+    try { cv.setPointerCapture(e.pointerId); } catch(err){}
+  });
+  cv.addEventListener('pointermove', e => {
+    if (!S.arrastre) return;
+    const p = punto(e), dx = p.x - S.arrastre.x, dy = p.y - S.arrastre.y;
+    S.mira = dy < -6 ? limita({ x: ORIGEN.x + dx * 1.5, y: ORIGEN.y + dy * 1.9 }) : null;
+  });
+  cv.addEventListener('pointerup', () => {
+    if (!S.arrastre) return;
+    const m = S.mira; S.arrastre = null; S.mira = null;
+    if (m) lanzar(m);
+  });
+  cv.addEventListener('pointercancel', () => { S.arrastre = null; S.mira = null; });
+
+  cv.addEventListener('keydown', e => {
+    if (S.modo !== 'jugando') return;
+    const paso = 7, m = S.mira || S.teclado || { x: 90, y: 90 };
+    let x = m.x, y = m.y;
+    if (e.key === 'ArrowLeft') x -= paso; else if (e.key === 'ArrowRight') x += paso;
+    else if (e.key === 'ArrowUp') y -= paso; else if (e.key === 'ArrowDown') y += paso;
+    else if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); if (!S.balon) { S.teclado = limita(m); lanzar(S.teclado); } return; }
+    else return;
+    e.preventDefault();
+    S.teclado = limita({ x, y });
+    if (!S.balon) S.mira = S.teclado;
+  });
+
+  $('btn-jugar').addEventListener('click', empezar);
+  $('btn-otra').addEventListener('click', empezar);
+  ui.sonido.addEventListener('click', () => {
+    sonido = !sonido; guardar(CLAVE_SONIDO, sonido ? 'si' : 'no'); pintarSonido();
+    if (sonido) { abrirAudio(); suena.tic(); }
+  });
+  $('btn-enlace').addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(URL_WEB); ui.fAviso.textContent = 'Enlace copiado. Pégalo donde quieras.'; }
+    catch (err) { ui.fAviso.textContent = 'Copia este enlace: ' + URL_WEB; }
+  });
+})();
+</script>
 </body>
 </html>

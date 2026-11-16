@@ -19,10 +19,19 @@ No hace falta pedir confirmación para el commit y el push a `main` de estos enc
 El workflow publica la carpeta `proximamente/` en la raíz del dominio y la web
 real en una carpeta de vista previa, con `noindex`:
 
-- Raíz: https://rumboalcesa.es/ (página "Próximamente")
+- Raíz: https://rumboalcesa.es/ (juego "Asturias rumbo al CESA", ver abajo)
 - Web real: https://rumboalcesa.es/vista-previa-p623z9u80x/
 - Mientras el dominio no esté conectado, las mismas rutas cuelgan de
   https://rubencandasmarketing-gif.github.io/rumboalcesa/
+
+La raíz enseña el juego arcade "Asturias rumbo al CESA" (recreativa de
+lanzamientos de 7 metros) con el aviso "Próximamente": es el gancho hasta el
+lanzamiento. Todo el juego es `proximamente/index.html`, un único archivo con
+su CSS y su JS dentro; las reglas y la dificultad están ajustadas a propósito,
+no tocarlo sin que Rubén lo pida. La carpeta es autocontenida (favicon, fuentes
+Barlow y Press Start 2P, `img/og-juego.png` para la vista previa del enlace) y
+no hace peticiones externas. El workflow genera `404.html` a partir de ese
+index, así que su `<head>` debe seguir en una línea propia.
 
 No enlazar la vista previa desde ningún sitio. Para lanzar la web real, ver
 el comentario "PARA LANZAR" en el workflow.
