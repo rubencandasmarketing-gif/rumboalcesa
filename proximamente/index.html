@@ -4,16 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Asturias rumbo al CESA</title>
-<meta name="description" content="Muy pronto, toda la información de las selecciones asturianas de balonmano en el CESA 2027. Mientras llega, juega a la recreativa de lanzamientos de 7 metros.">
+<meta name="description" content="Mientras esperas la nueva web con toda la información de las selecciones asturianas de balonmano en el CESA 2027, demuestra tu puntería desde los 7 metros.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://rumboalcesa.es/">
-<meta property="og:title" content="Asturias rumbo al CESA: ¿cuántos goles metes en 45 segundos?">
-<meta property="og:description" content="Muy pronto, toda la información de las selecciones asturianas de balonmano en el CESA 2027. Mientras llega, juega a la recreativa de 7 metros y reta a tu equipo.">
-<meta property="og:image" content="https://rumboalcesa.es/img/og-juego.png">
-<meta property="og:image:alt" content="Asturias rumbo al CESA: recreativa de lanzamientos de 7 metros">
+<meta property="og:title" content="Asturias, rumbo al CESA — Próximamente">
+<meta property="og:description" content="Mientras esperas la nueva web con toda la información del CESA 2027, demuestra tu puntería desde los 7 metros.">
+<meta property="og:image" content="https://rumboalcesa.es/img/og-rumbo-al-cesa.jpg">
+<meta property="og:image:alt" content="Asturias, rumbo al CESA — Próximamente. Demuestra tu puntería desde los 7 metros">
 <meta property="og:site_name" content="Asturias, rumbo al CESA">
 <meta property="og:locale" content="es_ES">
-<meta name="twitter:image" content="https://rumboalcesa.es/img/og-juego.png">
+<meta name="twitter:image" content="https://rumboalcesa.es/img/og-rumbo-al-cesa.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -62,12 +62,6 @@ body{
   padding:var(--sp-2) var(--sp-2) var(--sp-3);
   display:flex; flex-direction:column; align-items:center; gap:var(--sp-2);
 }
-.aviso-web{
-  align-self:stretch; margin:0; display:flex; align-items:flex-start; gap:.75rem;
-  font:600 .8rem/1.3 var(--font-body); letter-spacing:.12em; text-transform:uppercase; color:var(--amarillo);
-}
-.aviso-web img{width:40px; height:40px; border-radius:10px; border:1.5px solid rgba(255,255,255,.3); flex:none}
-.aviso-web span span{display:block; color:rgba(238,246,252,.8); letter-spacing:.04em; text-transform:none; font-weight:400; font-size:.9rem}
 
 /* ---------- Máquina ---------- */
 .maquina{
@@ -175,14 +169,52 @@ canvas:focus-visible{box-shadow:inset 0 0 0 3px var(--amarillo)}
 .pie{align-self:stretch; margin:0; font-size:.875rem; color:rgba(238,246,252,.7); line-height:1.4}
 
 @media (prefers-reduced-motion: reduce){ .parpadea,.marcador .tiempo.apura dd{animation:none} *{transition:none!important} }
+
+/* ---------- Portada "Próximamente" sobre la máquina (colores y rayado de la web) ---------- */
+body{
+  background:
+    repeating-linear-gradient(82deg, rgba(255,255,255,.045) 0 2px, transparent 2px 16px),
+    linear-gradient(135deg, #083A5E, #0168B3 58%, #045189);
+  background-attachment:fixed;
+}
+.portada{align-self:stretch; display:flex; flex-direction:column; align-items:center; text-align:center; gap:.6rem; padding-top:.25rem; text-shadow:0 1px 12px rgba(6,35,56,.45)}
+.portada__logo{width:min(9rem, 42%); height:auto; filter:drop-shadow(0 6px 18px rgba(6,35,56,.35))}
+.portada__chip{margin:0; padding:.3em .9em; font:700 .95rem/1.2 var(--font-cond); text-transform:uppercase; letter-spacing:.14em; color:#062338; background:linear-gradient(160deg,#FFEC7E,#FFE55D 45%,#F8D93E); border-radius:6px; transform:skewX(-8deg); text-shadow:none}
+.portada__chip span{display:inline-block; transform:skewX(8deg)}
+.portada__texto{margin:0; max-width:31ch; font-size:1rem; line-height:1.35; color:#D9EAF6}
+.portada__texto b{color:#fff; font-weight:600}
+.portada__texto strong{display:block; margin-top:.2rem; font:700 1.4rem/1.05 var(--font-cond); text-transform:uppercase; letter-spacing:.02em; color:var(--amarillo); text-wrap:balance}
+.pie{text-align:center; color:rgba(238,246,252,.85)}
+/* Paneles: si el contenido no cabe, se puede recorrer entero (centrado seguro) */
+.panel{justify-content:flex-start}
+.panel > :first-child{margin-top:auto}
+.panel > :last-child{margin-bottom:auto}
+@media (max-height:720px), (max-width:23rem){
+  .panel{gap:.5rem; padding:.7rem .9rem}
+  .panel h2{font-size:var(--px-3); line-height:1.4}
+  .reglas{gap:.25rem; font-size:.95rem; line-height:1.2}
+  .puntos-final{font-size:1.9rem}
+}
+/* Ordenador: portada a la izquierda y máquina a la derecha, todo en una pantalla */
+@media (min-width:56rem){
+  .pagina{width:min(100%, 64rem); min-height:100dvh; box-sizing:border-box; display:grid; grid-template-columns:1fr auto; grid-template-rows:1fr auto; column-gap:3.5rem; align-items:center; padding:.75rem 2rem .5rem}
+  .portada{grid-column:1; grid-row:1; align-self:center; align-items:flex-start; text-align:left; gap:1.1rem}
+  .portada__logo{width:13rem}
+  .portada__chip{font-size:1.1rem}
+  .portada__texto{max-width:30rem; font-size:1.3rem}
+  .portada__texto strong{margin-top:.6rem; font-size:clamp(2.6rem, 4.4vw, 3.6rem); line-height:.95}
+  .maquina{grid-column:2; grid-row:1 / span 2}
+  .pie{grid-column:1; grid-row:2; text-align:left; align-self:end}
+}
 </style>
 </head>
 <body>
 <main class="pagina">
-  <p class="aviso-web">
-    <img src="data:image/jpeg;base64,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" alt="Federación de Balonmano del Principado de Asturias" width="40" height="40">
-    <span>Próximamente<span>Muy pronto, toda la información de las selecciones asturianas de balonmano en el CESA 2027. Mientras llega, ¿cuántos goles metes?</span></span>
-  </p>
+  <header class="portada">
+    <img class="portada__logo" src="img/fbmpa-blanco.png" width="913" height="193" alt="Federación de Balonmano del Principado de Asturias">
+    <p class="portada__chip"><span>Próximamente</span></p>
+    <p class="portada__texto">Mientras esperas la nueva web con toda la información del <b>CESA 2027</b>… <strong>Demuestra tu puntería desde los 7 metros</strong></p>
+  </header>
 
   <section class="maquina" aria-label="Máquina arcade Asturias rumbo al CESA">
     <header class="marquesina">
@@ -843,6 +875,17 @@ canvas:focus-visible{box-shadow:inset 0 0 0 3px var(--amarillo)}
     try { await navigator.clipboard.writeText(URL_WEB); ui.fAviso.textContent = 'Enlace copiado. Pégalo donde quieras.'; }
     catch (err) { ui.fAviso.textContent = 'Copia este enlace: ' + URL_WEB; }
   });
+})();
+</script>
+<script>
+/* Al empezar una partida, la máquina se coloca entera en pantalla */
+(() => {
+  const maquina = document.querySelector('.maquina');
+  const suave = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  ['btn-jugar', 'btn-otra'].forEach(id => document.getElementById(id).addEventListener('click', () => {
+    const r = maquina.getBoundingClientRect();
+    if (r.top < 0 || r.bottom > window.innerHeight) maquina.scrollIntoView({ block: r.height > window.innerHeight ? 'end' : 'center', behavior: suave ? 'smooth' : 'auto' });
+  }));
 })();
 </script>
 </body>

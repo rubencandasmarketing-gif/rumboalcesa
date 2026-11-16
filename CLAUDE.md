@@ -26,10 +26,13 @@ real en una carpeta de vista previa, con `noindex`:
 
 La raíz enseña el juego arcade "Asturias rumbo al CESA" (recreativa de
 lanzamientos de 7 metros) con el aviso "Próximamente": es el gancho hasta el
-lanzamiento. Todo el juego es `proximamente/index.html`, un único archivo con
+lanzamiento. Encima de la máquina va la portada con el logo FBMPA, el chip
+"Próximamente" y el mensaje "Mientras esperas la nueva web…"; en ordenador,
+portada a la izquierda y máquina a la derecha. Todo el juego es `proximamente/index.html`, un único archivo con
 su CSS y su JS dentro; las reglas y la dificultad están ajustadas a propósito,
 no tocarlo sin que Rubén lo pida. La carpeta es autocontenida (favicon, fuentes
-Barlow y Press Start 2P, `img/og-juego.png` para la vista previa del enlace) y
+Barlow y Press Start 2P, `img/og-rumbo-al-cesa.jpg` para la vista previa del
+enlace) y
 no hace peticiones externas. El workflow genera `404.html` a partir de ese
 index, así que su `<head>` debe seguir en una línea propia.
 
