@@ -43,6 +43,25 @@ nueva debe llevarlo también.
 No enlazar la vista previa desde ningún sitio. Para lanzar la web real, ver
 el comentario "PARA LANZAR" en el workflow.
 
+## Seguridad
+
+Todas las páginas HTML llevan una política de seguridad de contenido (meta
+`Content-Security-Policy`) y `referrer`. Solo se cargan recursos de la propia
+web y de: Google Fonts, Cloudflare Web Analytics, miniaturas de YouTube
+(`i.ytimg.com`) y el reproductor `youtube-nocookie.com`. Consecuencias:
+
+- Nada de JavaScript en línea en la web real (ni `<script>` con código ni
+  atributos `onclick`/`onerror`): se bloquea. Todo va en `js/*.js`.
+- Un servicio externo nuevo (otro vídeo, mapa, widget, fuente) hay que añadirlo
+  a la política de TODAS las páginas o no cargará.
+- Una página nueva debe copiar las dos etiquetas meta de las demás.
+- El juego (`proximamente/index.html`) tiene su propia política, que sí
+  permite su script en línea.
+- Los datos de `datos.js` se pintan siempre con `esc()`.
+
+GitHub Pages no deja enviar cabeceras propias (HSTS, X-Frame-Options): si se
+quieren, hay que poner Cloudflare delante del dominio.
+
 ## Caché
 
 GitHub Pages cachea 10 min. El workflow añade `?v=<commit>` al CSS y a los

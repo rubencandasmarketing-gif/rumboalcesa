@@ -66,8 +66,7 @@ function card(p) {
   const ok = pedible(p);
   return `<article class="t-card${ok ? '' : ' t-card--pronto'}" id="c-${p.id}">
     <div class="t-card__fig">
-      <img src="${p.foto}" alt="${esc(p.nombre)}" width="600" height="750" loading="lazy" decoding="async"
-        onerror="this.style.display='none'; this.parentElement.classList.add('is-pendiente')">
+      <img src="${esc(p.foto)}" alt="${esc(p.nombre)}" width="600" height="750" loading="lazy" decoding="async">
       ${est ? `<span class="t-tag ${est.cls}">${est.txt}</span>` : ''}
     </div>
     <div class="t-card__body">
@@ -141,6 +140,12 @@ function marcado() {
 export function renderTienda(main) {
   main.classList.add('tienda');
   main.innerHTML = marcado();
+  // Foto que no carga: se oculta y la tarjeta enseña el marcador «Foto pendiente»
+  $$('.t-card__fig img', main).forEach(img => {
+    const pendiente = () => { img.style.display = 'none'; img.parentElement.classList.add('is-pendiente'); };
+    img.addEventListener('error', pendiente);
+    if (img.complete && !img.naturalWidth) pendiente();
+  });
   $$('[data-guia]', main).forEach(a => a.addEventListener('click', e => { e.preventDefault(); openGuide(); }));
   $('#mx').onclick = closeGuide;
   $('#modal').addEventListener('click', e => { if (e.target.id === 'modal') closeGuide(); });
