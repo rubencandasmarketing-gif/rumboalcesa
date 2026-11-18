@@ -58,7 +58,8 @@ js/tienda.js                Lógica de la tienda (solo se carga en tienda.html)
 img/tienda/                 Fotos de producto 4:5, WebP: «<id>.webp» (ver LEEME.md)
 css/estilo.css              Tokens FBMPA + componentes
 img/marca/                  Logos transparentes generados, favicon, OG
-img/jugadores/{seleccion}/  Fotos 4:5, WebP, ~600×750, 80-120 KB, «07-garcia.webp»
+img/jugadores/{seleccion}/  Fotos 4:5, WebP, 600×750, «nombre-apellido1-apellido2.webp»
+img/staff/                 Fotos del cuerpo técnico, mismo formato (se muestran en círculo)
 _headers                    noindex de las fotos de jugadores (Cloudflare Pages)
 ```
 

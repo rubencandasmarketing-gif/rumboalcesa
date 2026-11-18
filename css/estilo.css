@@ -1042,8 +1042,8 @@ section { padding-block: var(--sp-8); }
   box-shadow: var(--shadow-sm);
 }
 .staff-item__foto {
-  width: 60px; height: 60px; border-radius: 50%;
-  object-fit: cover; flex-shrink: 0;
+  width: 72px; height: 72px; border-radius: 50%;
+  object-fit: cover; object-position: 50% 22%; flex-shrink: 0;
   border: 2px solid var(--azul-100);
 }
 .staff-item--vacio { border-style: dashed; box-shadow: none; background: transparent; }
