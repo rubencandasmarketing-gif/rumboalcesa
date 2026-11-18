@@ -747,9 +747,9 @@ function renderSeleccion(id) {
   const tarjetaStaff = m => `
       <div class="staff-item">
         ${m.foto ? `<img class="staff-item__foto" src="${esc(m.foto)}" alt="" loading="lazy">` : ""}
-        <div>
+        <div class="staff-item__texto">
           <div class="staff-item__rol">${esc(m.rol)}</div>
-          <div style="font-weight:700">${esc(m.nombre)}</div>
+          <div class="staff-item__nombre">${esc(m.nombre)}</div>
         </div>
       </div>`;
 
@@ -759,9 +759,9 @@ function renderSeleccion(id) {
     return `
       <div class="staff-item staff-item--vacio">
         <div class="staff-item__foto staff-item__foto--hueco" aria-hidden="true"></div>
-        <div>
+        <div class="staff-item__texto">
           <div class="staff-item__rol">${c.etiqueta}</div>
-          <div style="font-weight:700;color:var(--muted)">Por confirmar</div>
+          <div class="staff-item__nombre">Por confirmar</div>
         </div>
       </div>`;
   }).join("");
