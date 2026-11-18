@@ -92,16 +92,23 @@ export const PATROCINADORES = [
     nivel: ""
   },
   {
-    nombre: "Carlin Asturias",
-    logo: "img/patrocinadores/carlin-asturias.png",
-    url: "https://www.carlinasturias.com/",
-    nivel: ""
-  },
-  {
     nombre: "Confía",
     logo: "img/patrocinadores/confia.svg",
     url: "https://www.confia.es/",
     nivel: ""
+  },
+  {
+    nombre: "Cajamar Caja Rural",
+    logo: "img/patrocinadores/cajamar.jpg",
+    url: "https://www.cajamar.es/es/comun/",
+    nivel: ""
+  },
+  {
+    nombre: "Deporte Asturiano",
+    logo: "img/patrocinadores/deporte-asturiano.png",
+    url: "https://deporteasturiano.org/",
+    nivel: "",
+    fondo: "#0119A9"
   }
 ];
 

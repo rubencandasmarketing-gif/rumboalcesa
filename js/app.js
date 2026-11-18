@@ -1011,12 +1011,13 @@ function huecoPatrocinador(p) {
 }
 
 function franjaPatrocinadores() {
-  const celdas = Array.from({ length: 6 }, (_, i) => huecoPatrocinador(PATROCINADORES[i])).join("");
+  const nPatro = Math.max(6, PATROCINADORES.length);
+  const celdas = Array.from({ length: nPatro }, (_, i) => huecoPatrocinador(PATROCINADORES[i])).join("");
   return `
     <section class="contenedor" aria-labelledby="t-patro">
       <p class="eyebrow">Nos apoyan</p>
       <h2 id="t-patro">Patrocinadores</h2>
-      <div class="patro-grid patro-grid--seis">${celdas}</div>
+      <div class="patro-grid patro-grid--seis" style="--n:${nPatro}">${celdas}</div>
     </section>`;
 }
 
@@ -1038,11 +1039,12 @@ function renderPatrocinadores() {
          directo y en el cierre de cada página. La máxima visibilidad de la cobertura.</span>
        </div>`;
 
-  // Los 6 patrocinadores habituales de la federación
-  const celdas = Array.from({ length: 6 }, (_, i) => huecoPatrocinador(PATROCINADORES[i])).join("");
+  // Los patrocinadores habituales de la federación (mínimo 6 huecos)
+  const nPatro = Math.max(6, PATROCINADORES.length);
+  const celdas = Array.from({ length: nPatro }, (_, i) => huecoPatrocinador(PATROCINADORES[i])).join("");
   const resto = `
     <h2>Patrocinadores de la federación</h2>
-    <div class="patro-grid patro-grid--seis">${celdas}</div>`;
+    <div class="patro-grid patro-grid--seis" style="--n:${nPatro}">${celdas}</div>`;
 
   main.append(el(`
     <div class="seleccion-hero">
