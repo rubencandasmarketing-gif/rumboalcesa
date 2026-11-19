@@ -1017,7 +1017,7 @@ function franjaPatrocinadores() {
     <section class="contenedor" aria-labelledby="t-patro">
       <p class="eyebrow">Nos apoyan</p>
       <h2 id="t-patro">Patrocinadores</h2>
-      <div class="patro-grid patro-grid--seis" style="--n:${nPatro}">${celdas}</div>
+      <div class="patro-grid patro-grid--seis" style="--n:${nPatro > 7 ? Math.ceil(nPatro / 2) : nPatro}">${celdas}</div>
     </section>`;
 }
 
@@ -1044,7 +1044,7 @@ function renderPatrocinadores() {
   const celdas = Array.from({ length: nPatro }, (_, i) => huecoPatrocinador(PATROCINADORES[i])).join("");
   const resto = `
     <h2>Patrocinadores de la federación</h2>
-    <div class="patro-grid patro-grid--seis" style="--n:${nPatro}">${celdas}</div>`;
+    <div class="patro-grid patro-grid--seis" style="--n:${nPatro > 7 ? Math.ceil(nPatro / 2) : nPatro}">${celdas}</div>`;
 
   main.append(el(`
     <div class="seleccion-hero">

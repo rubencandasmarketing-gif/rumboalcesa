@@ -104,6 +104,12 @@ export const PATROCINADORES = [
     nivel: ""
   },
   {
+    nombre: "Excade",
+    logo: "img/patrocinadores/excade.jpg",
+    url: "https://www.excade.com/",
+    nivel: ""
+  },
+  {
     nombre: "Deporte Asturiano",
     logo: "img/patrocinadores/deporte-asturiano.png",
     url: "https://deporteasturiano.org/",

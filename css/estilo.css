@@ -1305,11 +1305,11 @@ section { padding-block: var(--sp-8); }
 .patro-grid a.patro-logo--propio img { max-height: 64px; }
 
 /* Patrocinadores habituales de la federación: todos en una fila si caben
-   (--n = cuántos son); si no, saltan de línea y la última fila queda centrada */
+   (--n = cuántos por fila: todos, o la mitad si pasan de 7); si no, saltan de línea y la última fila queda centrada */
 .patro-grid--seis { display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch; }
 .patro-grid--seis > * {
   flex: 1 1 calc((100% - (var(--n, 6) - 1) * var(--sp-2)) / var(--n, 6));
-  min-width: 132px; max-width: 220px;
+  min-width: 132px; max-width: 260px;
 }
 @media (max-width: 520px) { .patro-grid--seis > * { min-width: calc(50% - var(--sp-2)); } }
 /* Hueco reservado, no roto: el símbolo respira al pasar por encima */
