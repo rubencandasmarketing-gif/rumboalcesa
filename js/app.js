@@ -82,9 +82,14 @@ function fechaLarga(iso) {
   return f.charAt(0).toUpperCase() + f.slice(1);
 }
 
-/** Programado cuya hora ya pasó (ventana de 2h30). */
+/** Hora de un partido, o "Hora por confirmar" mientras no se publique. */
+function horaTexto(p, corto = false) {
+  return p.hora || (corto ? "Sin hora" : "Hora por confirmar");
+}
+
+/** Programado cuya hora ya pasó (ventana de 2h30). Sin hora, nunca. */
 function enJuegoPorHorario(p) {
-  if (p.estado !== "programado") return false;
+  if (p.estado !== "programado" || !p.hora) return false;
   const inicio = new Date(`${p.fecha}T${p.hora}:00`);
   const ms = Date.now() - inicio.getTime();
   return ms >= 0 && ms <= 150 * 60000;
@@ -106,7 +111,7 @@ function hayAlgoQueVigilar() {
   const margen = 120 * 60000;
   return SELECCIONES.some(s => s.partidos.some(p => {
     if (emisionActiva(p) || enJuegoPorHorario(p)) return true;
-    if (p.estado !== "programado" || !p.youtubeId) return false;
+    if (p.estado !== "programado" || !p.youtubeId || !p.hora) return false;
     const faltan = new Date(`${p.fecha}T${p.hora}:00`).getTime() - ahora;
     return faltan > 0 && faltan <= margen;
   }));
@@ -329,12 +334,13 @@ function renderPie() {
 ---------------------------------------------------------------------------- */
 
 /** Único sitio que decide a dónde va el directo de un partido:
-    · sin youtubeId  → nuestra sala de directo (modo prueba)
-    · con youtubeId  → el vídeo en YouTube, en pestaña nueva
-    Devuelve null en el único caso sin salida: acabado y sin vídeo. */
+    · con youtubeId                → el vídeo en YouTube, en pestaña nueva
+    · sin youtubeId, en "directo"  → nuestra sala de directo (forzado a mano)
+    Devuelve null si no hay nada que enseñar: sin vídeo y sin emisión. Así
+    un partido solo anuncia directo cuando de verdad tiene enlace. */
 function destinoDirecto(partido) {
   const acabado = partido.estado === "finalizado";
-  if (acabado && !partido.youtubeId) return null;
+  if (!partido.youtubeId && partido.estado !== "directo") return null;
   return {
     acabado,
     href: partido.youtubeId
@@ -369,7 +375,9 @@ function enlaceDirectoAgenda(partido, sel) {
 function tarjetaPartido(partido, sel, { conSeleccion = false, sinReproductor = false } = {}) {
   const sede = sedeDe(partido.sede);
   const sedeHTML = sede
-    ? `<span class="partido__sede">📍 <a href="${esc(sede.mapa)}" rel="noopener" target="_blank">${esc(sede.nombre)}</a></span>`
+    ? `<span class="partido__sede">📍 ${sede.mapa
+        ? `<a href="${esc(sede.mapa)}" rel="noopener" target="_blank">${esc(sede.nombre)}</a>`
+        : esc(sede.nombre)}</span>`
     : "";
 
   const etiquetaSel = conSeleccion
@@ -412,7 +420,7 @@ function tarjetaPartido(partido, sel, { conSeleccion = false, sinReproductor = f
     // Si aún no ha llegado la hora, a la derecha va la sede.
     cabecera = enJuegoPorHorario(partido)
       ? `<span class="badge-enjuego">En juego</span>`
-      : `<span class="partido__hora">${esc(partido.hora)}</span>`;
+      : `<span class="partido__hora${partido.hora ? "" : " partido__hora--pendiente"}">${esc(horaTexto(partido))}</span>`;
     cruce = `${asturias}<span class="vs">vs</span>${rival}`;
     acciones = botonDirecto(partido);
   }
@@ -424,7 +432,7 @@ function tarjetaPartido(partido, sel, { conSeleccion = false, sinReproductor = f
         <div class="partido__meta">
           ${etiquetaSel}
           <span class="partido__fase">${esc(partido.fase)}</span>
-          <span>${fechaLarga(partido.fecha)} · ${esc(partido.hora)}</span>
+          <span>${fechaLarga(partido.fecha)}${partido.hora ? ` · ${esc(partido.hora)}` : ""}</span>
           ${sedeHTML}
         </div>
         <div class="partido__cruce">${cruce}</div>
@@ -515,7 +523,7 @@ function filaAgenda({ partido, sel }) {
   // parte; el botón de directo va por encima con su propio z-index.
   return `
     <div class="agenda-fila ${emisionActiva(partido) ? "agenda-fila--directo" : ""}">
-      <span class="agenda-fila__hora">${esc(partido.hora)}</span>
+      <span class="agenda-fila__hora${partido.hora ? "" : " agenda-fila__hora--pendiente"}">${esc(horaTexto(partido, true))}</span>
       <span class="agenda-fila__sel">${esc(sel.categoria)} ${sel.genero === "Masculina" ? "M" : "F"}</span>
       <a class="agenda-fila__cruce" href="${sel.id}.html">Asturias <span class="vs">–</span> ${esc(partido.rival)}</a>
       ${estado}

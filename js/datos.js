@@ -21,11 +21,14 @@
    youtubeId es SOLO el identificador, no la URL completa:
    https://www.youtube.com/watch?v=dQw4w9WgXcQ  →  youtubeId: "dQw4w9WgXcQ"
 
-   Mientras no se publique el calendario, partidos: [] y la página muestra
-   los rivales del grupo con "Fechas y horas, cuando se publique el calendario".
-   Cada partido nuevo sigue este formato (sede: id de SEDES):
-     { id: "im-j1", fecha: "2027-01-04", hora: "10:00", fase: "Fase de grupos — J1",
-       rival: "Canarias", sede: "",
+   Calendario de la fase de grupos: hoja "CALENDARIOS CESA 27" (rival y
+   localidad de cada día, del 3 al 4-5 de enero de 2027). Aún sin horas ni
+   pabellones: con hora: "" la web pone "Hora por confirmar" y el partido
+   nunca se marca "en juego" solo. Los cruces y la fase final (hasta el 8 de
+   enero) se añaden cuando se conozcan los rivales.
+   Cada partido sigue este formato (sede: id de SEDES):
+     { id: "im-j1", fecha: "2027-01-03", hora: "10:00", fase: "Fase de grupos — J1",
+       rival: "La Rioja", sede: "blanes",
        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
    ============================================================================= */
 
@@ -53,11 +56,17 @@ export const CONFIG = {
 };
 
 /* --- SEDES --------------------------------------------------------------- */
-/* Pendientes de confirmar. Cada sede sigue este formato y los partidos la
-   enlazan por su id (sede: "id"). Sin sede, el partido sale sin pabellón.
-     { id: "pabellon-1", nombre: "Pabellón ...", municipio: "...",
+/* De momento solo se sabe la localidad de cada partido, no el pabellón.
+   Cuando se publiquen, cambiar nombre por el del pabellón y rellenar mapa
+   (con mapa, el nombre enlaza a Google Maps); los partidos enlazan por id.
+     { id: "blanes", nombre: "Pabellón ...", municipio: "Blanes",
        direccion: "", mapa: "https://maps.google.com/?q=..." } */
-export const SEDES = [];
+export const SEDES = [
+  { id: "blanes",  nombre: "Blanes",         municipio: "Blanes",         direccion: "", mapa: "" },
+  { id: "calella", nombre: "Calella",        municipio: "Calella",        direccion: "", mapa: "" },
+  { id: "lloret",  nombre: "Lloret de Mar",  municipio: "Lloret de Mar",  direccion: "", mapa: "" },
+  { id: "malgrat", nombre: "Malgrat de Mar", municipio: "Malgrat de Mar", direccion: "", mapa: "" }
+];
 
 /* --- PATROCINADORES (todos los niveles) ---------------------------------- */
 /* 'nivel' queda listo para cuando la federación defina los niveles.
@@ -169,7 +178,17 @@ export const SELECCIONES = [
       { nombre: "Adrián Álvarez Ancizu", club: "Real Grupo de Cultura Covadonga", foto: "img/jugadores/infantil-masculina/adrian-alvarez-ancizu.webp" },
       { nombre: "Javier Suárez del Valle", club: "Real Grupo de Cultura Covadonga", foto: "img/jugadores/infantil-masculina/javier-suarez-del-valle.webp" }
     ],
-    partidos: []
+    partidos: [
+      { id: "im-j1", fecha: "2027-01-03", hora: "", fase: "Fase de grupos — J1",
+        rival: "La Rioja", sede: "blanes",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
+      { id: "im-j2", fecha: "2027-01-04", hora: "", fase: "Fase de grupos — J2",
+        rival: "Melilla", sede: "calella",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
+      { id: "im-j3", fecha: "2027-01-04", hora: "", fase: "Fase de grupos — J3",
+        rival: "Canarias", sede: "blanes",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
+    ]
   },
   {
     id: "infantil-femenina",
@@ -211,7 +230,17 @@ export const SELECCIONES = [
       { nombre: "Daniela Rodríguez Ramos", club: "Siero Deportivo Balonmano", foto: "img/jugadores/infantil-femenina/daniela-rodriguez-ramos.webp" },
       { nombre: "Sara Fernández García", club: "Siero Deportivo Balonmano", foto: "img/jugadores/infantil-femenina/sara-fernandez-garcia.webp" }
     ],
-    partidos: []
+    partidos: [
+      { id: "if-j1", fecha: "2027-01-03", hora: "", fase: "Fase de grupos — J1",
+        rival: "Región de Murcia", sede: "blanes",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
+      { id: "if-j2", fecha: "2027-01-04", hora: "", fase: "Fase de grupos — J2",
+        rival: "Baleares", sede: "blanes",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
+      { id: "if-j3", fecha: "2027-01-04", hora: "", fase: "Fase de grupos — J3",
+        rival: "Ceuta", sede: "blanes",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
+    ]
   },
   {
     id: "cadete-masculina",
@@ -253,7 +282,14 @@ export const SELECCIONES = [
       { nombre: "Álvaro Arribas Noval", club: "Real Grupo de Cultura Covadonga", foto: "img/jugadores/cadete-masculina/alvaro-arribas-noval.webp" },
       { nombre: "Héctor Muñiz Chimeno", club: "Real Grupo de Cultura Covadonga", foto: "img/jugadores/cadete-masculina/hector-muniz-chimeno.webp" }
     ],
-    partidos: []
+    partidos: [
+      { id: "cm-j1", fecha: "2027-01-03", hora: "", fase: "Fase de grupos — J1",
+        rival: "Navarra", sede: "blanes",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
+      { id: "cm-j2", fecha: "2027-01-04", hora: "", fase: "Fase de grupos — J2",
+        rival: "Extremadura", sede: "malgrat",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
+    ]
   },
   {
     id: "cadete-femenina",
@@ -295,7 +331,14 @@ export const SELECCIONES = [
       { nombre: "Sofía Díaz Ordóñez", club: "Siero Deportivo Balonmano", foto: "img/jugadores/cadete-femenina/sofia-diaz-ordonez.webp" },
       { nombre: "Reyes Fernández Roces", club: "Siero Deportivo Balonmano", foto: "img/jugadores/cadete-femenina/reyes-fernandez-roces.webp" }
     ],
-    partidos: []
+    partidos: [
+      { id: "cf-j1", fecha: "2027-01-03", hora: "", fase: "Fase de grupos — J1",
+        rival: "Cantabria", sede: "lloret",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
+      { id: "cf-j2", fecha: "2027-01-04", hora: "", fase: "Fase de grupos — J2",
+        rival: "La Rioja", sede: "blanes",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
+    ]
   },
   {
     id: "juvenil-masculina",
@@ -339,7 +382,14 @@ export const SELECCIONES = [
       { nombre: "Javier Pastrana Trincado", club: "Real Grupo de Cultura Covadonga", foto: "" },
       { nombre: "Leo Cardeli Rodríguez", club: "Real Grupo de Cultura Covadonga", foto: "" }
     ],
-    partidos: []
+    partidos: [
+      { id: "jm-j1", fecha: "2027-01-03", hora: "", fase: "Fase de grupos — J1",
+        rival: "Cantabria", sede: "calella",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
+      { id: "jm-j2", fecha: "2027-01-04", hora: "", fase: "Fase de grupos — J2",
+        rival: "Canarias", sede: "lloret",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
+    ]
   },
   {
     id: "juvenil-femenina",
@@ -380,6 +430,16 @@ export const SELECCIONES = [
       { nombre: "Elena García Prieto", club: "Club Deportivo Básico Oviedo Balonmano Femenino", foto: "img/jugadores/juvenil-femenina/elena-garcia-prieto.webp" },
       { nombre: "Sara García Alonso", club: "Siero Deportivo Balonmano", foto: "img/jugadores/juvenil-femenina/sara-garcia-alonso.webp" }
     ],
-    partidos: []
+    partidos: [
+      { id: "jf-j1", fecha: "2027-01-03", hora: "", fase: "Fase de grupos — J1",
+        rival: "Canarias", sede: "blanes",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
+      { id: "jf-j2", fecha: "2027-01-04", hora: "", fase: "Fase de grupos — J2",
+        rival: "Cantabria", sede: "blanes",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
+      { id: "jf-j3", fecha: "2027-01-05", hora: "", fase: "Fase de grupos — J3",
+        rival: "Región de Murcia", sede: "blanes",
+        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
+    ]
   }
 ];
