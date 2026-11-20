@@ -355,6 +355,9 @@ section { padding-block: var(--sp-8); }
   .nav__flecha { transform: rotate(-45deg) translateY(.15em); }
 
   .nav-velo { position: fixed; inset: 0; background: rgba(6, 35, 56, .55); z-index: 55; }
+  /* Con el cajón abierto la cabecera sube por encima del velo: si no, el velo
+     tapa las opciones del menú y cada toque lo cierra sin abrir el enlace */
+  .cabecera--abierta { z-index: 60; }
   body.sin-scroll { overflow: hidden; }
 }
 
@@ -804,6 +807,7 @@ section { padding-block: var(--sp-8); }
   letter-spacing: .05em; color: var(--muted);
 }
 .partido__hora--pendiente { font-size: .78rem; }
+.agenda-fila__sede--pendiente { font-size: .78rem; font-style: italic; }
 .agenda-fila__sel {
   font-size: var(--step--1); font-weight: 700; color: var(--azul-800);
   text-transform: uppercase; letter-spacing: .04em;
@@ -877,6 +881,8 @@ section { padding-block: var(--sp-8); }
   .agenda-fila__cruce { grid-area: cruce; }
   .agenda-fila > :nth-child(4) { grid-area: estado; }
   .agenda-fila > span:empty { display: none; }
+  /* Sin sede aún no hay nada que decir: en móvil ese hueco es para el cruce */
+  .agenda-fila__sede--pendiente { display: none; }
   .agenda-fila__directo { grid-column: 1 / -1; }
 }
 

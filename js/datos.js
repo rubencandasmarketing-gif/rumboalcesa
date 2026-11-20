@@ -21,14 +21,14 @@
    youtubeId es SOLO el identificador, no la URL completa:
    https://www.youtube.com/watch?v=dQw4w9WgXcQ  →  youtubeId: "dQw4w9WgXcQ"
 
-   Calendario de la fase de grupos: hoja "CALENDARIOS CESA 27" (rival y
-   localidad de cada día, del 3 al 4-5 de enero de 2027). Aún sin horas ni
-   pabellones: con hora: "" la web pone "Hora por confirmar" y el partido
-   nunca se marca "en juego" solo. Los cruces y la fase final (hasta el 8 de
+   Calendario de la fase de grupos: hoja "CALENDARIOS CESA 27" (rival de
+   cada día, del 3 al 4-5 de enero de 2027). Horas y sedes, por confirmar:
+   con hora: "" la web pone "Hora por confirmar" (y el partido nunca se marca
+   "en juego" solo) y con sede: "" pone "Sede por confirmar". Los cruces y la fase final (hasta el 8 de
    enero) se añaden cuando se conozcan los rivales.
    Cada partido sigue este formato (sede: id de SEDES):
      { id: "im-j1", fecha: "2027-01-03", hora: "10:00", fase: "Fase de grupos — J1",
-       rival: "La Rioja", sede: "blanes",
+       rival: "La Rioja", sede: "",
        estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
    ============================================================================= */
 
@@ -56,17 +56,12 @@ export const CONFIG = {
 };
 
 /* --- SEDES --------------------------------------------------------------- */
-/* De momento solo se sabe la localidad de cada partido, no el pabellón.
-   Cuando se publiquen, cambiar nombre por el del pabellón y rellenar mapa
-   (con mapa, el nombre enlaza a Google Maps); los partidos enlazan por id.
-     { id: "blanes", nombre: "Pabellón ...", municipio: "Blanes",
+/* Pendientes de confirmar: con sede: "" el partido pone "Sede por confirmar".
+   Cuando se publiquen, añadir aquí cada sede y enlazarla desde el partido por
+   su id (sede: "id"). Con mapa, el nombre enlaza a Google Maps.
+     { id: "pabellon-1", nombre: "Pabellón ...", municipio: "...",
        direccion: "", mapa: "https://maps.google.com/?q=..." } */
-export const SEDES = [
-  { id: "blanes",  nombre: "Blanes",         municipio: "Blanes",         direccion: "", mapa: "" },
-  { id: "calella", nombre: "Calella",        municipio: "Calella",        direccion: "", mapa: "" },
-  { id: "lloret",  nombre: "Lloret de Mar",  municipio: "Lloret de Mar",  direccion: "", mapa: "" },
-  { id: "malgrat", nombre: "Malgrat de Mar", municipio: "Malgrat de Mar", direccion: "", mapa: "" }
-];
+export const SEDES = [];
 
 /* --- PATROCINADORES (todos los niveles) ---------------------------------- */
 /* 'nivel' queda listo para cuando la federación defina los niveles.
@@ -134,6 +129,8 @@ export const PATROCINADORES = [
    posicion y foto son opcionales: se añaden a cada ficha cuando se tengan
      { dorsal: 7, nombre: "...", posicion: "Central", club: "...", foto: "img/jugadores/..." }
    Staff: se muestra tal cual, en este orden (el del boletín de la federación).
+   El cargo va ya en masculino o femenino según la persona (Entrenador /
+   Entrenadora, Delegado / Delegada), no con "/a".
    Grupos: tal cual el orden oficial del sorteo. El de Asturias se detecta
    solo (el que incluye "Asturias") y se destaca como "Nuestro grupo".
    Valen grupos de 3 o 4 equipos y 2 o 3 grupos por categoría. */
@@ -153,11 +150,11 @@ export const SELECCIONES = [
     ],
     staff: [
       { rol: "Director deportivo", nombre: "Jorge Martínez Martínez", foto: "" },
-      { rol: "Entrenador/a", nombre: "Sergio Bao Nicieza", foto: "" },
-      { rol: "Entrenador/a", nombre: "Rubén Rozada Doval", foto: "" },
-      { rol: "Entrenador/a de porteros", nombre: "Antonio Suárez Crespo", foto: "img/staff/antonio-suarez-crespo.webp" },
+      { rol: "Entrenador", nombre: "Sergio Bao Nicieza", foto: "" },
+      { rol: "Entrenador", nombre: "Rubén Rozada Doval", foto: "" },
+      { rol: "Entrenador de porteros", nombre: "Antonio Suárez Crespo", foto: "img/staff/antonio-suarez-crespo.webp" },
       { rol: "Fisioterapeuta", nombre: "Patricia Tejero Álvarez", foto: "img/staff/patricia-tejero-alvarez.webp" },
-      { rol: "Delegado/a", nombre: "Eduardo Valdés Menéndez", foto: "" },
+      { rol: "Delegado", nombre: "Eduardo Valdés Menéndez", foto: "" },
       { rol: "Responsable de selecciones", nombre: "Francisco Cimadevilla Pérez", foto: "" }
     ],
     plantilla: [
@@ -180,13 +177,13 @@ export const SELECCIONES = [
     ],
     partidos: [
       { id: "im-j1", fecha: "2027-01-03", hora: "", fase: "Fase de grupos — J1",
-        rival: "La Rioja", sede: "blanes",
+        rival: "La Rioja", sede: "",
         estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
       { id: "im-j2", fecha: "2027-01-04", hora: "", fase: "Fase de grupos — J2",
-        rival: "Melilla", sede: "calella",
+        rival: "Melilla", sede: "",
         estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
       { id: "im-j3", fecha: "2027-01-04", hora: "", fase: "Fase de grupos — J3",
-        rival: "Canarias", sede: "blanes",
+        rival: "Canarias", sede: "",
         estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
     ]
   },
@@ -205,11 +202,11 @@ export const SELECCIONES = [
     staff: [
       { rol: "Director deportivo", nombre: "Jorge Martínez Martínez", foto: "" },
       { rol: "Director técnico", nombre: "Sergio Bao Nicieza", foto: "" },
-      { rol: "Entrenador/a", nombre: "Lucía Parajón Fernández", foto: "img/staff/lucia-parajon-fernandez.webp" },
-      { rol: "Entrenador/a", nombre: "Nerea García González", foto: "img/staff/nerea-garcia-gonzalez.webp" },
-      { rol: "Entrenador/a de porteros", nombre: "Antonio Suárez Crespo", foto: "img/staff/antonio-suarez-crespo.webp" },
+      { rol: "Entrenadora", nombre: "Lucía Parajón Fernández", foto: "img/staff/lucia-parajon-fernandez.webp" },
+      { rol: "Entrenadora", nombre: "Nerea García González", foto: "img/staff/nerea-garcia-gonzalez.webp" },
+      { rol: "Entrenador de porteras", nombre: "Antonio Suárez Crespo", foto: "img/staff/antonio-suarez-crespo.webp" },
       { rol: "Fisioterapeuta", nombre: "Patricia Tejero Álvarez", foto: "img/staff/patricia-tejero-alvarez.webp" },
-      { rol: "Delegado/a", nombre: "Sandra Pascual Castedo", foto: "img/staff/sandra-pascual-castedo.webp" },
+      { rol: "Delegada", nombre: "Sandra Pascual Castedo", foto: "img/staff/sandra-pascual-castedo.webp" },
       { rol: "Responsable de selecciones", nombre: "Francisco Cimadevilla Pérez", foto: "" }
     ],
     plantilla: [
@@ -232,13 +229,13 @@ export const SELECCIONES = [
     ],
     partidos: [
       { id: "if-j1", fecha: "2027-01-03", hora: "", fase: "Fase de grupos — J1",
-        rival: "Región de Murcia", sede: "blanes",
+        rival: "Región de Murcia", sede: "",
         estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
       { id: "if-j2", fecha: "2027-01-04", hora: "", fase: "Fase de grupos — J2",
-        rival: "Baleares", sede: "blanes",
+        rival: "Baleares", sede: "",
         estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
       { id: "if-j3", fecha: "2027-01-04", hora: "", fase: "Fase de grupos — J3",
-        rival: "Ceuta", sede: "blanes",
+        rival: "Ceuta", sede: "",
         estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
     ]
   },
@@ -258,10 +255,10 @@ export const SELECCIONES = [
       { rol: "Director deportivo", nombre: "Jorge Martínez Martínez", foto: "" },
       { rol: "Director técnico", nombre: "Sergio Bao Nicieza", foto: "" },
       { rol: "Entrenador/a", nombre: "Álex Cortina Gallegos", foto: "img/staff/alex-cortina-gallegos.webp" },
-      { rol: "Entrenador/a", nombre: "José Arconada Ocariz", foto: "img/staff/jose-arconada-ocariz.webp" },
-      { rol: "Entrenador/a de porteros", nombre: "Antonio Suárez Crespo", foto: "img/staff/antonio-suarez-crespo.webp" },
+      { rol: "Entrenador", nombre: "José Arconada Ocariz", foto: "img/staff/jose-arconada-ocariz.webp" },
+      { rol: "Entrenador de porteros", nombre: "Antonio Suárez Crespo", foto: "img/staff/antonio-suarez-crespo.webp" },
       { rol: "Fisioterapeuta", nombre: "Patricia Tejero Álvarez", foto: "img/staff/patricia-tejero-alvarez.webp" },
-      { rol: "Delegado/a", nombre: "Eduardo Valdés Menéndez", foto: "" },
+      { rol: "Delegado", nombre: "Eduardo Valdés Menéndez", foto: "" },
       { rol: "Responsable de selecciones", nombre: "Francisco Cimadevilla Pérez", foto: "" }
     ],
     plantilla: [
@@ -284,10 +281,10 @@ export const SELECCIONES = [
     ],
     partidos: [
       { id: "cm-j1", fecha: "2027-01-03", hora: "", fase: "Fase de grupos — J1",
-        rival: "Navarra", sede: "blanes",
+        rival: "Navarra", sede: "",
         estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
       { id: "cm-j2", fecha: "2027-01-04", hora: "", fase: "Fase de grupos — J2",
-        rival: "Extremadura", sede: "malgrat",
+        rival: "Extremadura", sede: "",
         estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
     ]
   },
@@ -306,11 +303,11 @@ export const SELECCIONES = [
     staff: [
       { rol: "Director deportivo", nombre: "Jorge Martínez Martínez", foto: "" },
       { rol: "Director técnico", nombre: "Sergio Bao Nicieza", foto: "" },
-      { rol: "Entrenador/a", nombre: "Raúl Vallejo Martínez", foto: "img/staff/raul-vallejo-martinez.webp" },
-      { rol: "Entrenador/a", nombre: "Ana García Blanco", foto: "" },
-      { rol: "Entrenador/a de porteros", nombre: "Antonio Suárez Crespo", foto: "img/staff/antonio-suarez-crespo.webp" },
+      { rol: "Entrenador", nombre: "Raúl Vallejo Martínez", foto: "img/staff/raul-vallejo-martinez.webp" },
+      { rol: "Entrenadora", nombre: "Ana García Blanco", foto: "" },
+      { rol: "Entrenador de porteras", nombre: "Antonio Suárez Crespo", foto: "img/staff/antonio-suarez-crespo.webp" },
       { rol: "Fisioterapeuta", nombre: "Patricia Tejero Álvarez", foto: "img/staff/patricia-tejero-alvarez.webp" },
-      { rol: "Delegado/a", nombre: "Sandra Pascual Castedo", foto: "img/staff/sandra-pascual-castedo.webp" },
+      { rol: "Delegada", nombre: "Sandra Pascual Castedo", foto: "img/staff/sandra-pascual-castedo.webp" },
       { rol: "Responsable de selecciones", nombre: "Francisco Cimadevilla Pérez", foto: "" }
     ],
     plantilla: [
@@ -333,10 +330,10 @@ export const SELECCIONES = [
     ],
     partidos: [
       { id: "cf-j1", fecha: "2027-01-03", hora: "", fase: "Fase de grupos — J1",
-        rival: "Cantabria", sede: "lloret",
+        rival: "Cantabria", sede: "",
         estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
       { id: "cf-j2", fecha: "2027-01-04", hora: "", fase: "Fase de grupos — J2",
-        rival: "La Rioja", sede: "blanes",
+        rival: "La Rioja", sede: "",
         estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
     ]
   },
@@ -355,11 +352,11 @@ export const SELECCIONES = [
     staff: [
       { rol: "Director deportivo", nombre: "Jorge Martínez Martínez", foto: "" },
       { rol: "Director técnico", nombre: "Sergio Bao Nicieza", foto: "" },
-      { rol: "Entrenador/a", nombre: "Ángel C. Perianes Gutiérrez", foto: "" },
-      { rol: "Entrenador/a", nombre: "Samuel Tang Martínez Igual", foto: "" },
-      { rol: "Entrenador/a de porteros", nombre: "Antonio Suárez Crespo", foto: "img/staff/antonio-suarez-crespo.webp" },
+      { rol: "Entrenador", nombre: "Ángel C. Perianes Gutiérrez", foto: "" },
+      { rol: "Entrenador", nombre: "Samuel Tang Martínez Igual", foto: "" },
+      { rol: "Entrenador de porteros", nombre: "Antonio Suárez Crespo", foto: "img/staff/antonio-suarez-crespo.webp" },
       { rol: "Fisioterapeuta", nombre: "Patricia Tejero Álvarez", foto: "img/staff/patricia-tejero-alvarez.webp" },
-      { rol: "Delegado/a", nombre: "Eduardo Valdés Menéndez", foto: "" },
+      { rol: "Delegado", nombre: "Eduardo Valdés Menéndez", foto: "" },
       { rol: "Responsable de selecciones", nombre: "Francisco Cimadevilla Pérez", foto: "" }
     ],
     plantilla: [
@@ -384,10 +381,10 @@ export const SELECCIONES = [
     ],
     partidos: [
       { id: "jm-j1", fecha: "2027-01-03", hora: "", fase: "Fase de grupos — J1",
-        rival: "Cantabria", sede: "calella",
+        rival: "Cantabria", sede: "",
         estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
       { id: "jm-j2", fecha: "2027-01-04", hora: "", fase: "Fase de grupos — J2",
-        rival: "Canarias", sede: "lloret",
+        rival: "Canarias", sede: "",
         estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
     ]
   },
@@ -405,11 +402,11 @@ export const SELECCIONES = [
     staff: [
       { rol: "Director deportivo", nombre: "Jorge Martínez Martínez", foto: "" },
       { rol: "Director técnico", nombre: "Sergio Bao Nicieza", foto: "" },
-      { rol: "Entrenador/a", nombre: "Carmen García-Calvo López", foto: "img/staff/carmen-garcia-calvo-lopez.webp" },
-      { rol: "Entrenador/a", nombre: "Cristina Pevida Díaz", foto: "img/staff/cristina-pevida-diaz.webp" },
-      { rol: "Entrenador/a de porteros", nombre: "Antonio Suárez Crespo", foto: "img/staff/antonio-suarez-crespo.webp" },
+      { rol: "Entrenadora", nombre: "Carmen García-Calvo López", foto: "img/staff/carmen-garcia-calvo-lopez.webp" },
+      { rol: "Entrenadora", nombre: "Cristina Pevida Díaz", foto: "img/staff/cristina-pevida-diaz.webp" },
+      { rol: "Entrenador de porteras", nombre: "Antonio Suárez Crespo", foto: "img/staff/antonio-suarez-crespo.webp" },
       { rol: "Fisioterapeuta", nombre: "Patricia Tejero Álvarez", foto: "img/staff/patricia-tejero-alvarez.webp" },
-      { rol: "Delegado/a", nombre: "Sandra Pascual Castedo", foto: "img/staff/sandra-pascual-castedo.webp" },
+      { rol: "Delegada", nombre: "Sandra Pascual Castedo", foto: "img/staff/sandra-pascual-castedo.webp" },
       { rol: "Responsable de selecciones", nombre: "Francisco Cimadevilla Pérez", foto: "" }
     ],
     plantilla: [
@@ -432,13 +429,13 @@ export const SELECCIONES = [
     ],
     partidos: [
       { id: "jf-j1", fecha: "2027-01-03", hora: "", fase: "Fase de grupos — J1",
-        rival: "Canarias", sede: "blanes",
+        rival: "Canarias", sede: "",
         estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
       { id: "jf-j2", fecha: "2027-01-04", hora: "", fase: "Fase de grupos — J2",
-        rival: "Cantabria", sede: "blanes",
+        rival: "Cantabria", sede: "",
         estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" },
       { id: "jf-j3", fecha: "2027-01-05", hora: "", fase: "Fase de grupos — J3",
-        rival: "Región de Murcia", sede: "blanes",
+        rival: "Región de Murcia", sede: "",
         estado: "programado", golesAsturias: null, golesRival: null, youtubeId: "", galeria: "" }
     ]
   }

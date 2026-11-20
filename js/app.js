@@ -378,7 +378,8 @@ function tarjetaPartido(partido, sel, { conSeleccion = false, sinReproductor = f
     ? `<span class="partido__sede">📍 ${sede.mapa
         ? `<a href="${esc(sede.mapa)}" rel="noopener" target="_blank">${esc(sede.nombre)}</a>`
         : esc(sede.nombre)}</span>`
-    : "";
+    : partido.estado === "finalizado" ? ""
+    : `<span class="partido__sede partido__sede--pendiente">📍 Sede por confirmar</span>`;
 
   const etiquetaSel = conSeleccion
     ? `<span class="partido__fase" style="color:var(--azul-800)">${esc(nombreSeleccion(sel))}</span>`
@@ -515,7 +516,9 @@ function filaAgenda({ partido, sel }) {
   } else if (enJuegoPorHorario(partido)) {
     estado = `<span class="badge-enjuego">En juego</span>`;
   } else {
-    estado = sede ? `<span class="agenda-fila__sede">${esc(sede.municipio)}</span>` : "<span></span>";
+    estado = sede
+      ? `<span class="agenda-fila__sede">${esc(sede.municipio)}</span>`
+      : `<span class="agenda-fila__sede agenda-fila__sede--pendiente">Sede por confirmar</span>`;
   }
   // La fila deja de ser un <a> envolvente: dentro va el botón de directo, y un
   // enlace dentro de otro es HTML inválido. El enlace a la selección se estira
@@ -804,7 +807,7 @@ function renderSeleccion(id) {
 
     <section class="contenedor" aria-labelledby="t-conv">
       <p class="eyebrow">La convocatoria</p>
-      <h2 id="t-conv">Jugadores</h2>
+      <h2 id="t-conv">${sel.genero === "Femenina" ? "Jugadoras" : "Jugadores"}</h2>
       <div class="plantilla-grid">${plantilla}</div>
     </section>
 
