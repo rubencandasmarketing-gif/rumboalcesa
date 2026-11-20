@@ -254,7 +254,7 @@ export const SELECCIONES = [
     staff: [
       { rol: "Director deportivo", nombre: "Jorge Martínez Martínez", foto: "" },
       { rol: "Director técnico", nombre: "Sergio Bao Nicieza", foto: "" },
-      { rol: "Entrenador/a", nombre: "Álex Cortina Gallegos", foto: "img/staff/alex-cortina-gallegos.webp" },
+      { rol: "Entrenador", nombre: "Álex Cortina Gallegos", foto: "img/staff/alex-cortina-gallegos.webp" },
       { rol: "Entrenador", nombre: "José Arconada Ocariz", foto: "img/staff/jose-arconada-ocariz.webp" },
       { rol: "Entrenador de porteros", nombre: "Antonio Suárez Crespo", foto: "img/staff/antonio-suarez-crespo.webp" },
       { rol: "Fisioterapeuta", nombre: "Patricia Tejero Álvarez", foto: "img/staff/patricia-tejero-alvarez.webp" },
