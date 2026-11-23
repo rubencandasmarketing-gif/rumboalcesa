@@ -122,3 +122,53 @@ conviene cambiarlas por fotos de producto reales cuando las haya.
 La web no recoge pedidos: todo se pide por correo a la federación. Cada prenda
 tiene un botón «Pedir por correo» que abre un correo a `TIENDA.email` con la
 prenda y el precio ya escritos, y huecos para talla, cantidad, nombre y teléfono.
+
+## Pendientes (auditoría del 20 de noviembre de 2026)
+
+Lista acordada con Rubén para ir resolviendo. Tachar o borrar cada punto al
+hacerlo. Los números son los que se le dieron a él.
+
+**Errores y cosas que pueden confundir**
+
+1. Botón «Ver directos» de la portada: lleva a una página sin emisiones. Cambiar por «Ver calendario» hasta que haya directos confirmados.
+2. «Este espacio puede ser tuyo» sale tres veces por página y sin contacto: poner a quién escribir o dejarlo una sola vez.
+3. Guía de tallas de la tienda: medidas orientativas, no las oficiales de Joma. Poner la tabla oficial o quitar la guía.
+4. Tienda: «todas las tallas» se muestra como niño + adulto, y los colores de la camiseta de playa (azul, blanca, negra) salen de la foto. Confirmar.
+5. Cuerpo técnico: tarjetas con y sin foto mezcladas. Faltan 8 fotos; mientras, símbolo de la federación en las que no tienen.
+6. Juvenil masculina sin fotos (18 fichas).
+7. Foto de Álvaro Arribas (cadete masculina): de móvil, otro fondo y otra camiseta.
+8. `directo.html?demo` enseña un partido de ejemplo del año pasado: quitar antes de lanzar.
+
+**Contenido que falta**
+
+9. Horas y sedes de los 14 partidos.
+10. Partidos del 5 al 8 de enero (cruces y fase final).
+11. Confirmar el año del calendario (la hoja ponía 2026) y los dos partidos de las infantiles el día 4.
+12. Fechas y lugar del torneo en la portada.
+13. Redes sociales y canal de YouTube (`CONFIG.redes`, `CONFIG.canalYoutube`).
+14. Contacto de la federación en el pie.
+15. Aviso legal y política de privacidad (fotos de menores): lo más importante.
+16. Cómo se paga en la tienda.
+17. Camiseta de juego Selección: sigue «Próximamente», sin precio.
+
+**Mejoras**
+
+18. Menú móvil: que «Selecciones» liste las seis en el propio menú.
+19. Bloque «próximo partido» o cuenta atrás en portada y selecciones.
+20. Imagen al compartir propia para la tienda y cada selección.
+21. Fotos de la tienda y logo de Deporte Asturiano en mejor resolución.
+22. Alojar las tipografías en la web en vez de cargarlas de Google.
+23. Accesibilidad: «Guía de tallas» debe ser un botón; la tienda se salta un nivel de títulos.
+24. Decidir qué pasa con el juego al lanzar (¿página propia?).
+
+**Para el lanzamiento**
+
+25. Mapa del sitio, dirección canónica por página y decidir si las fotos de menores se indexan.
+26. Las estadísticas cuentan también las visitas a la vista previa.
+27. Cloudflare delante del dominio (cabeceras de seguridad): decisión pendiente.
+28. Verificación en dos pasos en GitHub e IONOS.
+
+**Mantenimiento interno**
+
+29. Este README está desactualizado en varias partes (datos de ejemplo, `_headers`, Cloudflare Pages).
+30. Comentarios viejos en `js/datos.js` («dominio provisional», «edición pendiente de confirmar»).

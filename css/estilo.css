@@ -1324,6 +1324,9 @@ section { padding-block: var(--sp-8); }
   padding: var(--sp-1) var(--sp-2);
 }
 .patro-grid a.patro-logo--propio img { max-height: 64px; }
+/* Logo casi cuadrado: menos margen y más alto, para igualar su presencia */
+.patro-grid a.patro-logo--alto { padding: 6px var(--sp-2); }
+.patro-grid a.patro-logo--alto img { max-height: 78px; }
 
 /* Patrocinadores habituales de la federación: todos en una fila si caben
    (--n = cuántos por fila: todos, o la mitad si pasan de 7); si no, saltan de línea y la última fila queda centrada */

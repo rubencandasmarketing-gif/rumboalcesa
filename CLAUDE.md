@@ -43,6 +43,13 @@ nueva debe llevarlo también.
 No enlazar la vista previa desde ningún sitio. Para lanzar la web real, ver
 el comentario "PARA LANZAR" en el workflow.
 
+## Lista de pendientes
+
+La lista de errores y mejoras acordada con Rubén (auditoría del 20 de
+noviembre de 2026, 30 puntos numerados) está al final de `README.md`, en
+"Pendientes". Cuando él pida seguir con "la lista", es esa. Al resolver un
+punto, quitarlo de ahí.
+
 ## Seguridad
 
 Todas las páginas HTML llevan una política de seguridad de contenido (meta

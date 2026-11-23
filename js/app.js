@@ -1010,9 +1010,11 @@ function huecoPatrocinador(p) {
   if (p && p.logo) {
     // Logo con fondo incrustado: la tarjeta se tiñe de ese color y el logo
     // llega a los bordes, para que no se lea como un recorte sobre blanco.
+    // Logo casi cuadrado (alto: true): aprovecha el alto de la tarjeta para
+    // no quedar diminuto junto a los logos apaisados.
     const propio = p.fondo
       ? ` class="patro-logo--propio" style="--fondo: ${rutaCss(p.fondo)}"`
-      : "";
+      : p.alto ? ` class="patro-logo--alto"` : "";
     return `
     <a${propio} href="${esc(p.url)}" rel="sponsored noopener" target="_blank" aria-label="${esc(p.nombre)}">
       <img src="${esc(p.logo)}" alt="${esc(p.nombre)}" loading="lazy">

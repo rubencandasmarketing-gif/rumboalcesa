@@ -67,7 +67,8 @@ export const SEDES = [];
 /* 'nivel' queda listo para cuando la federación defina los niveles.
    'fondo' solo hace falta cuando el logo trae su propio color de fondo
    incrustado (no transparente): el hueco se tiñe de ese color y el logo
-   ocupa la tarjeta entera, en vez de quedar como un recorte sobre blanco. */
+   ocupa la tarjeta entera, en vez de quedar como un recorte sobre blanco.
+   'alto: true' para un logo casi cuadrado: se le da más altura en la tarjeta. */
 export const PATROCINADORES = [
   {
     nombre: "Caja Rural de Asturias",
@@ -112,6 +113,13 @@ export const PATROCINADORES = [
     logo: "img/patrocinadores/excade.jpg",
     url: "https://www.excade.com/",
     nivel: ""
+  },
+  {
+    nombre: "Hotel San Miguel",
+    logo: "img/patrocinadores/hotel-san-miguel.jpg",
+    url: "https://www.hsanmiguel.com/",
+    nivel: "",
+    alto: true
   },
   {
     nombre: "Deporte Asturiano",
