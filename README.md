@@ -136,16 +136,15 @@ hacerlo. Los números son los que se le dieron a él.
 
 **Contenido que falta**
 
-9. Horas y sedes de los 14 partidos.
-10. Partidos del 5 al 8 de enero (cruces y fase final).
-15. Textos legales: el pie enlaza ya el aviso legal y las políticas de privacidad y cookies de fbmpa.es. Falta que la federación confirme que esos textos cubren también esta web y las fotos de menores.
-17. Camiseta de juego Selección: sigue «Próximamente», sin precio.
+9. Horas y sedes de los 14 partidos. EN ESPERA: lo irá pasando la organización; no preguntar, cargarlo cuando Rubén lo mande.
+10. Partidos del 5 al 8 de enero (cruces y fase final) y enlaces a los directos. EN ESPERA: igual que el 9.
+17. Camiseta de juego Selección: sigue «Próximamente», sin precio. APARCADO: la tienda se queda como está hasta que haya más información.
 
 **Mejoras**
 
 19. Bloque «próximo partido» o cuenta atrás en portada y selecciones.
 20. Imagen al compartir propia para la tienda y cada selección.
-21. Fotos de la tienda y logo de Deporte Asturiano en mejor resolución.
+21. Logo de Deporte Asturiano en mejor resolución. Las fotos de la tienda, APARCADAS con el resto de la tienda.
 22. Alojar las tipografías en la web en vez de cargarlas de Google.
 24. Decidir qué pasa con el juego al lanzar (¿página propia?).
 
