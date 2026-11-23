@@ -51,6 +51,13 @@ export const CONFIG = {
     privacidad: "https://fbmpa.es/politica-de-privacidad/",
     cookies: "https://fbmpa.es/politica-de-cookies/"
   },
+  // Firma de quien hizo la web: sale en el pie de todas las páginas
+  autor: {
+    nombre: "Rubén Candás",
+    web: "https://www.rubencandas.com",
+    instagram: "https://www.instagram.com/soyrubencandas/",
+    usuario: "@soyrubencandas"
+  },
   // A quién escribe una empresa interesada en patrocinar la cobertura
   contactoPatrocinio: "marketing@fbmpa.com",
   // Redes sociales de la federación: se muestran en el pie al rellenarlas

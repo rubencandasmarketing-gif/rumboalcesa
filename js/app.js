@@ -335,6 +335,14 @@ function renderPie() {
           <a href="${esc(f.cookies)}" rel="noopener" target="_blank">Política de cookies</a>
         </nav>
       </div>
+      ${CONFIG.autor ? `
+      <p class="contenedor pie__firma">
+        Diseño y desarrollo:
+        <a href="${esc(CONFIG.autor.web)}" rel="noopener" target="_blank">${esc(CONFIG.autor.nombre)}</a>
+        <span aria-hidden="true">·</span>
+        <a href="${esc(CONFIG.autor.instagram)}" rel="noopener" target="_blank"
+           aria-label="${esc(CONFIG.autor.nombre)} en Instagram">${esc(CONFIG.autor.usuario)}</a>
+      </p>` : ""}
     </footer>
   `));
 }
