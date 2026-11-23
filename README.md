@@ -141,7 +141,7 @@ hacerlo. Los números son los que se le dieron a él.
 
 5. Faltan 7 fotos del cuerpo técnico: Jorge Martínez, Sergio Bao, Rubén Rozada, Eduardo Valdés, Francisco Cimadevilla, Ana García Blanco y Samuel Tang Martínez (mientras, salen con el símbolo de la federación). EN ESPERA: ya están avisados; no preguntar, subirlas cuando Rubén las mande.
 6. Juvenil masculina: falta la foto de Mauro Castaño Pérez. EN ESPERA: igual que el 5.
-8. `directo.html?demo` enseña un partido de ejemplo del año pasado: quitar antes de lanzar.
+8. `directo.html?demo` enseña un partido de ejemplo del año pasado. DECIDIDO: se deja hasta que empiece el torneo (sirve para enseñar la web a patrocinadores); quitarlo el 3 de enero de 2027 o antes.
 
 **Contenido que falta**
 
@@ -158,6 +158,6 @@ hacerlo. Los números son los que se le dieron a él.
 
 25. DECIDIDO: las fotos de jugadores y cuerpo técnico NO se indexan en buscadores. Al lanzar: mapa del sitio, dirección canónica por página y exclusión de `img/jugadores/` e `img/staff/`.
 26. Las estadísticas cuentan también las visitas a la vista previa.
-27. Cloudflare delante del dominio (cabeceras de seguridad): decisión pendiente.
+27. Cloudflare delante del dominio (cabeceras de seguridad y protección contra saturación). DECIDIDO: sí, pero DESPUÉS del lanzamiento, con calma. Es un cambio de DNS en IONOS, guiado paso a paso.
 28. Verificación en dos pasos en IONOS (en GitHub ya está activada).
 
