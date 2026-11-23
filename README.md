@@ -73,6 +73,7 @@ durante la demo; caducará solo.
 
 ## Publicar en Cloudflare Pages
 
+1. Sube esta carpeta a un repositorio (GitHub).
 2. Cloudflare Pages → Create project → conecta el repo.
 3. Framework preset: **None**. Build command: vacío. Output: `/`.
 4. Custom domain: `rumboalcesa.es` cuando esté registrado.
@@ -129,7 +130,6 @@ hacerlo. Los números son los que se le dieron a él.
 
 **Errores y cosas que pueden confundir**
 
-1. Botón «Ver directos» de la portada: lleva a una página sin emisiones. Cambiar por «Ver calendario» hasta que haya directos confirmados.
 2. «Este espacio puede ser tuyo» sale tres veces por página y sin contacto: poner a quién escribir o dejarlo una sola vez.
 3. Guía de tallas de la tienda: medidas orientativas, no las oficiales de Joma. Poner la tabla oficial o quitar la guía.
 4. Tienda: «todas las tallas» se muestra como niño + adulto, y los colores de la camiseta de playa (azul, blanca, negra) salen de la foto. Confirmar.
