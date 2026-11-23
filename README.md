@@ -130,8 +130,8 @@ hacerlo. Los números son los que se le dieron a él.
 
 **Errores y cosas que pueden confundir**
 
-5. Faltan 7 fotos del cuerpo técnico: Jorge Martínez, Sergio Bao, Rubén Rozada, Eduardo Valdés, Francisco Cimadevilla, Ana García Blanco y Samuel Tang Martínez (mientras, salen con el símbolo de la federación).
-6. Juvenil masculina: falta la foto de Mauro Castaño Pérez.
+5. Faltan 7 fotos del cuerpo técnico: Jorge Martínez, Sergio Bao, Rubén Rozada, Eduardo Valdés, Francisco Cimadevilla, Ana García Blanco y Samuel Tang Martínez (mientras, salen con el símbolo de la federación). EN ESPERA: ya están avisados; no preguntar, subirlas cuando Rubén las mande.
+6. Juvenil masculina: falta la foto de Mauro Castaño Pérez. EN ESPERA: igual que el 5.
 8. `directo.html?demo` enseña un partido de ejemplo del año pasado: quitar antes de lanzar.
 
 **Contenido que falta**
@@ -153,7 +153,7 @@ hacerlo. Los números son los que se le dieron a él.
 25. Mapa del sitio, dirección canónica por página y decidir si las fotos de menores se indexan.
 26. Las estadísticas cuentan también las visitas a la vista previa.
 27. Cloudflare delante del dominio (cabeceras de seguridad): decisión pendiente.
-28. Verificación en dos pasos en GitHub e IONOS.
+28. Verificación en dos pasos en IONOS (en GitHub ya está activada).
 
 **Mantenimiento interno**
 
