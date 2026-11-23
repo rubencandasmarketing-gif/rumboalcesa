@@ -130,9 +130,8 @@ hacerlo. Los números son los que se le dieron a él.
 
 **Errores y cosas que pueden confundir**
 
-5. Faltan 8 fotos del cuerpo técnico (mientras, salen con el símbolo de la federación).
-6. Juvenil masculina sin fotos (18 fichas).
-7. Foto de Álvaro Arribas (cadete masculina): de móvil, otro fondo y otra camiseta.
+5. Faltan 7 fotos del cuerpo técnico: Jorge Martínez, Sergio Bao, Rubén Rozada, Eduardo Valdés, Francisco Cimadevilla, Ana García Blanco y Samuel Tang Martínez (mientras, salen con el símbolo de la federación).
+6. Juvenil masculina: falta la foto de Mauro Castaño Pérez.
 8. `directo.html?demo` enseña un partido de ejemplo del año pasado: quitar antes de lanzar.
 
 **Contenido que falta**
