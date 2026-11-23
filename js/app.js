@@ -505,6 +505,29 @@ document.addEventListener("click", e => {
 
 /* --- Portada --------------------------------------------------------------- */
 
+/** Días naturales desde hoy hasta una fecha ISO (0 = hoy). */
+function diasHasta(iso) {
+  const [a, m, d] = iso.split("-").map(Number);
+  const h = new Date();
+  return Math.round((new Date(a, m - 1, d) - new Date(h.getFullYear(), h.getMonth(), h.getDate())) / 86400000);
+}
+function textoFaltan(n) {
+  return n <= 0 ? "Hoy" : n === 1 ? "Mañana" : `Faltan ${n} días`;
+}
+/** Partidos aún por jugar, de hoy en adelante, en orden. */
+function porJugar(lista) {
+  const hoy = hoyISO();
+  return lista
+    .filter(t => t.partido.estado !== "finalizado" && t.partido.fecha >= hoy)
+    .sort((a, b) => (a.partido.fecha + a.partido.hora).localeCompare(b.partido.fecha + b.partido.hora));
+}
+/** Cuenta atrás en grande: número de días, o HOY / MAÑANA. */
+function cuentaAtrasHTML(n) {
+  return n <= 0 ? `<span class="proximo__num proximo__num--texto">Hoy</span>`
+    : n === 1 ? `<span class="proximo__num proximo__num--texto">Mañana</span>`
+    : `<span class="proximo__num">${n}</span><span class="proximo__unidad">días</span>`;
+}
+
 function todosLosPartidos() {
   return SELECCIONES.flatMap(sel =>
     sel.partidos.map(p => ({ partido: p, sel }))
@@ -578,6 +601,32 @@ function renderPortada() {
       </div>
     </section>` : "";
 
+  // --- Próxima jornada: el primer día con partidos por jugar, con cuenta atrás ---
+  const pendientes = porJugar(todos);
+  let proximaHTML = "";
+  if (pendientes.length && !enDirecto.length) {
+    const dia = pendientes[0].partido.fecha;
+    const deEseDia = pendientes.filter(t => t.partido.fecha === dia);
+    proximaHTML = `
+    <section class="contenedor solapa proximo" aria-labelledby="t-prox">
+      <div class="proximo__caja">
+        <div class="proximo__cuenta" aria-hidden="true">${cuentaAtrasHTML(diasHasta(dia))}</div>
+        <div class="proximo__texto">
+          <p class="eyebrow eyebrow--claro" id="t-prox">Próxima jornada · ${esc(textoFaltan(diasHasta(dia)))}</p>
+          <p class="proximo__fecha">${fechaLarga(dia)}</p>
+          <ul class="proximo__lista">
+            ${deEseDia.map(({ partido, sel }) => `
+            <li><a href="${sel.id}.html">
+              <span class="proximo__sel">${esc(sel.categoria)} ${sel.genero === "Masculina" ? "M" : "F"}</span>
+              <span class="proximo__cruce">Asturias – ${esc(partido.rival)}</span>
+              ${partido.hora ? `<span class="proximo__hora">${esc(partido.hora)}</span>` : ""}
+            </a></li>`).join("")}
+          </ul>
+        </div>
+      </div>
+    </section>`;
+  }
+
   // --- Agenda: todos los partidos agrupados por día ---
   AGENDA = new Map();
   [...todos]
@@ -639,6 +688,7 @@ function renderPortada() {
     </div>
 
     ${directoHTML}
+    ${proximaHTML}
 
     <section class="seccion-selecciones" id="selecciones" aria-labelledby="t-sel">
       <div class="contenedor">
@@ -694,6 +744,18 @@ function renderSeleccion(id) {
     : rivales.length
       ? vacio(`Contra ${listaRivales}`, "El orden de los partidos, las fechas y las horas, cuando se publique el calendario.")
       : vacio("El calendario, muy pronto", "Cuando se publique el calendario, los partidos aparecerán aquí.");
+  // Próximo partido de esta selección, con cuenta atrás
+  const sig = porJugar(sel.partidos.map(p => ({ partido: p, sel })))
+    .find(t => !emisionActiva(t.partido));
+  const proximoSel = sig ? `
+      <div class="proximo__caja proximo__caja--sel">
+        <div class="proximo__cuenta" aria-hidden="true">${cuentaAtrasHTML(diasHasta(sig.partido.fecha))}</div>
+        <div class="proximo__texto">
+          <p class="eyebrow eyebrow--claro">Próximo partido · ${esc(textoFaltan(diasHasta(sig.partido.fecha)))}</p>
+          <p class="proximo__fecha">Asturias – ${esc(sig.partido.rival)}</p>
+          <p class="proximo__detalle">${fechaLarga(sig.partido.fecha)}${sig.partido.hora ? ` · ${esc(sig.partido.hora)}` : ""}</p>
+        </div>
+      </div>` : "";
   const otros = (sel.grupos ?? []).filter(g => g !== nuestro);
   const listaEquipos = (g, clase) => `
         <ol class="${clase}">
@@ -820,6 +882,7 @@ function renderSeleccion(id) {
     <section class="contenedor" aria-labelledby="t-cal">
       <p class="eyebrow">Calendario y directos</p>
       <h2 id="t-cal">Partidos</h2>
+      ${proximoSel}
       <div style="display:grid;gap:var(--sp-3)">${calendario}</div>
     </section>
 

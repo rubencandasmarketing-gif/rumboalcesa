@@ -6,6 +6,15 @@
    chips, distintivos y cortes de sección con skew(-8deg).
    ============================================================================= */
 
+/* Tipografías alojadas en la propia web (carpeta fuentes/, licencia SIL OFL:
+   fuentes/OFL.txt). Subconjunto latino. Sin peticiones a Google Fonts. */
+@font-face { font-family: "Barlow"; font-style: normal; font-weight: 400; font-display: swap; src: url("../fuentes/barlow-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Barlow"; font-style: normal; font-weight: 600; font-display: swap; src: url("../fuentes/barlow-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Barlow"; font-style: normal; font-weight: 700; font-display: swap; src: url("../fuentes/barlow-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Barlow Condensed"; font-style: normal; font-weight: 600; font-display: swap; src: url("../fuentes/barlow-condensed-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Barlow Condensed"; font-style: normal; font-weight: 700; font-display: swap; src: url("../fuentes/barlow-condensed-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Barlow Condensed"; font-style: italic; font-weight: 900; font-display: swap; src: url("../fuentes/barlow-condensed-latin-900-italic.woff2") format("woff2"); }
+
 :root {
   /* --- Color: escala de marca (azul FBMPA #0168B3 como 700) --- */
   --azul-950: #062338;
@@ -766,6 +775,51 @@ section { padding-block: var(--sp-8); }
 .hoy-juegan__lista { display: grid; gap: var(--sp-2); }
 
 /* =============================================================================
+   PRÓXIMA JORNADA / PRÓXIMO PARTIDO (cuenta atrás)
+   ============================================================================= */
+.proximo__caja {
+  display: grid; grid-template-columns: auto 1fr; gap: var(--sp-3); align-items: center;
+  background: var(--rayas), linear-gradient(135deg, var(--azul-900), var(--azul-700));
+  color: #fff; border-radius: var(--r-md); padding: var(--sp-3);
+  box-shadow: var(--shadow-lg);
+}
+.proximo__caja--sel { margin-bottom: var(--sp-3); box-shadow: var(--shadow-md); }
+.proximo__cuenta {
+  display: grid; justify-items: center; align-content: center; min-width: 6.2rem;
+  padding: var(--sp-2) var(--sp-2); border-radius: var(--r-sm);
+  background: var(--amarillo-deg); color: var(--azul-950);
+  transform: skewX(var(--skew));
+}
+.proximo__cuenta > * { transform: skewX(calc(var(--skew) * -1)); }
+.proximo__num { font: 700 var(--step-4)/.9 var(--font-display); font-variant-numeric: tabular-nums; }
+.proximo__num--texto { font-size: var(--step-2); text-transform: uppercase; letter-spacing: .02em; padding-block: .25em; }
+.proximo__unidad { font: 700 var(--step--1)/1 var(--font-body); text-transform: uppercase; letter-spacing: .12em; margin-top: .25em; }
+.proximo__texto { min-width: 0; }
+.proximo__texto .eyebrow { margin: 0 0 .2rem; }
+.proximo__fecha { margin: 0; font: 700 var(--step-2)/1.05 var(--font-display); text-transform: uppercase; }
+.proximo__detalle { margin: .25rem 0 0; color: var(--azul-100); }
+.proximo__lista {
+  list-style: none; margin: var(--sp-2) 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: .4rem;
+}
+.proximo__lista a {
+  display: grid; grid-template-columns: 5em minmax(0, 1fr) auto; gap: .6rem; align-items: baseline;
+  padding: .5rem .7rem; border-radius: var(--r-sm);
+  background: rgba(255, 255, 255, .09); color: #fff; text-decoration: none;
+  transition: background .2s var(--ease);
+}
+.proximo__lista a:hover, .proximo__lista a:focus-visible { background: rgba(255, 255, 255, .18); }
+.proximo__sel { font: 700 .72rem/1.2 var(--font-body); text-transform: uppercase; letter-spacing: .06em; color: var(--amarillo); }
+.proximo__cruce { font: 600 var(--step-0)/1.15 var(--font-display); text-transform: uppercase; letter-spacing: .015em; }
+.proximo__hora { font: 700 var(--step-0)/1 var(--font-display); font-variant-numeric: tabular-nums; }
+@media (max-width: 620px) {
+  .proximo__caja { grid-template-columns: 1fr; gap: var(--sp-2); padding: var(--sp-2); }
+  .proximo__cuenta { justify-self: start; grid-auto-flow: column; align-items: baseline; gap: .4rem; min-width: 0; padding: .5rem 1rem; }
+  .proximo__num { font-size: var(--step-3); }
+  .proximo__lista { grid-template-columns: 1fr; }
+}
+
+/* =============================================================================
    AGENDA DEL CAMPEONATO (portada)
    ============================================================================= */
 .agenda-dias {
@@ -815,7 +869,7 @@ section { padding-block: var(--sp-8); }
   letter-spacing: .05em; color: var(--muted);
 }
 .partido__hora--pendiente { font-size: .78rem; }
-.agenda-fila__sede--pendiente { font-size: .78rem; font-style: italic; }
+.agenda-fila__sede--pendiente { font-size: .78rem; }
 .agenda-fila__sel {
   font-size: var(--step--1); font-weight: 700; color: var(--azul-800);
   text-transform: uppercase; letter-spacing: .04em;

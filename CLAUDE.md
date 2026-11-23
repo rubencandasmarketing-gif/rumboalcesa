@@ -54,8 +54,9 @@ punto, quitarlo de ahí.
 
 Todas las páginas HTML llevan una política de seguridad de contenido (meta
 `Content-Security-Policy`) y `referrer`. Solo se cargan recursos de la propia
-web y de: Google Fonts, Cloudflare Web Analytics, miniaturas de YouTube
-(`i.ytimg.com`) y el reproductor `youtube-nocookie.com`. Consecuencias:
+web y de: Cloudflare Web Analytics, miniaturas de YouTube (`i.ytimg.com`) y el
+reproductor `youtube-nocookie.com`. Las tipografías están alojadas en la
+propia web (`fuentes/`), no en Google Fonts. Consecuencias:
 
 - Nada de JavaScript en línea en la web real (ni `<script>` con código ni
   atributos `onclick`/`onerror`): se bloquea. Todo va en `js/*.js`.
