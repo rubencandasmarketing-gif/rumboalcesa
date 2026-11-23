@@ -35,9 +35,9 @@
 export const CONFIG = {
   nombreSitio: "Asturias, rumbo al CESA",
   descripcion: "Toda la cobertura de las selecciones asturianas en el CESA 2027: convocatorias, calendario, resultados y directos.",
-  dominio: "rumboalcesa.es",            // provisional hasta confirmar registro
+  dominio: "rumboalcesa.es",
   canalYoutube: "",                     // URL del canal, p. ej. "https://www.youtube.com/@..."
-  edicion: "CESA 2027",                 // pendiente de confirmar edición y fechas
+  edicion: "CESA 2027",
   // Redes sociales de la federación: se muestran en el pie al rellenarlas
   redes: {
     twitter: "",     // p. ej. "https://x.com/fbmpa"

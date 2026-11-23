@@ -71,7 +71,7 @@ function card(p) {
     </div>
     <div class="t-card__body">
       <div class="t-card__head">
-        <h4>${esc(p.nombre)}</h4>
+        <h3>${esc(p.nombre)}</h3>
         ${p.colores ? `<p class="t-card__meta">${esc(lista(p.colores))}</p>` : ''}
       </div>
       <p class="t-card__desc">${esc(p.descripcion)}</p>
@@ -80,7 +80,7 @@ function card(p) {
         <span class="t-price__now">${precioTexto(p)}</span>
         <span class="t-price__iva">+ IVA</span>
       </div>
-      <p class="t-card__tallas">${esc(textoTallas(p))}${p.guia ? ` · <a href="#" class="t-link" data-guia>Guía de tallas</a>` : ''}</p>
+      <p class="t-card__tallas">${esc(textoTallas(p))}${p.guia ? ` · <button type="button" class="t-link" data-guia>Guía de tallas</button>` : ''}</p>
       <a class="btn btn--azul btn--bloque" href="${esc(mailto(p))}">Pedir por correo</a>`
       : `
       <div class="t-price"><span class="t-price__now">Próximamente</span></div>
@@ -146,7 +146,7 @@ export function renderTienda(main) {
     img.addEventListener('error', pendiente);
     if (img.complete && !img.naturalWidth) pendiente();
   });
-  $$('[data-guia]', main).forEach(a => a.addEventListener('click', e => { e.preventDefault(); openGuide(); }));
+  $$('[data-guia]', main).forEach(a => a.addEventListener('click', openGuide));
   $('#mx').onclick = closeGuide;
   $('#modal').addEventListener('click', e => { if (e.target.id === 'modal') closeGuide(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeGuide(); });

@@ -190,7 +190,7 @@ function renderCabecera() {
 /* --- Comportamiento de la navegación ---------------------------------------
    Escritorio: "Selecciones" es un desplegable que abre con ratón, con clic y
    con teclado. Móvil (≤980px): la barra se pliega en un cajón lateral y
-   "Selecciones" lleva a la franja de cintas de la portada.
+   "Selecciones" despliega las seis dentro del propio cajón.
 ---------------------------------------------------------------------------- */
 function cablearNavegacion() {
   const cabecera = document.querySelector(".cabecera");
@@ -212,17 +212,12 @@ function cablearNavegacion() {
 
   const abrirCajon = abierto => {
     cabecera.classList.toggle("cabecera--abierta", abierto);
+    // En una página de selección, el cajón se abre con la lista ya desplegada
+    if (abierto && movil.matches && grupo.classList.contains("nav__grupo--activo")) desplegar(true);
     hamburguesa.setAttribute("aria-expanded", String(abierto));
     velo.hidden = !abierto;
     document.body.classList.toggle("sin-scroll", abierto);
     if (!abierto) desplegar(false);
-  };
-
-  const irASelecciones = () => {
-    const destino = document.getElementById("selecciones");
-    if (!destino) { location.href = "index.html#selecciones"; return; }
-    const quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    destino.scrollIntoView({ behavior: quieto ? "auto" : "smooth", block: "start" });
   };
 
   hamburguesa.addEventListener("click", () =>
@@ -230,10 +225,8 @@ function cablearNavegacion() {
   cerrar.addEventListener("click", () => { abrirCajon(false); hamburguesa.focus(); });
   velo.addEventListener("click", () => abrirCajon(false));
 
-  disparador.addEventListener("click", () => {
-    if (movil.matches) { abrirCajon(false); irASelecciones(); }
-    else desplegar(disparador.getAttribute("aria-expanded") !== "true");
-  });
+  disparador.addEventListener("click", () =>
+    desplegar(disparador.getAttribute("aria-expanded") !== "true"));
 
   // Ratón en escritorio
   grupo.addEventListener("mouseenter", () => { if (!movil.matches) desplegar(true); });
@@ -582,7 +575,7 @@ function renderPortada() {
   else fechaInicial = fechas.find(f => f >= hoy) ?? fechas[fechas.length - 1] ?? null;
 
   const agendaHTML = `
-    <section class="contenedor" aria-labelledby="t-agenda">
+    <section class="contenedor" id="agenda" aria-labelledby="t-agenda">
       <p class="eyebrow">Día a día</p>
       <h2 id="t-agenda">Agenda del campeonato</h2>
       ${fechas.length ? `
@@ -615,7 +608,9 @@ function renderPortada() {
           </h1>
           <p>Toda la cobertura de las selecciones asturianas en el CESA: convocatorias, calendario, resultados y directos.</p>
           <div class="heroe__acciones">
-            <a class="btn" href="directo.html">Ver directos</a>
+            ${todos.some(t => emisionActiva(t.partido))
+              ? `<a class="btn" href="directo.html">Ver directos</a>`
+              : `<a class="btn" href="#agenda">Ver calendario</a>`}
             <a class="btn btn--fantasma" href="#selecciones">Las selecciones</a>
           </div>
         </div>
@@ -757,7 +752,9 @@ function renderSeleccion(id) {
   const asignados = new Set();
   const tarjetaStaff = m => `
       <div class="staff-item">
-        ${m.foto ? `<img class="staff-item__foto" src="${esc(m.foto)}" alt="" loading="lazy">` : ""}
+        ${m.foto
+          ? `<img class="staff-item__foto" src="${esc(m.foto)}" alt="" loading="lazy">`
+          : `<div class="staff-item__foto staff-item__foto--sin" aria-hidden="true"></div>`}
         <div class="staff-item__texto">
           <div class="staff-item__rol">${esc(m.rol)}</div>
           <div class="staff-item__nombre">${esc(m.nombre)}</div>

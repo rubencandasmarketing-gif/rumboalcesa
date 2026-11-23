@@ -350,9 +350,17 @@ section { padding-block: var(--sp-8); }
   .nav__disparador:focus-visible::after,
   .nav__grupo--activo > .nav__disparador::after { width: 2.5rem; }
 
-  /* Aquí "Selecciones" lleva a la franja de cintas: el panel no se usa */
-  .nav__panel { display: none; }
-  .nav__flecha { transform: rotate(-45deg) translateY(.15em); }
+  /* "Selecciones" es un acordeón: las seis se despliegan dentro del cajón */
+  .nav__panel {
+    position: static; display: none; grid-template-columns: 1fr 1fr; gap: .3rem;
+    margin: .1rem 0 .5rem; padding: .4rem;
+    background: rgba(255, 255, 255, .07); box-shadow: none;
+    opacity: 1; visibility: visible; transform: none; transition: none;
+  }
+  .nav__grupo--abierto > .nav__panel { display: grid; }
+  .nav__panel a { color: #fff; white-space: normal; min-height: 52px; }
+  .nav__panel a span { color: var(--amarillo); }
+  .nav__panel a:hover, .nav__panel a:focus-visible { background: rgba(255, 255, 255, .1); }
 
   .nav-velo { position: fixed; inset: 0; background: rgba(6, 35, 56, .55); z-index: 55; }
   /* Con el cajón abierto la cabecera sube por encima del velo: si no, el velo
@@ -1069,6 +1077,12 @@ section { padding-block: var(--sp-8); }
   border: 2px solid var(--azul-100);
 }
 .staff-item--vacio { border-style: dashed; box-shadow: none; background: transparent; }
+/* Persona confirmada pero aún sin foto: símbolo de la federación en su sitio */
+.staff-item__foto--sin {
+  background:
+    url("../img/marca/simbolo-blanco.png") center / 58% auto no-repeat,
+    var(--azul-100);
+}
 .staff-item__foto--hueco {
   background:
     url("../img/marca/simbolo-blanco.png") center / 60% auto no-repeat,
@@ -1656,13 +1670,17 @@ section { padding-block: var(--sp-8); }
 .t-tag--pronto { background: var(--azul-950); color: var(--amarillo); }
 .t-card--pronto .t-price__now { font-size: var(--step-1); color: var(--muted); }
 .t-card__body { padding: var(--sp-3); display: flex; flex-direction: column; gap: .75rem; flex: 1; }
-.t-card__head h4 { margin: 0; font-family: var(--font-display); font-size: var(--step-1); font-weight: 700; text-transform: uppercase; line-height: 1.05; }
+.t-card__head h3 { margin: 0; font-family: var(--font-display); font-size: var(--step-1); font-weight: 700; text-transform: uppercase; line-height: 1.05; }
 .t-card__meta { margin: 2px 0 0; font-size: .78rem; color: var(--muted); }
 .t-card__desc { margin: 0; font-size: var(--step--1); color: var(--muted); line-height: 1.5; }
 .t-price { display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap; margin-top: .25rem; }
 .t-price__now { font-family: var(--font-display); font-size: var(--step-2); font-weight: 700; color: var(--azul-700); line-height: 1; }
 .t-price__iva { font-size: .75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
 .t-link { font-size: .8rem; align-self: start; }
+button.t-link {
+  background: none; border: 0; padding: 0; font-family: inherit; cursor: pointer;
+  color: var(--azul-700); text-decoration: underline;
+}
 .t-card .btn--azul { margin-top: auto; }
 .t-card__tallas { margin: 0; font-size: .8rem; color: var(--muted); }
 .t-btn-off { margin-top: auto; background: var(--paper-2); color: var(--muted); cursor: not-allowed; }

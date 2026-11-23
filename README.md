@@ -73,7 +73,6 @@ durante la demo; caducará solo.
 
 ## Publicar en Cloudflare Pages
 
-1. Sube esta carpeta a un repositorio (GitHub).
 2. Cloudflare Pages → Create project → conecta el repo.
 3. Framework preset: **None**. Build command: vacío. Output: `/`.
 4. Custom domain: `rumboalcesa.es` cuando esté registrado.
@@ -134,7 +133,7 @@ hacerlo. Los números son los que se le dieron a él.
 2. «Este espacio puede ser tuyo» sale tres veces por página y sin contacto: poner a quién escribir o dejarlo una sola vez.
 3. Guía de tallas de la tienda: medidas orientativas, no las oficiales de Joma. Poner la tabla oficial o quitar la guía.
 4. Tienda: «todas las tallas» se muestra como niño + adulto, y los colores de la camiseta de playa (azul, blanca, negra) salen de la foto. Confirmar.
-5. Cuerpo técnico: tarjetas con y sin foto mezcladas. Faltan 8 fotos; mientras, símbolo de la federación en las que no tienen.
+5. Faltan 8 fotos del cuerpo técnico (mientras, salen con el símbolo de la federación).
 6. Juvenil masculina sin fotos (18 fichas).
 7. Foto de Álvaro Arribas (cadete masculina): de móvil, otro fondo y otra camiseta.
 8. `directo.html?demo` enseña un partido de ejemplo del año pasado: quitar antes de lanzar.
@@ -153,12 +152,10 @@ hacerlo. Los números son los que se le dieron a él.
 
 **Mejoras**
 
-18. Menú móvil: que «Selecciones» liste las seis en el propio menú.
 19. Bloque «próximo partido» o cuenta atrás en portada y selecciones.
 20. Imagen al compartir propia para la tienda y cada selección.
 21. Fotos de la tienda y logo de Deporte Asturiano en mejor resolución.
 22. Alojar las tipografías en la web en vez de cargarlas de Google.
-23. Accesibilidad: «Guía de tallas» debe ser un botón; la tienda se salta un nivel de títulos.
 24. Decidir qué pasa con el juego al lanzar (¿página propia?).
 
 **Para el lanzamiento**
@@ -171,4 +168,3 @@ hacerlo. Los números son los que se le dieron a él.
 **Mantenimiento interno**
 
 29. Este README está desactualizado en varias partes (datos de ejemplo, `_headers`, Cloudflare Pages).
-30. Comentarios viejos en `js/datos.js` («dominio provisional», «edición pendiente de confirmar»).
