@@ -36,13 +36,29 @@ export const CONFIG = {
   nombreSitio: "Asturias, rumbo al CESA",
   descripcion: "Toda la cobertura de las selecciones asturianas en el CESA 2027: convocatorias, calendario, resultados y directos.",
   dominio: "rumboalcesa.es",
-  canalYoutube: "",                     // URL del canal, p. ej. "https://www.youtube.com/@..."
   edicion: "CESA 2027",
+  fechas: "Del 3 al 8 de enero de 2027",
+  lugar: "Cataluña",
+
+  // Federación: contacto y textos legales (los de fbmpa.es) que salen en el pie
+  federacion: {
+    web: "https://www.fbmpa.es",
+    email: "fbmpa@fbmpa.com",
+    telefono: "985 39 51 72",
+    direccion: "C/ Espronceda 19, bajo · 33208 Gijón",
+    contacto: "https://fbmpa.es/contacto/",
+    avisoLegal: "https://fbmpa.es/aviso-legal/",
+    privacidad: "https://fbmpa.es/politica-de-privacidad/",
+    cookies: "https://fbmpa.es/politica-de-cookies/"
+  },
+  // A quién escribe una empresa interesada en patrocinar la cobertura
+  contactoPatrocinio: "marketing@fbmpa.com",
   // Redes sociales de la federación: se muestran en el pie al rellenarlas
   redes: {
-    twitter: "",     // p. ej. "https://x.com/fbmpa"
-    instagram: "",   // p. ej. "https://www.instagram.com/fbmpa"
-    facebook: ""     // p. ej. "https://www.facebook.com/fbmpa"
+    twitter: "https://twitter.com/fbmpa_oficial",
+    instagram: "https://www.instagram.com/fbmpa/",
+    facebook: "https://www.facebook.com/Federaci%C3%B3n-de-Balonmano-del-Principado-de-Asturias-679453935782831/",
+    youtube: "https://www.youtube.com/channel/UCNhd_de1J22ZJaoGBTZkfOA"
   },
 
   // Con activo:false, los tres huecos muestran "Este espacio puede ser tuyo"

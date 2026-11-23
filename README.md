@@ -130,9 +130,6 @@ hacerlo. Los números son los que se le dieron a él.
 
 **Errores y cosas que pueden confundir**
 
-2. «Este espacio puede ser tuyo» sale tres veces por página y sin contacto: poner a quién escribir o dejarlo una sola vez.
-3. Guía de tallas de la tienda: medidas orientativas, no las oficiales de Joma. Poner la tabla oficial o quitar la guía.
-4. Tienda: «todas las tallas» se muestra como niño + adulto, y los colores de la camiseta de playa (azul, blanca, negra) salen de la foto. Confirmar.
 5. Faltan 8 fotos del cuerpo técnico (mientras, salen con el símbolo de la federación).
 6. Juvenil masculina sin fotos (18 fichas).
 7. Foto de Álvaro Arribas (cadete masculina): de móvil, otro fondo y otra camiseta.
@@ -142,12 +139,7 @@ hacerlo. Los números son los que se le dieron a él.
 
 9. Horas y sedes de los 14 partidos.
 10. Partidos del 5 al 8 de enero (cruces y fase final).
-11. Confirmar el año del calendario (la hoja ponía 2026) y los dos partidos de las infantiles el día 4.
-12. Fechas y lugar del torneo en la portada.
-13. Redes sociales y canal de YouTube (`CONFIG.redes`, `CONFIG.canalYoutube`).
-14. Contacto de la federación en el pie.
-15. Aviso legal y política de privacidad (fotos de menores): lo más importante.
-16. Cómo se paga en la tienda.
+15. Textos legales: el pie enlaza ya el aviso legal y las políticas de privacidad y cookies de fbmpa.es. Falta que la federación confirme que esos textos cubren también esta web y las fotos de menores.
 17. Camiseta de juego Selección: sigue «Próximamente», sin precio.
 
 **Mejoras**

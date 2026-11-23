@@ -130,9 +130,9 @@ function renderCabecera() {
     ? `<a href="${esc(p.url)}" rel="sponsored noopener" target="_blank">
          <img src="${esc(p.logo)}" alt="${esc(p.nombre)}, patrocinador principal">
        </a>`
-    : `<span class="patro-placeholder--franja">
-         <b>Este espacio puede ser tuyo</b><span>· Patrocinador principal</span>
-       </span>`;
+    : `<a class="patro-placeholder--franja" href="${esc(mailtoPatrocinio())}">
+         <b>Este espacio puede ser tuyo</b><span>· Patrocinador principal · ${esc(CONFIG.contactoPatrocinio)}</span>
+       </a>`;
 
   const hayDirecto = SELECCIONES.some(s => s.partidos.some(p => emisionActiva(p)));
 
@@ -256,18 +256,28 @@ const ICONOS_REDES = {
   instagram: `<svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23a3.8 3.8 0 0 1-.9 1.38c-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.8 3.8 0 0 1-1.38-.9 3.74 3.74 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.58 2.2 15.2 2.2 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.21 8.8 2.2 12 2.2M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63a5.88 5.88 0 0 0-2.13 1.38A5.86 5.86 0 0 0 .63 4.14C.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.28.26 2.15.56 2.91.31.8.72 1.48 1.38 2.13a5.87 5.87 0 0 0 2.13 1.38c.77.3 1.64.5 2.91.56 1.28.06 1.69.07 4.95.07s3.67-.01 4.95-.07c1.28-.06 2.15-.26 2.91-.56a5.9 5.9 0 0 0 2.13-1.38 5.86 5.86 0 0 0 1.38-2.13c.3-.77.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.28-.26-2.15-.56-2.91a5.89 5.89 0 0 0-1.38-2.13A5.85 5.85 0 0 0 19.86.63c-.77-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0m0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32M12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8m6.41-11.85a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88"/></svg>`,
   facebook: `<svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M24 12.07C24 5.45 18.63.07 12 .07S0 5.45 0 12.07c0 5.99 4.39 10.95 10.13 11.85v-8.38H7.08v-3.47h3.05V9.43c0-3 1.79-4.67 4.53-4.67 1.31 0 2.69.24 2.69.24v2.95h-1.52c-1.49 0-1.95.93-1.95 1.87v2.25h3.33l-.53 3.47h-2.8v8.38C19.61 23.03 24 18.06 24 12.07z"/></svg>`
 };
-const NOMBRES_REDES = { twitter: "X (Twitter)", instagram: "Instagram", facebook: "Facebook" };
+ICONOS_REDES.youtube = `<svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z"/></svg>`;
+const NOMBRES_REDES = { twitter: "X (Twitter)", instagram: "Instagram", facebook: "Facebook", youtube: "YouTube" };
 
 function redesHTML() {
   const redes = CONFIG.redes || {};
-  const enlaces = ["twitter", "instagram", "facebook"]
+  const enlaces = ["instagram", "facebook", "twitter", "youtube"]
     .filter(k => redes[k])
     .map(k => `<a class="pie__red" href="${esc(redes[k])}" rel="noopener" target="_blank" aria-label="FBMPA en ${NOMBRES_REDES[k]}">${ICONOS_REDES[k]}</a>`)
     .join("");
   return enlaces ? `<div class="pie__redes">${enlaces}</div>` : "";
 }
 
+/** Contacto para patrocinar: correo ya preparado a marketing. */
+function mailtoPatrocinio() {
+  return `mailto:${CONFIG.contactoPatrocinio}?subject=${encodeURIComponent(`Patrocinio — ${CONFIG.nombreSitio}`)}`;
+}
+function contactoPatrocinioHTML() {
+  return `<a class="patro-placeholder__contacto" href="${esc(mailtoPatrocinio())}">Escríbenos a ${esc(CONFIG.contactoPatrocinio)}</a>`;
+}
+
 function renderPie() {
+  const f = CONFIG.federacion;
   const p = CONFIG.patrocinadorPrincipal;
   const cierre = p.activo
     ? `<a href="${esc(p.url)}" rel="sponsored noopener" target="_blank">
@@ -276,6 +286,7 @@ function renderPie() {
     : `<div class="patro-placeholder">
          <strong>Este espacio puede ser tuyo</strong>
          <span>Patrocinador principal de la cobertura — presencia en todas las páginas y junto a cada directo.</span>
+         ${contactoPatrocinioHTML()}
        </div>`;
 
   document.body.append(el(`
@@ -285,7 +296,7 @@ function renderPie() {
     <footer class="pie">
       <div class="contenedor pie__rejilla">
         <div class="pie__col pie__col--marca">
-          <a href="https://www.fbmpa.es" rel="noopener" target="_blank"
+          <a href="${esc(f.web)}" rel="noopener" target="_blank"
              aria-label="Federación de Balonmano del Principado de Asturias">
             <img src="img/marca/fbmpa-blanco.png" alt="FBMPA">
           </a>
@@ -306,14 +317,23 @@ function renderPie() {
         <div class="pie__col">
           <h2 class="pie__titulo">Federación</h2>
           <ul class="pie__enlaces">
-            <li><a href="https://www.fbmpa.es" rel="noopener" target="_blank">fbmpa.es</a></li>
+            <li><a href="${esc(f.web)}" rel="noopener" target="_blank">fbmpa.es</a></li>
+            <li><a href="mailto:${esc(f.email)}">${esc(f.email)}</a></li>
+            <li><a href="tel:+34${f.telefono.replace(/\s/g, "")}">${esc(f.telefono)}</a></li>
+            <li><a href="${esc(f.contacto)}" rel="noopener" target="_blank">Contacto</a></li>
           </ul>
+          <p class="pie__direccion">${esc(f.direccion)}</p>
           ${redesHTML()}
         </div>
       </div>
 
       <div class="contenedor pie__legal">
-        Web de la Federación de Balonmano del Principado de Asturias dedicada al seguimiento del ${esc(CONFIG.edicion)}.
+        <span>Web de la Federación de Balonmano del Principado de Asturias dedicada al seguimiento del ${esc(CONFIG.edicion)}.</span>
+        <nav class="pie__legales" aria-label="Textos legales">
+          <a href="${esc(f.avisoLegal)}" rel="noopener" target="_blank">Aviso legal</a>
+          <a href="${esc(f.privacidad)}" rel="noopener" target="_blank">Política de privacidad</a>
+          <a href="${esc(f.cookies)}" rel="noopener" target="_blank">Política de cookies</a>
+        </nav>
       </div>
     </footer>
   `));
@@ -606,6 +626,7 @@ function renderPortada() {
             <span class="heroe__titular__clave">Selecciones</span>
             <span class="heroe__titular__remate">Durante el ${esc(CONFIG.edicion)}</span>
           </h1>
+          <p class="heroe__fechas"><span>${esc(CONFIG.fechas)}</span><span>${esc(CONFIG.lugar)}</span></p>
           <p>Toda la cobertura de las selecciones asturianas en el CESA: convocatorias, calendario, resultados y directos.</p>
           <div class="heroe__acciones">
             ${todos.some(t => emisionActiva(t.partido))
@@ -1047,6 +1068,7 @@ function renderPatrocinadores() {
          <strong>Patrocinador principal — espacio disponible</strong>
          <span>Presencia en la cabecera de todas las páginas, junto al reproductor de cada
          directo y en el cierre de cada página. La máxima visibilidad de la cobertura.</span>
+         ${contactoPatrocinioHTML()}
        </div>`;
 
   // Los patrocinadores habituales de la federación (mínimo 6 huecos)

@@ -1494,6 +1494,22 @@ section { padding-block: var(--sp-8); }
   border-radius: 50%;
   transition: border-color .2s var(--ease), color .2s var(--ease), transform .2s var(--ease);
 }
+.pie__direccion { margin: .5rem 0 var(--sp-2); font-size: var(--step--1); color: var(--azul-300); }
+.pie__legal { display: flex; flex-wrap: wrap; gap: .6rem var(--sp-3); justify-content: space-between; }
+.pie__legales { display: flex; flex-wrap: wrap; gap: .4rem var(--sp-3); }
+.pie__legales a { color: var(--azul-100); text-underline-offset: .25em; }
+.pie__legales a:hover { color: var(--amarillo); }
+.pie__redes { flex-wrap: wrap; }
+.patro-placeholder__contacto { font-weight: 700; color: var(--azul-800); text-underline-offset: .25em; }
+.patro-placeholder__contacto:hover { color: var(--azul-700); }
+.franja-principal a.patro-placeholder--franja:hover b { text-decoration: underline; text-underline-offset: .25em; }
+/* Fechas y lugar del torneo en la portada */
+.heroe__fechas {
+  display: flex; flex-wrap: wrap; gap: .4rem .6rem; margin: 0 0 var(--sp-2);
+  font: 700 var(--step-0)/1.2 var(--font-display); text-transform: uppercase; letter-spacing: .06em;
+}
+.heroe__fechas span { padding: .35em .7em; border-radius: var(--r-sm); background: rgba(255, 255, 255, .14); color: #fff; }
+.heroe__fechas span:first-child { background: var(--amarillo); color: var(--azul-950); }
 .pie__red:hover { border-color: var(--amarillo); color: var(--amarillo); transform: translateY(-2px); }
 
 /* =============================================================================
