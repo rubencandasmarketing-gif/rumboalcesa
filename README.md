@@ -152,11 +152,11 @@ hacerlo. Los números son los que se le dieron a él.
 **Mejoras**
 
 21. Logo de Deporte Asturiano en mejor resolución. Las fotos de la tienda, APARCADAS con el resto de la tienda.
-24. Decidir qué pasa con el juego al lanzar (¿página propia?).
+24. DECIDIDO: al lanzar, el juego pasa a una página propia oculta (sin enlaces desde la web y sin indexar), accesible solo con su enlace.
 
 **Para el lanzamiento**
 
-25. Mapa del sitio, dirección canónica por página y decidir si las fotos de menores se indexan.
+25. DECIDIDO: las fotos de jugadores y cuerpo técnico NO se indexan en buscadores. Al lanzar: mapa del sitio, dirección canónica por página y exclusión de `img/jugadores/` e `img/staff/`.
 26. Las estadísticas cuentan también las visitas a la vista previa.
 27. Cloudflare delante del dominio (cabeceras de seguridad): decisión pendiente.
 28. Verificación en dos pasos en IONOS (en GitHub ya está activada).
