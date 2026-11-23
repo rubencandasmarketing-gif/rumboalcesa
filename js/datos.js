@@ -58,7 +58,7 @@ export const CONFIG = {
     twitter: "https://twitter.com/fbmpa_oficial",
     instagram: "https://www.instagram.com/fbmpa/",
     facebook: "https://www.facebook.com/Federaci%C3%B3n-de-Balonmano-del-Principado-de-Asturias-679453935782831/",
-    youtube: "https://www.youtube.com/channel/UCNhd_de1J22ZJaoGBTZkfOA"
+    youtube: ""      // sin enlace al canal por decisión de Rubén; si se rellena, sale el icono en el pie
   },
 
   // Con activo:false, los tres huecos muestran "Este espacio puede ser tuyo"
