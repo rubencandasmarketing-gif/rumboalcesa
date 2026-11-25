@@ -154,6 +154,8 @@ hacerlo. Los números son los que se le dieron a él.
 21. Logo de Deporte Asturiano en mejor resolución. Las fotos de la tienda, APARCADAS con el resto de la tienda.
 24. DECIDIDO: al lanzar, el juego pasa a una página propia oculta (sin enlaces desde la web y sin indexar), accesible solo con su enlace.
 
+31. Más presencia de los patrocinadores (pedido por Rubén el 23 de noviembre, aplazado). Opciones que se le dieron: (1) cinta de logos en movimiento en todas las páginas, también en la tienda; (2) «ofrecido por» con logos que rotan junto a la cuenta atrás, el próximo partido y la agenda; (3) banda de logos junto al reproductor en directo; (4) tira de logos en las imágenes al compartir; (5) vallas con logos en el juego; (6) un patrocinador por selección. Recomendación dada: 1 y 2. Falta que diga cuáles quiere y si todos pesan igual. Ojo: no restar valor al hueco del patrocinador principal.
+
 **Para el lanzamiento**
 
 25. DECIDIDO: las fotos de jugadores y cuerpo técnico NO se indexan en buscadores. Al lanzar: mapa del sitio, dirección canónica por página y exclusión de `img/jugadores/` e `img/staff/`.
