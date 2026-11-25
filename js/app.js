@@ -1269,11 +1269,27 @@ if (!MODO_ESTATICO) setInterval(() => {
 
 renderCabecera();
 
+/* --- Página de error (404.html) -------------------------------------------- */
+function renderError() {
+  // Quien llegue con un enlace de la antigua vista previa va a la misma página en su sitio real
+  const vieja = location.pathname.match(/^\/vista-previa-[^/]+\/(.*)$/);
+  if (vieja) { location.replace("/" + vieja[1] + location.search + location.hash); return; }
+  $("main").append(el(`
+    <div class="seleccion-hero">
+      <div class="contenedor anim-entrada"><h1>Página no encontrada</h1></div>
+    </div>
+    <section class="contenedor">
+      ${vacio("Esta dirección no existe", "Puede que el enlace esté mal escrito o que la página haya cambiado de sitio.")}
+      <p style="text-align:center;margin-top:var(--sp-3)"><a class="btn btn--azul" href="index.html">Ir a la portada</a></p>
+    </section>`));
+}
+
 const pagina = document.body.dataset.pagina;
 if (pagina === "portada") renderPortada();
 else if (pagina === "seleccion") renderSeleccion(document.body.dataset.seleccion);
 else if (pagina === "directo") renderSalaDirecto();
 else if (pagina === "patrocinadores") renderPatrocinadores();
+else if (pagina === "error") renderError();
 else if (pagina === "tienda") {
   // La tienda vive en su propio módulo: solo se descarga en tienda.html
   const { renderTienda } = await import("./tienda.js");

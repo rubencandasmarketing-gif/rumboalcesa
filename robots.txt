@@ -1,2 +1,8 @@
+# Asturias, rumbo al CESA
+# La web se indexa; las fotos de jugadores y cuerpo técnico (menores), no.
 User-agent: *
 Allow: /
+Disallow: /img/jugadores/
+Disallow: /img/staff/
+
+Sitemap: https://rumboalcesa.es/sitemap.xml

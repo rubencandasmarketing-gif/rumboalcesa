@@ -19,14 +19,15 @@ Se aloja en **GitHub Pages**, con el dominio `rumboalcesa.es` (registrado en
 IONOS). Cada `push` a `main` lanza `.github/workflows/deploy-pages.yml`, que
 publica en un minuto.
 
-Hasta el lanzamiento la web está en **modo "Próximamente"**:
+La web está **lanzada** desde el 25 de noviembre de 2026: se publica en la
+raíz del dominio y cada cambio sale directamente a la vista de todos.
 
-- `https://rumboalcesa.es/` enseña la carpeta `proximamente/` (el juego arcade
-  de 7 metros).
-- La web real sale en `https://rumboalcesa.es/vista-previa-p623z9u80x/`, con
-  `noindex`. No enlazarla desde ningún sitio.
-
-Para lanzar la web real, ver el comentario "PARA LANZAR" del workflow.
+- `404.html` es la página de error. Los enlaces de la antigua vista previa se
+  redirigen solos a su página real.
+- `robots.txt` y `sitemap.xml`: la web se indexa; las fotos de jugadores y
+  cuerpo técnico, no.
+- El juego arcade de 7 metros está en `https://rumboalcesa.es/juego/`, oculto:
+  sin enlaces desde la web y sin indexar.
 
 ## La regla de oro
 
@@ -72,8 +73,10 @@ index.html                  Portada (héroe, próxima jornada, selecciones, agen
 directo.html                Sala del directo: reproductor + banners del patrocinador
 tienda.html                 Tienda (catálogo; pedidos por correo a la federación)
 patrocinadores.html
-proximamente/               Lo que se ve en rumboalcesa.es hasta el lanzamiento: el juego
-                            arcade "Asturias rumbo al CESA" (7 metros). Autocontenido.
+404.html                    Página de error
+juego/                      El juego arcade "Asturias rumbo al CESA" (7 metros). Página
+                            oculta, autocontenida.
+robots.txt, sitemap.xml     Buscadores
 js/datos.js                 ← EL archivo: configuración, sedes, patrocinadores y selecciones
 js/app.js                   Render de todas las páginas (no tocar en caliente)
 js/tienda-datos.js          Catálogo de la tienda, tal cual el boletín
@@ -152,14 +155,10 @@ hacerlo. Los números son los que se le dieron a él.
 **Mejoras**
 
 21. Logo de Deporte Asturiano en mejor resolución. Las fotos de la tienda, APARCADAS con el resto de la tienda.
-24. DECIDIDO: al lanzar, el juego pasa a una página propia oculta (sin enlaces desde la web y sin indexar), accesible solo con su enlace.
 
 31. Más presencia de los patrocinadores (pedido por Rubén el 23 de noviembre, aplazado). Opciones que se le dieron: (1) cinta de logos en movimiento en todas las páginas, también en la tienda; (2) «ofrecido por» con logos que rotan junto a la cuenta atrás, el próximo partido y la agenda; (3) banda de logos junto al reproductor en directo; (4) tira de logos en las imágenes al compartir; (5) vallas con logos en el juego; (6) un patrocinador por selección. Recomendación dada: 1 y 2. Falta que diga cuáles quiere y si todos pesan igual. Ojo: no restar valor al hueco del patrocinador principal.
 
-**Para el lanzamiento**
+**Después del lanzamiento**
 
-25. DECIDIDO: las fotos de jugadores y cuerpo técnico NO se indexan en buscadores. Al lanzar: mapa del sitio, dirección canónica por página y exclusión de `img/jugadores/` e `img/staff/`.
-26. Las estadísticas cuentan también las visitas a la vista previa.
 27. Cloudflare delante del dominio (cabeceras de seguridad y protección contra saturación). DECIDIDO: sí, pero DESPUÉS del lanzamiento, con calma. Es un cambio de DNS en IONOS, guiado paso a paso.
-28. Verificación en dos pasos en IONOS (en GitHub ya está activada).
 

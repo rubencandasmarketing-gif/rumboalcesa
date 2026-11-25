@@ -7,41 +7,38 @@ Cada encargo que cambie la web termina publicado, sin que Rubén tenga que pedir
 1. Comprobar en local (servidor estático, consola sin errores de JavaScript).
 2. Commit y push a `main`. Si el remoto tiene commits nuevos, `git pull --rebase` y repetir el push.
 3. Esperar a que termine el despliegue de GitHub Pages
-   (`.github/workflows/deploy-pages.yml`, ~1 min). Está terminado cuando la
-   **vista previa** sirve el HTML con `?v=<los 7 primeros caracteres del commit>`.
-4. Abrir la página cambiada en la vista previa publicada, comprobar que se ve
-   el cambio y dar a Rubén el enlace.
+   (`.github/workflows/deploy-pages.yml`, ~1 min). Está terminado cuando
+   https://rumboalcesa.es/ sirve el HTML con `?v=<los 7 primeros caracteres del commit>`.
+4. Abrir la página cambiada en la web publicada, comprobar que se ve el
+   cambio y dar a Rubén el enlace.
 
 No hace falta pedir confirmación para el commit y el push a `main` de estos encargos.
 
-## Modo "Próximamente" (hasta el lanzamiento)
+## Web lanzada (25 de noviembre de 2026)
 
-El workflow publica la carpeta `proximamente/` en la raíz del dominio y la web
-real en una carpeta de vista previa, con `noindex`:
+La web real está publicada en la raíz del dominio: https://rumboalcesa.es/
+El workflow copia todo el repositorio menos lo interno (`CLAUDE.md`,
+`README.md`, `.git`, `.github`). Ya no hay vista previa: cada push a `main` se
+publica directamente a la vista de todo el mundo, así que hay que comprobar
+bien en local antes de subir.
 
-- Raíz: https://rumboalcesa.es/ (juego "Asturias rumbo al CESA", ver abajo)
-- Web real: https://rumboalcesa.es/vista-previa-p623z9u80x/
-- Mientras el dominio no esté conectado, las mismas rutas cuelgan de
-  https://rubencandasmarketing-gif.github.io/rumboalcesa/
+- **Página de error:** `404.html` (con `<base href="/">`). Quien llegue con un
+  enlace de la antigua vista previa (`/vista-previa-.../pagina`) es redirigido
+  a la misma página en su sitio real.
+- **Buscadores:** `robots.txt` deja indexar la web y excluye `img/jugadores/`
+  e `img/staff/` (fotos de menores: decisión de Rubén, no cambiar).
+  `sitemap.xml` lista las 10 páginas; una página nueva debe añadirse ahí y
+  llevar su `<link rel="canonical">`.
+- **El juego** "Asturias rumbo al CESA" (recreativa de 7 metros) vive en
+  `juego/` → https://rumboalcesa.es/juego/ . Está oculto: no se enlaza desde
+  ninguna página, lleva `noindex` y no está en el mapa del sitio. Es un único
+  archivo (`juego/index.html`) con su CSS y su JS dentro; las reglas y la
+  dificultad están ajustadas a propósito, no tocarlo sin que Rubén lo pida. La
+  carpeta es autocontenida (favicon, fuentes, imagen de enlace).
 
-La raíz enseña el juego arcade "Asturias rumbo al CESA" (recreativa de
-lanzamientos de 7 metros) con el aviso "Próximamente": es el gancho hasta el
-lanzamiento. Encima de la máquina va la portada con el logo FBMPA, el chip
-"Próximamente" y el mensaje "Mientras esperas la nueva web…"; en ordenador,
-portada a la izquierda y máquina a la derecha. Todo el juego es `proximamente/index.html`, un único archivo con
-su CSS y su JS dentro; las reglas y la dificultad están ajustadas a propósito,
-no tocarlo sin que Rubén lo pida. La carpeta es autocontenida (favicon, fuentes
-Barlow y Press Start 2P, `img/og-rumbo-al-cesa.jpg` para la vista previa del
-enlace) y
-no hace más petición externa que la de las estadísticas. El workflow genera `404.html` a partir de ese
-index, así que su `<head>` debe seguir en una línea propia.
-
-Todas las páginas HTML (la web real y `proximamente/index.html`) llevan el
+Todas las páginas HTML (incluidas `404.html` y `juego/index.html`) llevan el
 fragmento de Cloudflare Web Analytics justo antes de `</body>`. Una página
 nueva debe llevarlo también.
-
-No enlazar la vista previa desde ningún sitio. Para lanzar la web real, ver
-el comentario "PARA LANZAR" en el workflow.
 
 ## Lista de pendientes
 
@@ -63,7 +60,7 @@ propia web (`fuentes/`), no en Google Fonts. Consecuencias:
 - Un servicio externo nuevo (otro vídeo, mapa, widget, fuente) hay que añadirlo
   a la política de TODAS las páginas o no cargará.
 - Una página nueva debe copiar las dos etiquetas meta de las demás.
-- El juego (`proximamente/index.html`) tiene su propia política, que sí
+- El juego (`juego/index.html`) tiene su propia política, que sí
   permite su script en línea.
 - Los datos de `datos.js` se pintan siempre con `esc()`.
 
